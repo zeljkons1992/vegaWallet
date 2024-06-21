@@ -9,6 +9,10 @@
 .history
 .svn/
 migrate_working_dir/
+lib/injection.config.dart
+*.g.dart
+*.config.dart
+*.lock
 
 # IntelliJ related
 *.iml
@@ -16,6 +20,9 @@ migrate_working_dir/
 *.iws
 .idea/
 
+sonar-project.properties
+
+*.env
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
 # is commented out by default.
