@@ -13,6 +13,7 @@ lib/injection.config.dart
 *.g.dart
 *.config.dart
 *.lock
+*.xcconfig
 
 # IntelliJ related
 *.iml
