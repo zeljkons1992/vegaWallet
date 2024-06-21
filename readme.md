@@ -1,1 +1,2 @@
-VegaIT Wallet
+VegaIT flutter create .
+
