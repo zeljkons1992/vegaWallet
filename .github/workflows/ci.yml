@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - name: Checkout repository
@@ -24,11 +24,15 @@ jobs:
       - name: Analyze code
         run: flutter analyze
 
-      - name: Build project
-        run: flutter build apk --debug # You can use `flutter build apk` or `flutter build ios` as needed
+      - name: Build Android project
+        run: flutter build apk --debug # Use `flutter build apk` for release build
+
+      - name: Build iOS project
+        run: flutter build ios --no-codesign
 
       - name: Run tests
         run: flutter test --coverage
+
 
 #      - name: Upload coverage to Codecov
 #        uses: codecov/codecov-action@v3
