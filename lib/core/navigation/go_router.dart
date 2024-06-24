@@ -16,15 +16,15 @@ final GoRouter router = GoRouter(
       routes: [
         GoRoute(
           path: '/',
-          builder: (context, state) => WalletScreen(walletCardInformation: WalletCardInformation(name: "Nikola\nRanković",expiry: "12/25",cardNo: "100 951"),)
+          builder: (context, state) => const WalletScreen(walletCardInformation: WalletCardInformation(name: "Nikola\nRanković",expiry: "12/25",cardNo: "100 951"),)
         ),
         GoRoute(
           path: '/stores',
-          builder: (context, state) => StoresScreen(),
+          builder: (context, state) => const StoresScreen(),
         ),
         GoRoute(
           path: '/maps',
-          builder: (context, state) => MapsScreen(),
+          builder: (context, state) => const MapsScreen(),
         ),
       ],
     ),
