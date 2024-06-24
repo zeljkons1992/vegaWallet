@@ -13,10 +13,10 @@ class WalletScreen extends StatefulWidget {
   const WalletScreen({super.key, required this.walletCardInformation});
 
   @override
-  _WalletScreenState createState() => _WalletScreenState();
+  WalletScreenState createState() => WalletScreenState();
 }
 
-class _WalletScreenState extends State<WalletScreen> {
+class WalletScreenState extends State<WalletScreen> {
   final FlipCardController _flipCardController = FlipCardController();
 
   @override
