@@ -30,13 +30,13 @@ class MyApp extends StatelessWidget {
 class MainScreen extends StatefulWidget {
   final Widget child;
 
-  const MainScreen({required this.child});
+  const MainScreen({super.key, required this.child});
 
   @override
-  _MainScreenState createState() => _MainScreenState();
+  MainScreenState createState() => MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
