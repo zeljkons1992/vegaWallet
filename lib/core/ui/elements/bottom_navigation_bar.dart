@@ -11,14 +11,13 @@ class MyBottomNavigationBar extends StatefulWidget {
   });
 
   @override
-  _MyBottomNavigationBar createState() => _MyBottomNavigationBar();
+  MyBottomNavigationBarState createState() => MyBottomNavigationBarState();
 }
 
-class _MyBottomNavigationBar extends State<MyBottomNavigationBar> {
+class MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     ColorScheme colorScheme = Theme.of(context).colorScheme;
-
 
     return NavigationBarTheme(
       data: NavigationBarThemeData(
