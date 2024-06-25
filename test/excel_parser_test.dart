@@ -5,7 +5,6 @@ import 'package:mockito/mockito.dart';
 import 'package:vegawallet/features/stores/domain/entities/address_city.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
 import 'package:vegawallet/features/stores/domain/utils/excel_parser.dart';
-import 'package:spreadsheet_decoder/spreadsheet_decoder.dart';
 import 'excel_parser_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<SpreadsheetDecoder>(), MockSpec<SpreadsheetTable>(), MockSpec<ExcelDecoderWrapper>()])
