@@ -1,14 +1,14 @@
 import 'package:injectable/injectable.dart';
+import 'package:vegawallet/features/stores/domain/utils/excel_service.dart';
 import '../entities/store.dart';
-import '../repository/store_repository.dart';
 
 @Injectable()
 class FetchStoresUseCase {
-  final StoreRepository repository;
+  final ExcelService service;
 
-  FetchStoresUseCase({required this.repository});
+  FetchStoresUseCase({required this.service});
 
   Future<List<Store>> call() async {
-    return await repository.fetchStores();
+    return await service.fetchAndProcessSpreadsheet();
   }
 }
