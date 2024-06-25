@@ -1,0 +1,1 @@
+const String vegaCard = 'assets/img/vega_card.svg';
