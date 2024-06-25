@@ -17,14 +17,10 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   }
 
   Future<void> _onLoadStores(LoadStores event, Emitter<StoreState> emit) async {
-    print("pokusao");
     try {
       final stores = await _fetchStoresUseCase();
-      print("Stores loaded: ${stores.length}");
       emit(StoreLoaded(stores: stores));
     } catch (e) {
-      print("error");
-      print(e);
       emit(StoreError(message: e.toString()));
     }
   }
