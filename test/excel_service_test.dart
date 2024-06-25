@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:spreadsheet_decoder/spreadsheet_decoder.dart';
+import 'package:vegawallet/features/stores/data/data_sources/local_data_source.dart';
 import 'package:vegawallet/features/stores/domain/entities/address_city.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
 import 'package:vegawallet/features/stores/domain/repository/store_repository.dart';
@@ -16,6 +17,7 @@ import 'excel_service_test.mocks.dart';
 @GenerateNiceMocks([MockSpec<StoreRepository>()])
 @GenerateNiceMocks([MockSpec<ExcelDecoderService>()])
 @GenerateNiceMocks([MockSpec<SpreadsheetDecoder>()])
+@GenerateNiceMocks([MockSpec<LocalDataSource>()])
 
 void main() {
   group('Excel Service', () {
@@ -25,6 +27,7 @@ void main() {
     late MockExcelDecoderService mockExcelDecoderService;
     late ExcelService excelService;
     late MockSpreadsheetDecoder mockSpreadsheetDecoder;
+    late MockLocalDataSource mockLocalDataSource;
 
     setUp(() {
       mockStoreRepository = MockStoreRepository();
@@ -32,12 +35,15 @@ void main() {
       mockExcelParser = MockExcelParser();
       mockExcelDecoderService = MockExcelDecoderService();
       mockSpreadsheetDecoder = MockSpreadsheetDecoder();
+      mockLocalDataSource = MockLocalDataSource();
+
 
       excelService = ExcelService(
         repository: mockStoreRepository,
         parser: mockExcelParser,
         mapper: mockExcelMapper,
         decoderService: mockExcelDecoderService,
+        localDataSource: mockLocalDataSource,
       );
     });
 
@@ -87,6 +93,7 @@ void main() {
       verify(mockExcelDecoderService.decodeBytes(any)).called(1);
       verify(mockExcelParser.parse(mockSpreadsheetDecoder)).called(1);
       verify(mockExcelMapper.map(mockData)).called(1);
+      verify(mockLocalDataSource.writeStores(stores)).called(1);
 
       expect(result, stores);
     });
