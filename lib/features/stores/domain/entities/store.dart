@@ -10,6 +10,7 @@ class Store {
   late List<AddressCity> addressCities;
   late List<String> discounts;
   late List<String> conditions;
+  late String category;  // New field for category
 
   Store();
 
@@ -18,14 +19,16 @@ class Store {
     required this.addressCities,
     required this.discounts,
     required this.conditions,
+    required this.category,  // Initialize category
   });
 
-  factory Store.fromMap(String name, List<List<dynamic>> rows) {
+  factory Store.fromMap(String name, List<List<dynamic>> rows, String category) {
     return Store.withData(
       name: name,
       addressCities: _parseAddressCities(rows),
       discounts: _parseList(rows, 4),
       conditions: _parseList(rows, 5),
+      category: category,  // Set category
     );
   }
 
@@ -54,7 +57,8 @@ class Store {
         '  name: $name,\n'
         '  addressCities: $addressCities,\n'
         '  discounts: $discounts,\n'
-        '  conditions: $conditions\n'
+        '  conditions: $conditions,\n'
+        '  category: $category\n'
         '}';
   }
 }
