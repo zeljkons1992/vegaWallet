@@ -30,7 +30,6 @@ class Store {
       addressCities: _parseAddressCities(rows),
       discounts: _parseList(rows, 4),
       conditions: _parseList(rows, 5),
-      category: category, // Set category
     );
   }
 
@@ -49,8 +48,7 @@ class Store {
     for (var row in rows) {
       String? address = row[2]?.toString();
       String? city = row[3]?.toString();
-      if (address != null && address.isNotEmpty && city != null &&
-          city.isNotEmpty) {
+      if (address != null && address.isNotEmpty && city != null && city.isNotEmpty) {
         addressCities.add(AddressCity.withData(address: address, city: city));
       }
     }
@@ -70,8 +68,7 @@ class Store {
         '  name: $name,\n'
         '  addressCities: $addressCities,\n'
         '  discounts: $discounts,\n'
-        '  conditions: $conditions,\n'
-        '  category: $category\n'
+        '  conditions: $conditions\n'
         '}';
   }
 
@@ -96,4 +93,3 @@ class Store {
       const DeepCollectionEquality().hash(conditions) ^
       category.hashCode;
 }
-
