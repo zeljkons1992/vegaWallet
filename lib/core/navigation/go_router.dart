@@ -15,7 +15,7 @@ final GoRouter router = GoRouter(
       routes: [
         GoRoute(
           path: '/',
-          builder: (context, state) =>  WalletScreen()
+          builder: (context, state) =>  const WalletScreen()
         ),
         GoRoute(
           path: '/stores',

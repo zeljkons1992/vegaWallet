@@ -29,15 +29,15 @@ void main() {
     return MaterialApp(
       home: BlocProvider.value(
         value: mockWalletBloc,
-        child: WalletScreen(),
+        child: const WalletScreen(),
       ),
     );
   }
 
 
   testWidgets('shows loaded card information when state is WalletStateLoaded', (WidgetTester tester) async {
-    final mockCardInfo = WalletCardInformation(name: 'John Doe', expiry: '12/34', cardNo: '123456789012');
-    whenListen(mockWalletBloc, Stream.fromIterable([WalletStateLoaded(mockCardInfo)]), initialState: WalletStateInitial());
+    const mockCardInfo = WalletCardInformation(name: 'John Doe', expiry: '12/34', cardNo: '123456789012');
+    whenListen(mockWalletBloc, Stream.fromIterable([const WalletStateLoaded(mockCardInfo)]), initialState: WalletStateInitial());
     await tester.pumpWidget(createWidgetUnderTest());
     await tester.pumpAndSettle();
 
