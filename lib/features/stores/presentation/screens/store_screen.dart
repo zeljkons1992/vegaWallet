@@ -15,7 +15,7 @@ class StoreScreen extends StatelessWidget {
       create: (context) => storeBloc,
       child: Center(
         child: ElevatedButton(
-          child: Text("click"),
+          child: const Text("click"),
           onPressed: () {
             storeBloc.add(LoadStores());
           },
