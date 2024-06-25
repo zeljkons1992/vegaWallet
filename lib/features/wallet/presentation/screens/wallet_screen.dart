@@ -31,14 +31,16 @@ class _WalletScreenState extends State<WalletScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: BlocBuilder<WalletBloc, WalletState>(
               builder: (context, state) {
-                if (state is WalletStateLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is WalletStateLoaded) {
-                  return _buildContent(context, state.walletCardInformation);
-                } else if (state is WalletStateError) {
-                  return const Center(child: Text('Failed to load card information'));
+                switch (state) {
+                  case WalletStateLoading _:
+                    return const Center(child: CircularProgressIndicator());
+                  case WalletStateLoaded _:
+                    return _buildContent(context, (state).walletCardInformation);
+                  case WalletStateError _:
+                    return const Center(child: Text('Failed to load card information'));
+                  default:
+                    return const Center(child: Text('Welcome to your wallet'));
                 }
-                return const Center(child: Text('Welcome to your wallet'));
               },
             ),
           ),
