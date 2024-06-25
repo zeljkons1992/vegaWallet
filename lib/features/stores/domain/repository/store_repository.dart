@@ -1,5 +1,5 @@
-import '../entities/store.dart';
+import 'dart:typed_data';
 
 abstract class StoreRepository {
-  Future<List<Store>> fetchStores();
+  Future<Uint8List> fetchSpreadsheet();
 }
