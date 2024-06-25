@@ -1,66 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vegawallet/core/constants/assets_const.dart';
 import 'package:vegawallet/core/constants/text_const.dart';
 import 'package:vegawallet/core/ui/theme/button_style.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
-import 'package:vegawallet/features/wallet/data/models/wallet_card_information.dart';
+import 'package:vegawallet/features/wallet/presentation/bloc/wallet_bloc.dart';
+import 'package:vegawallet/core/di/injection.dart';
+
+import '../../data/models/wallet_card_information.dart';
 
 class WalletScreen extends StatefulWidget {
-  final WalletCardInformation walletCardInformation;
-
-  const WalletScreen({super.key, required this.walletCardInformation});
+  const WalletScreen({super.key});
 
   @override
-  WalletScreenState createState() => WalletScreenState();
+  State<WalletScreen> createState() => _WalletScreenState();
 }
 
-class WalletScreenState extends State<WalletScreen> {
+class _WalletScreenState extends State<WalletScreen> {
   final FlipCardController _flipCardController = FlipCardController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: Text(TextConst.wallet, style: AppTextStyles.headline1),
-                ),
-                GestureDetector(
-                  onTap: () => _flipCardController.flipcard(),
-                  child: FlipCard(
-                    controller: _flipCardController,
-                    rotateSide: RotateSide.bottom,
-                    frontWidget: _buildFrontCard(context),
-                    backWidget: _buildBackCard(context),
-                  ),
-                ),
-                const Spacer(),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: primaryButtonStyle(context),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 12.0),
-                      child: Text(
-                        'Calculate the Discount',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-              ],
+    return BlocProvider(
+      create: (context) => getIt<WalletBloc>()..add(FetchCardInfo()),
+      child: Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: BlocBuilder<WalletBloc, WalletState>(
+              builder: (context, state) {
+                if (state is WalletStateLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is WalletStateLoaded) {
+                  return _buildContent(context, state.walletCardInformation);
+                } else if (state is WalletStateError) {
+                  return const Center(child: Text('Failed to load card information'));
+                }
+                return const Center(child: Text('Welcome to your wallet'));
+              },
             ),
           ),
         ),
@@ -68,7 +47,47 @@ class WalletScreenState extends State<WalletScreen> {
     );
   }
 
-  Widget _buildFrontCard(BuildContext context) {
+  Widget _buildContent(BuildContext context, WalletCardInformation cardInfo) {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+            child: Text(TextConst.wallet, style: AppTextStyles.headline1),
+          ),
+          GestureDetector(
+            onTap: () => _flipCardController.flipcard(),
+            child: FlipCard(
+              controller: _flipCardController,
+              rotateSide: RotateSide.bottom,
+              frontWidget: _buildFrontCard(context, cardInfo),
+              backWidget: _buildBackCard(context),
+            ),
+          ),
+          const Spacer(),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {},
+              style: primaryButtonStyle(context),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 12.0),
+                child: Text(
+                  TextConst.calculateDiscount,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFrontCard(BuildContext context, WalletCardInformation cardInfo) {
     return Stack(
       key: const ValueKey(true),
       children: [
@@ -86,7 +105,7 @@ class WalletScreenState extends State<WalletScreen> {
           top: 20,
           left: 16,
           child: Text(
-            widget.walletCardInformation.name,
+            cardInfo.name,
             style: AppTextStyles.cardNameStyle,
           ),
         ),
@@ -106,7 +125,7 @@ class WalletScreenState extends State<WalletScreen> {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    widget.walletCardInformation.expiry,
+                    cardInfo.expiry,
                     style: AppTextStyles.cardLabelDigital,
                   ),
                 ],
@@ -121,7 +140,7 @@ class WalletScreenState extends State<WalletScreen> {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    widget.walletCardInformation.cardNo,
+                    cardInfo.cardNo,
                     style: AppTextStyles.cardLabelDigital,
                   ),
                 ],

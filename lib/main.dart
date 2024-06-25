@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:vegawallet/core/di/injection.dart';
 import 'package:vegawallet/core/navigation/go_router.dart';
 import 'package:vegawallet/core/ui/elements/bottom_navigation_bar.dart';
 
 import 'core/ui/theme/theme.dart';
 import 'core/ui/theme/util.dart';
 
-void main() {
+Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  configureDependencies();
   runApp(const MyApp());
 }
 

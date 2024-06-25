@@ -1,7 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:vegawallet/features/maps/presentaion/screens/map_screen.dart';
 import 'package:vegawallet/features/stores/presentation/screens/stores_screen.dart';
-import 'package:vegawallet/features/wallet/data/models/wallet_card_information.dart';
 import 'package:vegawallet/features/wallet/presentation/screens/wallet_screen.dart';
 
 import '../../main.dart';
@@ -16,7 +15,7 @@ final GoRouter router = GoRouter(
       routes: [
         GoRoute(
           path: '/',
-          builder: (context, state) => const WalletScreen(walletCardInformation: WalletCardInformation(name: "Nikola\nRanković",expiry: "12/25",cardNo: "100 951"),)
+          builder: (context, state) =>  WalletScreen()
         ),
         GoRoute(
           path: '/stores',
