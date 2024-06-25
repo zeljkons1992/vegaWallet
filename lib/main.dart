@@ -7,7 +7,7 @@ import 'package:vegawallet/core/ui/elements/bottom_navigation_bar.dart';
 import 'core/ui/theme/theme.dart';
 import 'core/ui/theme/util.dart';
 
-Future<void> main() async{
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   configureDependencies();
   runApp(const MyApp());
@@ -30,6 +30,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
+enum TabItem { home, stores, maps }
+
 class MainScreen extends StatefulWidget {
   final Widget child;
 
@@ -40,21 +42,21 @@ class MainScreen extends StatefulWidget {
 }
 
 class MainScreenState extends State<MainScreen> {
-  int _selectedIndex = 0;
+  TabItem _selectedTab = TabItem.home;
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _selectedTab = TabItem.values[index];
     });
 
-    switch (index) {
-      case 0:
+    switch (_selectedTab) {
+      case TabItem.home:
         context.go('/');
         break;
-      case 1:
+      case TabItem.stores:
         context.go('/stores');
         break;
-      case 2:
+      case TabItem.maps:
         context.go('/maps');
         break;
     }
@@ -65,7 +67,7 @@ class MainScreenState extends State<MainScreen> {
     return Scaffold(
       body: widget.child,
       bottomNavigationBar: MyBottomNavigationBar(
-        selectedIndex: _selectedIndex,
+        selectedIndex: _selectedTab.index,
         onItemTapped: _onItemTapped,
       ),
     );
