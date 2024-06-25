@@ -27,6 +27,12 @@ jobs:
           distribution: 'zulu'
           java-version: '11'
 
+      - name: Create .env file
+        run: |
+          echo "EXCEL_BASE_URL=https://example.com" >> .env
+          echo "EXCEL_URL=/spreadsheet.xlsx" >> .env
+          echo "EXCEL_FORMAT=xlsx" >> .env
+
       - name: Install dependencies
         run: flutter pub get
 
