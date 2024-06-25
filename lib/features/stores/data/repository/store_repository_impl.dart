@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import '../data_sources/api_client.dart';
 import '../../domain/repository/store_repository.dart';
@@ -12,7 +13,7 @@ class StoreRepositoryImpl implements StoreRepository {
   @override
   Future<Uint8List> fetchSpreadsheet() async {
     try {
-      final response = await apiClient.downloadExcelFile('xlsx', '1pkLx5AoPiULXUxB-ZbQIKyiGpqt_TspXy0xENkvgeNo');
+      final response = await apiClient.downloadExcelFile(dotenv.env['EXCEL_FORMAT']!, dotenv.env['EXCEL_URL']!);
       if (response.response.statusCode == 200) {
         return Uint8List.fromList(response.data);
       } else {
