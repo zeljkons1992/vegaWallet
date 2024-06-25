@@ -12,10 +12,6 @@ class ExcelMapper {
       _mapTableToStores(rows, table, stores);
     }
 
-    for (var store in stores) {
-      print(store);
-    }
-
     return stores;
   }
 
