@@ -31,13 +31,17 @@ class ExcelService {
       final decoder = decoderService.decodeBytes(bytes);
       final parsedData = parser.parse(decoder);
       final stores = mapper.map(parsedData);
-      await localDataSource.writeStores(stores);
 
       return stores;
     } catch (e) {
       throw Exception('Error fetching and processing spreadsheet: $e');
     }
   }
+
+  Future<void> clearAndReplaceStores(List<Store> stores) async {
+    await localDataSource.clearAndReplaceStores(stores);
+  }
+
 }
 
 @Injectable()
