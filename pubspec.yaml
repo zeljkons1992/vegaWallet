@@ -29,6 +29,8 @@ dependencies:
   flutter_flip_card: ^0.0.6
   mocktail: ^1.0.4
   bloc_test: ^9.1.7
+  flutter_native_splash: ^2.4.0
+  lottie: ^3.1.2
 
 
 
@@ -48,3 +50,12 @@ flutter:
     - assets/img/
 
   uses-material-design: true
+
+flutter_native_splash:
+  color: "#C35535"
+  image: assets/img/vega_splash.png
+  ios: true
+  android_12:
+    android: true
+    color: "#C35535"
+    image: assets/img/vega_splash.png

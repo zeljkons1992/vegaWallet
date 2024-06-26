@@ -9,6 +9,7 @@ import 'core/ui/theme/util.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   configureDependencies();
   runApp(const MyApp());
 }
