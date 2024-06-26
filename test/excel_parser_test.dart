@@ -65,7 +65,7 @@ void main() {
       final result = parser.parse(Uint8List(0));
 
       // Assert
-      expect(result, expectedData);
+      expect(result.map((store) => store.toMap()).toList(), expectedData.map((store) => store.toMap()).toList());
     });
   });
 }
