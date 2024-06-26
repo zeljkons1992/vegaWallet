@@ -9,6 +9,8 @@ class FetchStoresUseCase {
   FetchStoresUseCase({required this.service});
 
   Future<List<Store>> call() async {
-    return await service.fetchAndProcessSpreadsheet();
+    final stores =  await service.fetchAndProcessSpreadsheet();
+    await service.clearAndReplaceStores(stores);
+    return stores;
   }
 }
