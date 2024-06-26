@@ -61,4 +61,19 @@ class Store {
         '  category: $category\n'
         '}';
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! Store) return false;
+    return name == other.name &&
+        addressCities == other.addressCities &&
+        discounts == other.discounts &&
+        conditions == other.conditions &&
+        category == other.category;
+  }
+
+  @override
+  int get hashCode => name.hashCode ^ addressCities.hashCode ^ discounts.hashCode ^ conditions.hashCode ^ category.hashCode;
 }
+

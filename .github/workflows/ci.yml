@@ -52,12 +52,7 @@ jobs:
         run: flutter test --coverage
 
 
-#      - name: Upload coverage to Codecov
-#        uses: codecov/codecov-action@v3
-#        with:
-#          files: ./coverage/lcov.info
-#          flags: unittests
-#          name: codecov-umbrella
-#          fail_ci_if_error: true
-#        env:
-#          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }} # Set this in your repository settings
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

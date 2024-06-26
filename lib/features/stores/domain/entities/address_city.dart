@@ -40,4 +40,14 @@ class AddressCity {
   static List<Map<String, dynamic>> toList(List<AddressCity> list) {
     return list.map((item) => item.toMap()).toList();
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! AddressCity) return false;
+    return address == other.address && city == other.city;
+  }
+
+  @override
+  int get hashCode => address.hashCode ^ city.hashCode;
 }
