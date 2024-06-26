@@ -1,5 +1,6 @@
-import 'dart:typed_data';
+import '../entities/cache_policy.dart';
+import '../entities/store.dart';
 
 abstract class StoreRepository {
-  Future<Uint8List> fetchSpreadsheet();
+  Future<List<Store>> getStores(CachePolicy cachePolicy);
 }
