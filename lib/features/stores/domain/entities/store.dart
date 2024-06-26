@@ -10,7 +10,7 @@ class Store {
   late List<AddressCity> addressCities;
   late List<String> discounts;
   late List<String> conditions;
-  late String category;  // New field for category
+  late String category; // New field for category
 
   Store();
 
@@ -19,17 +19,28 @@ class Store {
     required this.addressCities,
     required this.discounts,
     required this.conditions,
-    required this.category,  // Initialize category
+    required this.category, // Initialize category
   });
 
-  factory Store.fromMap(String name, List<List<dynamic>> rows, String category) {
+  factory Store.fromMap(String name, List<List<dynamic>> rows,
+      String category) {
     return Store.withData(
       name: name,
       addressCities: _parseAddressCities(rows),
       discounts: _parseList(rows, 4),
       conditions: _parseList(rows, 5),
-      category: category,  // Set category
+      category: category, // Set category
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'addressCities': addressCities.map((addressCity) => addressCity.toMap()).toList(),
+      'discounts': discounts,
+      'conditions': conditions,
+      'category': category,
+    };
   }
 
   static List<AddressCity> _parseAddressCities(List<List<dynamic>> rows) {
@@ -37,7 +48,8 @@ class Store {
     for (var row in rows) {
       String? address = row[2]?.toString();
       String? city = row[3]?.toString();
-      if (address != null && address.isNotEmpty && city != null && city.isNotEmpty) {
+      if (address != null && address.isNotEmpty && city != null &&
+          city.isNotEmpty) {
         addressCities.add(AddressCity.withData(address: address, city: city));
       }
     }
@@ -63,17 +75,24 @@ class Store {
   }
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! Store) return false;
-    return name == other.name &&
-        addressCities == other.addressCities &&
-        discounts == other.discounts &&
-        conditions == other.conditions &&
-        category == other.category;
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is Store &&
+              runtimeType == other.runtimeType &&
+              id == other.id &&
+              name == other.name &&
+              addressCities == other.addressCities &&
+              discounts == other.discounts &&
+              conditions == other.conditions &&
+              category == other.category;
 
   @override
-  int get hashCode => name.hashCode ^ addressCities.hashCode ^ discounts.hashCode ^ conditions.hashCode ^ category.hashCode;
+  int get hashCode =>
+      id.hashCode ^
+      name.hashCode ^
+      addressCities.hashCode ^
+      discounts.hashCode ^
+      conditions.hashCode ^
+      category.hashCode;
 }
 
