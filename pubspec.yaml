@@ -52,7 +52,10 @@ flutter:
   uses-material-design: true
 
 flutter_native_splash:
-  color: "#c35535"
+  color: "#C35535"
   image: assets/img/vega_splash.png
-  android: true
   ios: true
+  android_12:
+    android: true
+    color: "#C35535"
+    image: assets/img/vega_splash.png
