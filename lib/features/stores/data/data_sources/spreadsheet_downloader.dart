@@ -1,14 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
-part 'api_client.g.dart';
+part 'spreadsheet_downloader.g.dart';
 
 @RestApi()
-abstract class ApiClient {
-  factory ApiClient(Dio dio, {String baseUrl}) = _ApiClient;
+abstract class SpreadsheetDownloader {
+  factory SpreadsheetDownloader(Dio dio, {String baseUrl}) = _SpreadsheetDownloader;
 
   @GET("/{spreadsheetId}/export")
-  @DioResponseType(ResponseType.bytes) // Ensure the response is treated as bytes
+  @DioResponseType(ResponseType.bytes)
   Future<HttpResponse<List<int>>> downloadExcelFile(
       @Query("format") String format,
       @Path("spreadsheetId") String spreadsheetId,

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:isar/isar.dart';
 import 'address_city.dart';
 
@@ -81,18 +82,18 @@ class Store {
               runtimeType == other.runtimeType &&
               id == other.id &&
               name == other.name &&
-              addressCities == other.addressCities &&
-              discounts == other.discounts &&
-              conditions == other.conditions &&
+              const DeepCollectionEquality().equals(addressCities, other.addressCities) &&
+              const DeepCollectionEquality().equals(discounts, other.discounts) &&
+              const DeepCollectionEquality().equals(conditions, other.conditions) &&
               category == other.category;
 
   @override
   int get hashCode =>
       id.hashCode ^
       name.hashCode ^
-      addressCities.hashCode ^
-      discounts.hashCode ^
-      conditions.hashCode ^
+      const DeepCollectionEquality().hash(addressCities) ^
+      const DeepCollectionEquality().hash(discounts) ^
+      const DeepCollectionEquality().hash(conditions) ^
       category.hashCode;
 }
 

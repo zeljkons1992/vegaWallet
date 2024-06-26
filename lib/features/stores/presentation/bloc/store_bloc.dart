@@ -19,7 +19,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
 
   Future<void> _onLoadStores(LoadStores event, Emitter<StoreState> emit) async {
     try {
-      final cachePolicy = CachePolicy(type: CacheType.EXPIRES, expires: const Duration(days: 1));
+      final cachePolicy = CachePolicy(type: CacheType.EXPIRES, expires: const Duration(days: 7));
       final stores = await _fetchStoresUseCase(cachePolicy);
       emit(StoreLoaded(stores: stores));
     } catch (e) {

@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'injection.config.dart';
 
-import 'features/stores/data/data_sources/api_client.dart';
+import 'features/stores/data/data_sources/spreadsheet_downloader.dart';
 
 final getIt = GetIt.instance;
 
@@ -39,8 +39,8 @@ abstract class InjectableModule {
   // }
 
   @LazySingleton()
-  ApiClient provideApiClient(Dio dio) {
-    return ApiClient(dio);
+  SpreadsheetDownloader provideApiClient(Dio dio) {
+    return SpreadsheetDownloader(dio);
   }
 
 
