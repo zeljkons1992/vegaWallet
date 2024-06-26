@@ -30,6 +30,7 @@ class Store {
       addressCities: _parseAddressCities(rows),
       discounts: _parseList(rows, 4),
       conditions: _parseList(rows, 5),
+      category: category,  // Set category
     );
   }
 
@@ -68,7 +69,8 @@ class Store {
         '  name: $name,\n'
         '  addressCities: $addressCities,\n'
         '  discounts: $discounts,\n'
-        '  conditions: $conditions\n'
+        '  conditions: $conditions,\n'
+        '  category: $category\n'
         '}';
   }
 

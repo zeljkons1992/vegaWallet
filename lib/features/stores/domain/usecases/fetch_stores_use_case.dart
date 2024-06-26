@@ -6,9 +6,9 @@ import '../repository/store_repository.dart';
 
 @Injectable()
 class FetchStoresUseCase {
-  final ExcelService service;
+  final StoreRepository repository;
 
-  FetchStoresUseCase({required this.service});
+  FetchStoresUseCase({required this.repository});
 
   Future<List<Store>> call(CachePolicy cachePolicy) async {
     return await repository.getStores(cachePolicy);

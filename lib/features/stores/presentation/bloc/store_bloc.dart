@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import '../../domain/entities/cache_policy.dart';
 import '../../domain/entities/store.dart';
 import '../../domain/usecases/fetch_stores_use_case.dart';
 
