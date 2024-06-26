@@ -36,6 +36,7 @@ dependencies:
   bloc_test: ^9.1.7
   mockito: ^5.4.4
   shared_preferences: ^2.2.3
+  collection: ^1.18.0
 
 
 dev_dependencies:
