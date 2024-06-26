@@ -95,3 +95,4 @@ class Store {
       const DeepCollectionEquality().hash(conditions) ^
       category.hashCode;
 }
+
