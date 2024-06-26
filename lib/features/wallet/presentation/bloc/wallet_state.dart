@@ -19,4 +19,9 @@ class WalletStateLoaded extends WalletState{
   List<Object> get props => [walletCardInformation];
 }
 
-class WalletStateError extends WalletState{}
+class WalletStateError extends WalletState{
+  final String error;
+  const WalletStateError(this.error);
+  @override
+  List<Object> get props => [error];
+}

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:equatable/equatable.dart';
+import 'package:vegawallet/core/data_state/data_state.dart';
 import 'package:vegawallet/features/wallet/data/models/wallet_card_information.dart';
 
 import '../../domain/usecases/get_user_card_information_use_case.dart';
@@ -18,19 +19,15 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   WalletBloc(this.getUserCardInformationUseCase) : super(WalletStateInitial()) {
     on<FetchCardInfo>(_onFetchCardInfo);
   }
-
   Future<void> _onFetchCardInfo(
       FetchCardInfo event, Emitter<WalletState> emit) async {
     emit(WalletStateLoading());
-    try {
-      final result = await getUserCardInformationUseCase
-          .call()
-          .timeout(const Duration(seconds: 10));
+    final result = await getUserCardInformationUseCase.call();
+    if (result.status == DataStateStatus.success) {
       emit(WalletStateLoaded(result.data!));
-    } on TimeoutException {
-      emit(WalletStateError());
-    } catch (e) {
-      emit(WalletStateError());
+    } else {
+      emit(WalletStateError(result.message ?? "Failed to fetch data"));
     }
   }
+
 }
