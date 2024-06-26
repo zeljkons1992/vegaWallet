@@ -29,4 +29,12 @@ class LocalDataSource {
     return await db.stores.where().findAll();
   }
 
+  Future<void> clearAndReplaceStores(List<Store> stores) async {
+    final db = await isar;
+    await db.writeTxn(() async {
+      await db.stores.clear(); // Clear all existing stores
+      await db.stores.putAll(stores); // Replace with new stores
+    });
+  }
+
 }
