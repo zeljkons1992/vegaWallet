@@ -1,14 +1,15 @@
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:vegawallet/features/stores/domain/datasources/local_data_source.dart';
 
 import '../../domain/entities/store.dart';
 
-@LazySingleton()
-class LocalDataSource {
+@LazySingleton(as: LocalDataSource)
+class LocalDataSourceImpl implements LocalDataSource {
   late Future<Isar> isar;
 
-  LocalDataSource() {
+  LocalDataSourceImpl() {
     isar = _initIsar();
   }
 
@@ -17,11 +18,13 @@ class LocalDataSource {
     return await Isar.open([StoreSchema], directory: dir.path);
   }
 
+  @override
   Future<List<Store>> getStores() async {
     final db = await isar;
     return await db.stores.where().findAll();
   }
 
+  @override
   Future<void> clearAndReplaceStores(List<Store> stores) async {
     final db = await isar;
     await db.writeTxn(() async {
@@ -30,6 +33,7 @@ class LocalDataSource {
     });
   }
 
+  @override
   Future<void> clearStores() async {
     final db = await isar;
     await db.writeTxn(() async {
