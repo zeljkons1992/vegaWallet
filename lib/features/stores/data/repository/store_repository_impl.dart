@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../domain/datasources/local_data_source.dart';
@@ -9,9 +8,13 @@ import '../../domain/repository/store_repository.dart';
 
 @LazySingleton(as: StoreRepository)
 class StoreRepositoryImpl implements StoreRepository {
-  final ApiClient apiClient;
+  final LocalDataSource localDataSource;
+  final RemoteDataSource remoteDataSource;
 
-  StoreRepositoryImpl({required this.apiClient});
+  StoreRepositoryImpl({
+    required this.localDataSource,
+    required this.remoteDataSource,
+  });
 
   @override
   Future<List<Store>> getStores(CachePolicy cachePolicy) async {

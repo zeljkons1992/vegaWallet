@@ -49,7 +49,8 @@ class Store {
     for (var row in rows) {
       String? address = row[2]?.toString();
       String? city = row[3]?.toString();
-      if (address != null && address.isNotEmpty && city != null && city.isNotEmpty) {
+      if (address != null && address.isNotEmpty && city != null &&
+          city.isNotEmpty) {
         addressCities.add(AddressCity.withData(address: address, city: city));
       }
     }
