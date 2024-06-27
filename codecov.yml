@@ -3,4 +3,10 @@ coverage:
     project:
       default:
         target: 80%
-        threshold: 1% 
+        threshold: 1%
+
+  ignore:
+    - '**/entities/**'
+    - '**/di/**'
+    - '**/theme/**'
+

@@ -2,14 +2,13 @@ import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
 import 'package:vegawallet/features/stores/domain/datasources/local_data_source.dart';
 
-import '../../../../core/di/injection.dart';
 import '../../domain/entities/store.dart';
 
 @LazySingleton(as: LocalDataSource)
 class LocalDataSourceImpl implements LocalDataSource {
-  final Isar isar = getIt<Isar>();
+  final Isar isar;
 
-  LocalDataSourceImpl();
+  LocalDataSourceImpl(this.isar);
 
   @override
   Future<List<Store>> getStores() async {
