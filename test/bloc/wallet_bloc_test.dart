@@ -7,7 +7,7 @@ import 'package:vegawallet/features/wallet/domain/usecases/get_user_card_informa
 import 'package:vegawallet/features/wallet/presentation/bloc/wallet_bloc.dart';
 import 'package:vegawallet/features/wallet/data/models/wallet_card_information.dart';
 
-import '../widget_wallet_test.dart';
+import '../widgets/widget_wallet_test.dart';
 
 class MockWalletRepository extends Mock implements WalletRepository {}
 

@@ -3,14 +3,14 @@ import 'package:go_router/go_router.dart';
 import 'package:vegawallet/core/di/injection.dart';
 import 'package:vegawallet/core/navigation/go_router.dart';
 import 'package:vegawallet/core/ui/elements/bottom_navigation_bar.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/ui/theme/theme.dart';
 import 'core/ui/theme/util.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  configureDependencies();
+  await dotenv.load(fileName: ".env");
+  await configureDependencies();
   runApp(const MyApp());
 }
 
