@@ -20,6 +20,7 @@ class ExcelMapper {
     List<AddressCity> currentAddressCities = [];
     List<String> currentDiscounts = [];
     List<String> currentConditions = [];
+    double? parsedDiscount;
 
     String? lastCity;
     String? lastDiscount;
@@ -27,7 +28,8 @@ class ExcelMapper {
 
     for (var row in rows.skip(1)) {
       if (row[1] != null && row[1].toString().isNotEmpty) {
-        _addStoreIfExists(currentName, currentAddressCities, currentDiscounts, currentConditions, category, stores);
+        parsedDiscount = _calculateParsedDiscount(currentDiscounts);
+        _addStoreIfExists(currentName, currentAddressCities, currentDiscounts, currentConditions, parsedDiscount, category, stores);
 
         currentName = row[1].toString();
         _resetCurrentStoreData(currentAddressCities, currentDiscounts, currentConditions);
@@ -40,7 +42,8 @@ class ExcelMapper {
       _updateCurrentStoreData(row[2]?.toString(), lastCity, lastDiscount, lastCondition, currentAddressCities, currentDiscounts, currentConditions);
     }
 
-    _addStoreIfExists(currentName, currentAddressCities, currentDiscounts, currentConditions, category, stores);
+    parsedDiscount = _calculateParsedDiscount(currentDiscounts);
+    _addStoreIfExists(currentName, currentAddressCities, currentDiscounts, currentConditions, parsedDiscount, category, stores);
   }
 
   void _addStoreIfExists(
@@ -48,6 +51,7 @@ class ExcelMapper {
       List<AddressCity> currentAddressCities,
       List<String> currentDiscounts,
       List<String> currentConditions,
+      double? parsedDiscount,
       String category,
       List<Store> stores,
       ) {
@@ -58,6 +62,7 @@ class ExcelMapper {
         discounts: List.from(currentDiscounts),
         conditions: List.from(currentConditions),
         category: category,
+        parsedDiscount: parsedDiscount,
       ));
     }
   }
@@ -102,5 +107,37 @@ class ExcelMapper {
     if (lastCondition != null && lastCondition.isNotEmpty) {
       currentConditions.add(lastCondition);
     }
+  }
+
+  double? _calculateParsedDiscount(List<String> discounts) {
+    final regex = RegExp(r'(\d+(\.\d+)?\s*%)');
+    double? parsedDiscount;
+    bool allMatch = true;
+
+    for (var discount in discounts) {
+      final match = regex.firstMatch(discount);
+      if (match != null) {
+        final discountValue = double.parse(match.group(1)!.replaceAll('%', '').trim());
+        if (parsedDiscount == null) {
+          parsedDiscount = discountValue;
+        } else if (parsedDiscount != discountValue) {
+          allMatch = false;
+          break;
+        }
+      } else if (RegExp(r'^0\.\d+$').hasMatch(discount)) {
+        final discountValue = double.parse(discount) * 100;
+        if (parsedDiscount == null) {
+          parsedDiscount = discountValue;
+        } else if (parsedDiscount != discountValue) {
+          allMatch = false;
+          break;
+        }
+      } else {
+        allMatch = false;
+        break;
+      }
+    }
+
+    return allMatch ? parsedDiscount : null;
   }
 }

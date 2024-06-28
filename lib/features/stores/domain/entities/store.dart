@@ -11,7 +11,8 @@ class Store {
   late List<AddressCity> addressCities;
   late List<String> discounts;
   late List<String> conditions;
-  late String category; // New field for category
+  late String category;
+  late double? parsedDiscount;
 
   Store();
 
@@ -20,17 +21,19 @@ class Store {
     required this.addressCities,
     required this.discounts,
     required this.conditions,
-    required this.category, // Initialize category
+    required this.category,
+    this.parsedDiscount,
   });
 
   factory Store.fromMap(String name, List<List<dynamic>> rows,
-      String category) {
+      String category, double parsedDiscount) {
     return Store.withData(
       name: name,
       addressCities: _parseAddressCities(rows),
       discounts: _parseList(rows, 4),
       conditions: _parseList(rows, 5),
-      category: category,  // Set category
+      category: category,
+      parsedDiscount: parsedDiscount,
     );
   }
 
@@ -41,6 +44,7 @@ class Store {
       'discounts': discounts,
       'conditions': conditions,
       'category': category,
+      'parsedDiscount': parsedDiscount,
     };
   }
 
@@ -72,6 +76,7 @@ class Store {
         '  discounts: $discounts,\n'
         '  conditions: $conditions,\n'
         '  category: $category\n'
+        '  parsedDiscount: $parsedDiscount\n'
         '}';
   }
 
@@ -85,7 +90,8 @@ class Store {
               const DeepCollectionEquality().equals(addressCities, other.addressCities) &&
               const DeepCollectionEquality().equals(discounts, other.discounts) &&
               const DeepCollectionEquality().equals(conditions, other.conditions) &&
-              category == other.category;
+              category == other.category &&
+              parsedDiscount == other.parsedDiscount;
 
   @override
   int get hashCode =>
@@ -94,6 +100,7 @@ class Store {
       const DeepCollectionEquality().hash(addressCities) ^
       const DeepCollectionEquality().hash(discounts) ^
       const DeepCollectionEquality().hash(conditions) ^
-      category.hashCode;
+      category.hashCode ^
+      parsedDiscount.hashCode;
 }
 
