@@ -14,6 +14,7 @@ lib/injection.config.dart
 *.config.dart
 *.lock
 *.xcconfig
+*.env
 
 # IntelliJ related
 *.iml
@@ -23,7 +24,6 @@ lib/injection.config.dart
 
 sonar-project.properties
 
-*.env
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
 # is commented out by default.

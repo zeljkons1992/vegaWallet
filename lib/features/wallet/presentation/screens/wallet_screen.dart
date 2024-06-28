@@ -20,11 +20,17 @@ class WalletScreen extends StatefulWidget {
 
 class _WalletScreenState extends State<WalletScreen> {
   final FlipCardController _flipCardController = FlipCardController();
+  final WalletBloc walletBloc = getIt<WalletBloc>();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<WalletBloc>()..add(FetchCardInfo()),
+      create: (context) => walletBloc..add(FetchCardInfo()),
       child: Scaffold(
         body: SafeArea(
           child: Padding(
