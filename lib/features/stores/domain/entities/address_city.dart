@@ -40,6 +40,11 @@ class AddressCity {
   static List<Map<String, dynamic>> toList(List<AddressCity> list) {
     return list.map((item) => item.toMap()).toList();
   }
+  AddressCity copyWith({String? address, String? city}) {
+    return AddressCity()
+      ..address = address ?? this.address
+      ..city = city ?? this.city;
+  }
 
   @override
   bool operator ==(Object other) =>

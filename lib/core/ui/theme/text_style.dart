@@ -40,4 +40,9 @@ class AppTextStyles {
       fontWeight: FontWeight.w600,
       color:  Colors.white
   );
+  static final TextStyle titleBold = GoogleFonts.inter(
+      fontSize: 12,
+      fontWeight: FontWeight.bold,
+      color: const Color(0xff373a40)
+  );
 }
