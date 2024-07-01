@@ -4,7 +4,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:vegawallet/core/ui/elements/primary_back_button.dart';
 import 'package:vegawallet/features/stores/presentation/components/details_screen/item_details_info.dart';
 import '../../../../core/ui/elements/primary_dropdown_button.dart';
-import '../../data/model/store.dart';
+import '../../domain/entities/address_city.dart';
+import '../../domain/entities/store.dart';
 
 class StoreDetailsScreen extends StatefulWidget {
   final Store store;
@@ -16,7 +17,7 @@ class StoreDetailsScreen extends StatefulWidget {
 }
 
 class StoreDetailsScreenState extends State<StoreDetailsScreen> {
-  AddressCities? selectedDropdownItem;
+  AddressCity? selectedDropdownItem;
 
   @override
   Widget build(BuildContext context) {

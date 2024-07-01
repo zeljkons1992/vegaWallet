@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vegawallet/core/ui/theme/theme.dart';
 
-import '../../../data/model/store.dart';
+import '../../../domain/entities/store.dart';
+
 
 class StoreListTile extends StatelessWidget {
   final Store store;

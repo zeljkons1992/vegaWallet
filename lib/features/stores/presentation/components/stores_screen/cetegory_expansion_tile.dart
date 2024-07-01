@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../data/model/store.dart';
+import '../../../domain/entities/store.dart';
 import 'store_list_tile.dart';
 
 class CategoryExpansionTile extends StatelessWidget {

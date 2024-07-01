@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:vegawallet/core/ui/theme/theme.dart';
-import '../../../features/stores/data/model/store.dart';
+import '../../../features/stores/domain/entities/address_city.dart';
 
 class PrimaryDropdownButton extends StatefulWidget {
-  final List<AddressCities> items;
-  final ValueChanged<AddressCities?>? onChanged;
-  final AddressCities? selectedItem;
+  final List<AddressCity> items;
+  final ValueChanged<AddressCity?>? onChanged;
+  final AddressCity? selectedItem;
 
   const PrimaryDropdownButton({
     super.key,
@@ -19,12 +19,32 @@ class PrimaryDropdownButton extends StatefulWidget {
 }
 
 class PrimaryDropdownButtonState extends State<PrimaryDropdownButton> {
-  AddressCities? _selectedItem;
+  AddressCity? _selectedItem;
+  late List<AddressCity> _items;
 
   @override
   void initState() {
     super.initState();
-    _selectedItem = widget.selectedItem ?? widget.items[0];
+    _items = List.from(widget.items);
+    _selectedItem = widget.selectedItem ?? _items[0];
+
+
+    List<AddressCity> newItems = [];
+    for (var item in _items) {
+      if (item.address.contains('\n')) {
+        var addresses = item.address.split('\n');
+        for (var i = 1; i < addresses.length; i++) {
+          newItems.add(item.copyWith(address: addresses[i]));
+        }
+        item.address = addresses[0];
+      }
+    }
+
+    _items.addAll(newItems);
+  }
+
+  String _getFirstLine(String text) {
+    return text.split('\n').first;
   }
 
   void _showDropdownMenu(BuildContext context) async {
@@ -39,18 +59,18 @@ class PrimaryDropdownButtonState extends State<PrimaryDropdownButton> {
       Offset.zero & overlay.size,
     );
 
-    final selectedItem = await showMenu<AddressCities>(
+    final selectedItem = await showMenu<AddressCity>(
       context: context,
       position: position,
-      items: widget.items.map((AddressCities item) {
-        return PopupMenuItem<AddressCities>(
+      items: _items.map((AddressCity item) {
+        return PopupMenuItem<AddressCity>(
           value: item,
           child: InkWell(
             onTap: () {
               Navigator.pop(context, item);
             },
             borderRadius: BorderRadius.circular(10),
-            splashColor:  const Color(0xffffeee8),
+            splashColor: const Color(0xffffeee8),
             child: Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Row(
@@ -127,12 +147,12 @@ class PrimaryDropdownButtonState extends State<PrimaryDropdownButton> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      _selectedItem?.city ?? '',
+                      _getFirstLine(_selectedItem?.city ?? '',),
                       style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      _selectedItem?.address ?? '',
+                      _getFirstLine(_selectedItem?.address ?? ''),
                       style: const TextStyle(fontSize: 14, color: Colors.white),
                       overflow: TextOverflow.ellipsis,
                     ),

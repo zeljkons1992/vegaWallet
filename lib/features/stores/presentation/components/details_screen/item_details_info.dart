@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../../core/ui/theme/text_style.dart';
-import '../../../data/model/store.dart';
+import '../../../domain/entities/store.dart';
 
 Widget itemDetailsInfo(Store store, BuildContext context) {
   return Padding(
