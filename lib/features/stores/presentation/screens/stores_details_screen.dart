@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:vegawallet/core/ui/elements/primary_back_button.dart';
-import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/stores/presentation/components/details_screen/item_details_info.dart';
 import '../../../../core/ui/elements/primary_dropdown_button.dart';
 import '../../data/model/store.dart';
@@ -13,10 +12,10 @@ class StoreDetailsScreen extends StatefulWidget {
   const StoreDetailsScreen({super.key, required this.store});
 
   @override
-  _StoreDetailsScreenState createState() => _StoreDetailsScreenState();
+  StoreDetailsScreenState createState() => StoreDetailsScreenState();
 }
 
-class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
+class StoreDetailsScreenState extends State<StoreDetailsScreen> {
   AddressCities? selectedDropdownItem;
 
   @override
