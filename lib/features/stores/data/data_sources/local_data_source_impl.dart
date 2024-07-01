@@ -33,4 +33,10 @@ class LocalDataSourceImpl implements LocalDataSource {
     });
   }
 
+  @override
+  Future<List<Store>> searchStores(String query) async {
+    final db = isar;
+    return await db.stores.filter().nameContains(query, caseSensitive: false).findAll();
+  }
+
 }

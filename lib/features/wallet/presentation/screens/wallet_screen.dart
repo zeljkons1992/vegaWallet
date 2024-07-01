@@ -4,8 +4,10 @@ import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vegawallet/core/constants/assets_const.dart';
 import 'package:vegawallet/core/constants/text_const.dart';
+import 'package:vegawallet/core/ui/elements/search_bar.dart';
 import 'package:vegawallet/core/ui/theme/button_style.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
+import 'package:vegawallet/features/stores/presentation/bloc/store_bloc.dart';
 import 'package:vegawallet/features/wallet/presentation/bloc/wallet_bloc.dart';
 import 'package:vegawallet/core/di/injection.dart';
 
@@ -21,6 +23,7 @@ class WalletScreen extends StatefulWidget {
 class _WalletScreenState extends State<WalletScreen> {
   final FlipCardController _flipCardController = FlipCardController();
   final WalletBloc walletBloc = getIt<WalletBloc>();
+  final StoreBloc storeBloc = getIt<StoreBloc>();
 
   @override
   void initState() {
@@ -32,6 +35,7 @@ class _WalletScreenState extends State<WalletScreen> {
     return BlocProvider(
       create: (context) => walletBloc..add(FetchCardInfo()),
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -41,9 +45,11 @@ class _WalletScreenState extends State<WalletScreen> {
                   case WalletStateLoading _:
                     return const Center(child: CircularProgressIndicator());
                   case WalletStateLoaded _:
-                    return _buildContent(context, (state).walletCardInformation);
+                    return _buildContent(
+                        context, (state).walletCardInformation);
                   case WalletStateError _:
-                    return const Center(child: Text('Failed to load card information'));
+                    return const Center(
+                        child: Text('Failed to load card information'));
                   default:
                     return const Center(child: Text('Welcome to your wallet'));
                 }
@@ -72,6 +78,14 @@ class _WalletScreenState extends State<WalletScreen> {
               rotateSide: RotateSide.bottom,
               frontWidget: _buildFrontCard(context, cardInfo),
               backWidget: _buildBackCard(context),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => storeBloc,
+            child: Builder(
+                builder: (context) {
+                  return StoreSearchBar(onStoreSelected: (store) {});
+                }
             ),
           ),
           const Spacer(),

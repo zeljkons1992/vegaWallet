@@ -8,3 +8,12 @@ abstract class StoreEvent extends Equatable {
 }
 
 class LoadStores extends StoreEvent {}
+
+class SearchStores extends StoreEvent {
+  final String query;
+
+  const SearchStores(this.query);
+
+  @override
+  List<Object> get props => [query];
+}
