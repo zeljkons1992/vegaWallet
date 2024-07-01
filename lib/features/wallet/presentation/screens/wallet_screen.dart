@@ -4,14 +4,18 @@ import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vegawallet/core/constants/assets_const.dart';
 import 'package:vegawallet/core/constants/text_const.dart';
-import 'package:vegawallet/core/ui/elements/search_bar.dart';
 import 'package:vegawallet/core/ui/theme/button_style.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/stores/presentation/bloc/store_bloc.dart';
 import 'package:vegawallet/features/wallet/presentation/bloc/wallet_bloc.dart';
 import 'package:vegawallet/core/di/injection.dart';
 
+import '../../../../core/ui/elements/search_bar.dart';
+import '../../../../core/ui/elements/selected_store_display.dart';
+import '../../../stores/domain/entities/store.dart';
 import '../../data/models/wallet_card_information.dart';
+import '../widgets/discount_calculator.dart';
+import '../widgets/discount_info.dart';
 
 class WalletScreen extends StatefulWidget {
   const WalletScreen({super.key});
@@ -25,6 +29,8 @@ class _WalletScreenState extends State<WalletScreen> {
   final WalletBloc walletBloc = getIt<WalletBloc>();
   final StoreBloc storeBloc = getIt<StoreBloc>();
 
+  Store? _selectedStore;
+
   @override
   void initState() {
     super.initState();
@@ -32,8 +38,11 @@ class _WalletScreenState extends State<WalletScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => walletBloc..add(FetchCardInfo()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => walletBloc..add(FetchCardInfo())),
+        BlocProvider(create: (context) => storeBloc),
+      ],
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: SafeArea(
@@ -80,30 +89,31 @@ class _WalletScreenState extends State<WalletScreen> {
               backWidget: _buildBackCard(context),
             ),
           ),
-          BlocProvider(
-            create: (context) => storeBloc,
-            child: Builder(
-                builder: (context) {
-                  return StoreSearchBar(onStoreSelected: (store) {});
-                }
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0, left: 8.0),
+            child: Text(
+              "Calculator",
+              style: AppTextStyles.headline1,
             ),
           ),
-          const Spacer(),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: primaryButtonStyle(context),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(vertical: 12.0),
-                child: Text(
-                  TextConst.calculateDiscount,
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
+          StoreSearchBar(
+            onStoreSelected: (store) {
+              setState(() {
+                _selectedStore = store;
+              });
+            },
           ),
-          const SizedBox(height: 16),
+          const SizedBox(
+            height: 10.0,
+          ),
+          if (_selectedStore != null)
+            SelectedStoreDisplay(
+              store: _selectedStore!,
+            ),
+          if (_selectedStore != null)
+            _selectedStore!.parsedDiscount != null
+                ? DiscountCalculator(store: _selectedStore!)
+                : DiscountInfo(store: _selectedStore!),
         ],
       ),
     );

@@ -16,6 +16,15 @@ class StoreSearchBarState extends State<StoreSearchBar> {
   final TextEditingController _controller = TextEditingController();
   List<Store> _filteredStores = [];
 
+  final Map<String, IconData> categoryIcons = {
+    'Kafići i Restorani': Icons.coffee_outlined,
+    'Putovanja': Icons.card_travel,
+    'Zabava': Icons.celebration_outlined,
+    'Usluge': Icons.health_and_safety,
+    'Zdravlje i wellness': Icons.local_hospital_outlined,
+    'Kupovina': Icons.shopping_cart_outlined,
+  };
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -24,7 +33,7 @@ class StoreSearchBarState extends State<StoreSearchBar> {
           margin: const EdgeInsets.only(top: 20.0),
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.onPrimary,
+            color: Theme.of(context).colorScheme.onSecondary,
             borderRadius: BorderRadius.circular(50),
           ),
           child: Row(
@@ -42,8 +51,7 @@ class StoreSearchBarState extends State<StoreSearchBar> {
                   ),
                   onChanged: (value) {
                     if (value.isNotEmpty) {
-                      BlocProvider.of<StoreBloc>(context)
-                          .add(SearchStores(value));
+                      BlocProvider.of<StoreBloc>(context).add(SearchStores(value));
                     } else {
                       setState(() {
                         _filteredStores.clear();
@@ -63,48 +71,42 @@ class StoreSearchBarState extends State<StoreSearchBar> {
             }
             return _filteredStores.isNotEmpty
                 ? Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 0.0),
-                    padding: const EdgeInsets.all(8.0),
-                    constraints: const BoxConstraints(
-                      maxHeight: 200.0,
-                    ),
+              margin: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.all(8.0),
+              constraints: const BoxConstraints(
+                maxHeight: 200.0,
+              ),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.onSecondary,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: _filteredStores.length,
+                itemBuilder: (context, index) {
+                  return Container(
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 5,
-                          offset: Offset(0, 2),
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Theme.of(context).dividerColor,
                         ),
-                      ],
+                      ),
                     ),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: _filteredStores.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Theme.of(context).dividerColor,
-                              ),
-                            ),
-                          ),
-                          child: ListTile(
-                            title: Text(_filteredStores[index].name),
-                            onTap: () {
-                              widget.onStoreSelected(_filteredStores[index]);
-                              _controller.clear();
-                              setState(() {
-                                _filteredStores.clear();
-                              });
-                            },
-                          ),
-                        );
+                    child: ListTile(
+                      leading: Icon(categoryIcons[_filteredStores[index].category] ?? Icons.category),
+                      title: Text(_filteredStores[index].name),
+                      onTap: () {
+                        widget.onStoreSelected(_filteredStores[index]);
+                        setState(() {
+                          _controller.clear();
+                          _filteredStores.clear();
+                        });
                       },
                     ),
-                  )
+                  );
+                },
+              ),
+            )
                 : Container();
           },
         ),
