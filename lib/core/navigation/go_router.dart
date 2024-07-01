@@ -3,6 +3,8 @@ import 'package:vegawallet/features/maps/presentaion/screens/map_screen.dart';
 import 'package:vegawallet/features/stores/presentation/screens/store_screen.dart';
 import 'package:vegawallet/features/wallet/presentation/screens/wallet_screen.dart';
 
+import '../../features/stores/data/model/store.dart';
+import '../../features/stores/presentation/screens/stores_details_screen.dart';
 import '../../main.dart';
 
 final GoRouter router = GoRouter(
@@ -20,6 +22,15 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: '/stores',
           builder: (context, state) => StoreScreen(),
+          routes:[
+            GoRoute(
+              path: 'store_details',
+              builder: (context, state) {
+                final store = state.extra as Store;
+                return StoreDetailsScreen(store: store);
+              },
+            ),
+          ]
         ),
         GoRoute(
           path: '/maps',

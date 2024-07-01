@@ -6,11 +6,11 @@ import '../../../../core/data_state/data_state.dart';
 
 @Injectable()
 class GetUserCardInformationUseCase {
-  final WalletRepository walletRepository;
+  final WalletRepository _walletRepository;
 
-  GetUserCardInformationUseCase(this.walletRepository);
+  GetUserCardInformationUseCase(this._walletRepository);
 
   Future<DataState<WalletCardInformation>> call() async{
-    return await walletRepository.getWalletCardInformation();
+    return await _walletRepository.getWalletCardInformation();
   }
 }
