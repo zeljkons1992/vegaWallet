@@ -8,37 +8,24 @@ Widget itemDetailsInfo(Store store, BuildContext context) {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionTitle("Naziv objekta"),
-        _buildLargerSectionContent(store.name),
+        _buildSectionText("Naziv objekta",AppTextStyles.titleBold.copyWith(fontSize: 14)),
+        _buildSectionText(store.name,AppTextStyles.titleBold.copyWith(fontSize: 18.0)),
         _buildDivider(context),
-        _buildSectionTitle("Popusti"),
-        _buildSectionContent(_formatList(store.discounts)),
+        _buildSectionText("Popusti",AppTextStyles.titleBold.copyWith(fontSize: 14)),
+        _buildSectionText(_formatList(store.discounts),AppTextStyles.headline2.copyWith(fontSize: 14.0)),
         _buildDivider(context),
-        _buildSectionTitle("Uslovi"),
-        _buildSectionContent(_formatList(store.conditions)),
+        _buildSectionText("Uslovi",AppTextStyles.titleBold.copyWith(fontSize: 14)),
+        _buildSectionText(_formatList(store.conditions),AppTextStyles.headline2.copyWith(fontSize: 14.0)),
       ],
     ),
   );
 }
 
-Widget _buildSectionTitle(String title) {
-  return Padding(
-    padding: const EdgeInsets.only(bottom: 4.0),
-    child: Text(title, style: AppTextStyles.titleBold),
-  );
-}
 
-Widget _buildLargerSectionContent(String content) {
+Widget _buildSectionText(String content,TextStyle appTextStyle) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 4.0),
-    child: Text(content, style: AppTextStyles.titleBold.copyWith(fontSize: 18.0)),
-  );
-}
-
-Widget _buildSectionContent(String content) {
-  return Padding(
-    padding: const EdgeInsets.only(bottom: 4.0),
-    child: Text(content),
+    child: Text(content,style: appTextStyle,),
   );
 }
 
