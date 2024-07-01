@@ -27,14 +27,15 @@ class StoresScreen extends StatelessWidget {
               Expanded(
                 child: BlocBuilder<StoreBloc, StoreState>(
                   builder: (context, state) {
-                    if (state is StoreLoading) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (state is StoreLoaded) {
-                      return StoresList(stores: state.stores);
-                    } else if (state is StoreError) {
-                      return Center(child: Text(state.message));
-                    } else {
-                      return const Center(child: Text("Unknown state"));
+                    switch (state) {
+                      case StoreLoading _:
+                        return const Center(child: CircularProgressIndicator());
+                      case StoreLoaded _:
+                        return StoresList(stores: state.stores);
+                      case StoreError _:
+                        return Center(child: Text(state.message));
+                      default:
+                        return const Center(child: Text("Unknown state"));
                     }
                   },
                 ),
