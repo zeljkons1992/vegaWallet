@@ -36,6 +36,7 @@ class StoreRepositoryImpl implements StoreRepository {
             return DataState.success(stores);
           } else {
             final stores = await localDataSource.getStores();
+
             return DataState.success(stores);
           }
         default:
