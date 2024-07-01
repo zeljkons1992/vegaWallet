@@ -35,9 +35,7 @@ class StoreRepositoryImpl implements StoreRepository {
             final stores = await _fetchRemoteAndCache();
             return DataState.success(stores);
           } else {
-            //Changed for testing purposes, uncomment when done with the implementation
-           // final stores = await localDataSource.getStores();
-            final stores = await _fetchRemoteAndCache();
+            final stores = await localDataSource.getStores();
 
             return DataState.success(stores);
           }
