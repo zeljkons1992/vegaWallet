@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
@@ -13,8 +14,8 @@ class StoreSearchBar extends StatefulWidget {
 }
 
 class StoreSearchBarState extends State<StoreSearchBar> {
-  final TextEditingController _controller = TextEditingController();
-  List<Store> _filteredStores = [];
+  late SearchController _controller;
+  late StreamController<List<Store>> _searchStreamController;
 
   final Map<String, IconData> categoryIcons = {
     'Kafići i Restorani': Icons.coffee_outlined,
@@ -26,91 +27,100 @@ class StoreSearchBarState extends State<StoreSearchBar> {
   };
 
   @override
+  void initState() {
+    super.initState();
+    _controller = SearchController();
+    _searchStreamController = StreamController<List<Store>>.broadcast();
+  }
+
+  void _onSearchChanged(String value) {
+    if (value.isNotEmpty) {
+      BlocProvider.of<StoreBloc>(context).add(SearchStores(value));
+    } else {
+      _searchStreamController.add([]);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _searchStreamController.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
           margin: const EdgeInsets.only(top: 20.0),
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.onSecondary,
-            borderRadius: BorderRadius.circular(50),
-          ),
-          child: Row(
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(right: 10.0),
-                child: Icon(Icons.menu, color: Colors.black),
-              ),
-              Expanded(
-                child: TextField(
-                  controller: _controller,
-                  decoration: const InputDecoration(
-                    hintText: 'Search stores',
-                    border: InputBorder.none,
-                  ),
-                  onChanged: (value) {
-                    if (value.isNotEmpty) {
-                      BlocProvider.of<StoreBloc>(context).add(SearchStores(value));
-                    } else {
-                      setState(() {
-                        _filteredStores.clear();
-                      });
-                    }
-                  },
-                ),
-              ),
-              const Icon(Icons.search, color: Colors.black),
-            ],
+          child: SearchAnchor(
+            viewOnChanged: (value) {
+              _onSearchChanged(value);
+            },
+            isFullScreen: false,
+            viewConstraints: const BoxConstraints(
+              minHeight: 0,
+              maxHeight: 250,
+            ),
+            searchController: _controller,
+            builder: (context, controller) {
+              return SearchBar(
+                backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
+                shadowColor: WidgetStateProperty.all<Color>(Colors.transparent),
+                trailing: const [Padding(
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: Icon(Icons.search),
+                )],
+                controller: controller,
+                hintText: 'Search stores',
+                onTap: () {
+                  controller.openView();
+                },
+              );
+            },
+            suggestionsBuilder: (context, controller) {
+              return _buildSuggestions();
+            },
+            viewBackgroundColor: Colors.white,
           ),
         ),
-        BlocBuilder<StoreBloc, StoreState>(
-          builder: (context, state) {
+        BlocListener<StoreBloc, StoreState>(
+          listener: (context, state) {
             if (state is StoreLoaded) {
-              _filteredStores = state.stores;
+              _searchStreamController.add(state.stores);
             }
-            return _filteredStores.isNotEmpty
-                ? Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16.0),
-              padding: const EdgeInsets.all(8.0),
-              constraints: const BoxConstraints(
-                maxHeight: 200.0,
-              ),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onSecondary,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: _filteredStores.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Theme.of(context).dividerColor,
-                        ),
-                      ),
-                    ),
-                    child: ListTile(
-                      leading: Icon(categoryIcons[_filteredStores[index].category] ?? Icons.category),
-                      title: Text(_filteredStores[index].name),
-                      onTap: () {
-                        widget.onStoreSelected(_filteredStores[index]);
-                        setState(() {
-                          _controller.clear();
-                          _filteredStores.clear();
-                        });
-                      },
-                    ),
-                  );
-                },
-              ),
-            )
-                : Container();
           },
+          child: Container(),
         ),
       ],
     );
+  }
+
+  Future<List<Widget>> _buildSuggestions() async {
+    final completer = Completer<List<Widget>>();
+    _searchStreamController.stream.first.then((stores) {
+      final suggestions = stores
+          .map(
+            (store) => ListTile(
+              leading: Icon(categoryIcons[store.category] ?? Icons.category),
+              title: Text(store.name),
+              onTap: () {
+                widget.onStoreSelected(store);
+                setState(() {
+                  _searchStreamController.add([]);
+                  _controller.closeView("");
+                });
+                FocusScopeNode currentFocus = FocusScope.of(context);
+                if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+                  currentFocus.focusedChild?.unfocus();
+                }
+              },
+            ),
+          )
+          .toList();
+      completer.complete(suggestions);
+    });
+    return completer.future;
   }
 }

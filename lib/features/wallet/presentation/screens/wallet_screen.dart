@@ -4,12 +4,10 @@ import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vegawallet/core/constants/assets_const.dart';
 import 'package:vegawallet/core/constants/text_const.dart';
-import 'package:vegawallet/core/ui/theme/button_style.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/stores/presentation/bloc/store_bloc.dart';
 import 'package:vegawallet/features/wallet/presentation/bloc/wallet_bloc.dart';
 import 'package:vegawallet/core/di/injection.dart';
-import 'package:vector_graphics_compiler/vector_graphics_compiler.dart';
 import '../../../../core/ui/elements/search_bar.dart';
 import '../../../../core/ui/elements/selected_store_display.dart';
 import '../../../stores/domain/entities/store.dart';
@@ -90,7 +88,7 @@ class _WalletScreenState extends State<WalletScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 8.0, left: 8.0),
+            padding: const EdgeInsets.only(top: 16.0, left: 8.0),
             child: Text(
               "Calculator",
               style: AppTextStyles.headline1,
@@ -107,8 +105,11 @@ class _WalletScreenState extends State<WalletScreen> {
             height: 10.0,
           ),
           if (_selectedStore != null)
-            SelectedStoreDisplay(
-              store: _selectedStore!,
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+              child: SelectedStoreDisplay(
+                store: _selectedStore!,
+              ),
             ),
           if (_selectedStore != null)
             _selectedStore!.parsedDiscount != null

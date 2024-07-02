@@ -61,5 +61,31 @@ void main() {
         const StoreError(message: 'Error fetching data'),
       ],
     );
+
+    blocTest<StoreBloc, StoreState>(
+      'emits [StoreLoaded] when search is successful',
+      build: () {
+        when(() => mockSearchStoresUseCase(params: any(named: 'params')))
+            .thenAnswer((_) async => DataState.success(stores));
+        return storeBloc;
+      },
+      act: (bloc) => bloc.add(const SearchStores('Store1')),
+      expect: () => [
+        StoreLoaded(stores: stores),
+      ],
+    );
+
+    blocTest<StoreBloc, StoreState>(
+      'emits [StoreError] when search fails',
+      build: () {
+        when(() => mockSearchStoresUseCase(params: any(named: 'params')))
+            .thenAnswer((_) async => DataState.error('Error searching stores'));
+        return storeBloc;
+      },
+      act: (bloc) => bloc.add(const SearchStores('Store1')),
+      expect: () => [
+        const StoreError(message: 'Error searching stores'),
+      ],
+    );
   });
 }
