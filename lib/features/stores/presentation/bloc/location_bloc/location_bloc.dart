@@ -9,7 +9,7 @@ part 'location_state.dart';
 
 @Injectable()
 class LocationBloc extends Bloc<LocationEvent, LocationState> {
-  final GetCurrentLocationUseCase _getCurrentLocationUseCase;
+  final  GetCurrentLocationUseCase _getCurrentLocationUseCase;
 
   LocationBloc(this._getCurrentLocationUseCase) : super(LocationInitial()) {
     on<GetLocation>(_onGetLocation);
