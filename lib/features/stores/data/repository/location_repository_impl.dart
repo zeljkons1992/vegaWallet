@@ -5,6 +5,7 @@ import 'package:vegawallet/core/data_state/data_state.dart';
 import 'package:vegawallet/features/stores/domain/entities/position.dart';
 import '../../../../core/services/location_service.dart';
 
+import '../../domain/entities/position.dart';
 import '../../domain/repository/location_repository.dart';
 
 @LazySingleton(as: LocationRepository)
@@ -35,3 +36,9 @@ class LocationRepositoryImpl implements LocationRepository {
   }
 }
 
+    geolocator.Position position = await geolocator.Geolocator.getCurrentPosition(
+        desiredAccuracy: geolocator.LocationAccuracy.high);
+
+    return Position(latitude: position.latitude, longitude: position.longitude);
+  }
+}
