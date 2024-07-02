@@ -16,25 +16,25 @@ final GoRouter router = GoRouter(
       },
       routes: [
         GoRoute(
-          path: '/',
-          builder: (context, state) => const WalletScreen()
+            path: '/',
+            builder: (context, state) => const WalletScreen()
         ),
         GoRoute(
-          path: '/stores',
-          builder: (context, state) => const StoresScreen(),
-          routes:[
-            GoRoute(
-              path: 'store_details',
-              builder: (context, state) {
-                final store = state.extra as Store;
-                return StoreDetailsScreen(store: store);
-              },
-            ),
-          ]
+            path: '/stores',
+            builder: (context, state) => const StoresScreen(),
+            routes:[
+              GoRoute(
+                path: 'store_details',
+                builder: (context, state) {
+                  final store = state.extra as Store;
+                  return StoreDetailsScreen(store: store);
+                },
+              ),
+            ]
         ),
         GoRoute(
           path: '/maps',
-          builder: (context, state) => const MapsScreen(),
+          builder: (context, state) =>  MapScreen(),
         ),
       ],
     ),

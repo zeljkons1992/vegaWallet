@@ -32,5 +32,4 @@ class LocalDataSourceImpl implements LocalDataSource {
       await db.stores.clear();
     });
   }
-
 }
