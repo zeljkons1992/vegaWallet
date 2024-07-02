@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vegawallet/core/di/injection.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
-import 'package:vegawallet/features/stores/presentation/bloc/store_bloc.dart';
+import 'package:vegawallet/features/stores/presentation/bloc/store_bloc/store_bloc.dart';
 import '../components/stores_screen/stores_list.dart';
 
 class StoresScreen extends StatelessWidget {

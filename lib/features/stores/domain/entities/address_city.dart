@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+import 'address_location.dart';
 
 part 'address_city.g.dart';
 
@@ -6,23 +7,26 @@ part 'address_city.g.dart';
 class AddressCity {
   late String address;
   late String city;
+  AddressLocation? location;
 
   AddressCity();
 
   AddressCity.withData({
     required this.address,
     required this.city,
+    this.location,
   });
 
   @override
   String toString() {
-    return '{address: $address, city: $city}';
+    return '{address: $address, city: $city, location: $location}';
   }
 
   factory AddressCity.fromMap(Map<String, dynamic> map) {
     return AddressCity.withData(
       address: map['address'] as String,
       city: map['city'] as String,
+      location: map['location'] != null ? AddressLocation.fromMap(map['location']) : null,
     );
   }
 
@@ -30,6 +34,7 @@ class AddressCity {
     return {
       'address': address,
       'city': city,
+      'location': location?.toMap(),
     };
   }
 
@@ -40,10 +45,12 @@ class AddressCity {
   static List<Map<String, dynamic>> toList(List<AddressCity> list) {
     return list.map((item) => item.toMap()).toList();
   }
-  AddressCity copyWith({String? address, String? city}) {
+
+  AddressCity copyWith({String? address, String? city, AddressLocation? location}) {
     return AddressCity()
       ..address = address ?? this.address
-      ..city = city ?? this.city;
+      ..city = city ?? this.city
+      ..location = location ?? this.location;
   }
 
   @override
@@ -52,8 +59,9 @@ class AddressCity {
           other is AddressCity &&
               runtimeType == other.runtimeType &&
               address == other.address &&
-              city == other.city;
+              city == other.city &&
+              location == other.location;
 
   @override
-  int get hashCode => address.hashCode ^ city.hashCode;
+  int get hashCode => address.hashCode ^ city.hashCode ^ location.hashCode;
 }

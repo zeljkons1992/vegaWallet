@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:isar/isar.dart';
 import 'address_city.dart';
+import 'address_location.dart';
 
 part 'store.g.dart';
 
@@ -103,4 +104,3 @@ class Store {
       category.hashCode ^
       parsedDiscount.hashCode;
 }
-
