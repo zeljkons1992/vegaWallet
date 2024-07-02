@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
 class MapScreen extends StatefulWidget {
+  const MapScreen({super.key});
+
   @override
   MapScreenState createState() => MapScreenState();
 }
@@ -49,11 +51,11 @@ class MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Precizna Lokacija'),
+        title: const Text('Precizna Lokacija'),
       ),
       body: Center(
         child: _currentPosition == null
-            ? Text('Dobijanje lokacije...')
+            ? const Text('Dobijanje lokacije...')
             : Text(
             'Latitude: ${_currentPosition!.latitude}, Longitude: ${_currentPosition!.longitude}'),
       ),
