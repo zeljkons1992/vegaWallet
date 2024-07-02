@@ -34,7 +34,7 @@ final GoRouter router = GoRouter(
         ),
         GoRoute(
           path: '/maps',
-          builder: (context, state) =>  MapScreen(),
+          builder: (context, state) =>  const MapScreen(),
         ),
       ],
     ),
