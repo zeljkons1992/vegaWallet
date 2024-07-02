@@ -9,7 +9,7 @@ import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/stores/presentation/bloc/store_bloc.dart';
 import 'package:vegawallet/features/wallet/presentation/bloc/wallet_bloc.dart';
 import 'package:vegawallet/core/di/injection.dart';
-
+import 'package:vector_graphics_compiler/vector_graphics_compiler.dart';
 import '../../../../core/ui/elements/search_bar.dart';
 import '../../../../core/ui/elements/selected_store_display.dart';
 import '../../../stores/domain/entities/store.dart';
@@ -191,7 +191,7 @@ class _WalletScreenState extends State<WalletScreen> {
       child: SizedBox(
         width: double.infinity,
         child: SvgPicture.asset(
-          'assets/img/vega_card_back.svg',
+          vegaCardBackside,
           fit: BoxFit.cover,
         ),
       ),
