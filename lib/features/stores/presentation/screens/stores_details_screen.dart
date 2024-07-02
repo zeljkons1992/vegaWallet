@@ -7,7 +7,7 @@ import 'package:latlong2/latlong.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/ui/elements/primary_back_button.dart';
 import '../../../../core/ui/elements/primary_dropdown_button.dart';
-import '../../../../core/utils/IntentUtils.dart';
+import '../../../../core/utils/intent_utils.dart';
 import '../../domain/entities/address_city.dart';
 import '../../domain/entities/store.dart';
 import '../bloc/location_bloc/location_bloc.dart';
@@ -48,10 +48,7 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
         storeLongitude = location.longitude;
         _mapController.move(LatLng(storeLatitude!, storeLongitude!), 18);
       });
-      print('Address: $addressCity');
-      print('Latitude: ${location.latitude}, Longitude: ${location.longitude}');
-    } else {
-      print('No location found for address: $addressCity');
+
     }
   }
 

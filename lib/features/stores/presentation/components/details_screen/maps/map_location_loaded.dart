@@ -10,7 +10,7 @@ class MapLocationLoadedWidget extends StatefulWidget {
   final double? storeLongitude;
   final MapController mapController;
 
-  MapLocationLoadedWidget({
+  const MapLocationLoadedWidget({super.key,
     required this.initialLatitude,
     required this.initialLongitude,
     this.storeLatitude,
@@ -19,10 +19,10 @@ class MapLocationLoadedWidget extends StatefulWidget {
   });
 
   @override
-  _MapLocationLoadedWidgetState createState() => _MapLocationLoadedWidgetState();
+  MapLocationLoadedWidgetState createState() => MapLocationLoadedWidgetState();
 }
 
-class _MapLocationLoadedWidgetState extends State<MapLocationLoadedWidget> {
+class MapLocationLoadedWidgetState extends State<MapLocationLoadedWidget> {
   late MapOptions _mapOptions;
 
   @override
