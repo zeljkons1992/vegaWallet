@@ -46,7 +46,7 @@ void main() {
   testWidgets('shows loaded card information when state is WalletStateLoaded', (WidgetTester tester) async {
     const mockCardInfo = WalletCardInformation(name: 'John Doe', expiry: '12/34', cardNo: '123456789012');
     whenListen(mockWalletBloc, Stream.fromIterable([const WalletStateLoaded(mockCardInfo)]), initialState: WalletStateInitial());
-    whenListen(mockStoreBloc, Stream.fromIterable([StoreLoaded(stores: [])]), initialState: StoreLoading());
+    whenListen(mockStoreBloc, Stream.fromIterable([const StoreLoaded(stores: [])]), initialState: StoreLoading());
 
     await tester.pumpWidget(createWidgetUnderTest());
     await tester.pumpAndSettle();
