@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:latlong2/latlong.dart';
-
 import '../../../../core/di/injection.dart';
 import '../../../../core/ui/elements/primary_back_button.dart';
 import '../../../../core/ui/elements/primary_dropdown_button.dart';
@@ -15,6 +11,7 @@ import '../components/details_screen/item_details_info.dart';
 import '../components/details_screen/maps/map_location_error.dart';
 import '../components/details_screen/maps/map_location_initail.dart';
 import '../components/details_screen/maps/map_location_loaded.dart';
+
 class StoreDetailsScreen extends StatefulWidget {
   final Store store;
 
@@ -26,29 +23,18 @@ class StoreDetailsScreen extends StatefulWidget {
 
 class StoreDetailsScreenState extends State<StoreDetailsScreen> {
   AddressCity? selectedDropdownItem;
-  double? storeLatitude;
-  double? storeLongitude;
-  final MapController _mapController = MapController();
+  bool isStore = false;
 
   @override
   void initState() {
     super.initState();
+
     if (widget.store.addressCities.isNotEmpty) {
       selectedDropdownItem = widget.store.addressCities.first;
-      _setLocationFromAddress("${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}");
-    }
-  }
-
-  Future<void> _setLocationFromAddress(String addressCity) async {
-    List<Location> locations = await locationFromAddress(addressCity);
-    if (locations.isNotEmpty) {
-      Location location = locations.first;
-      setState(() {
-        storeLatitude = location.latitude;
-        storeLongitude = location.longitude;
-        _mapController.move(LatLng(storeLatitude!, storeLongitude!), 18);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        BlocProvider.of<LocationBloc>(context).add(OpenNavigationToAddress(
+            "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}"));
       });
-
     }
   }
 
@@ -63,24 +49,42 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
               flex: 1,
               child: Stack(
                 children: [
-                  BlocBuilder<LocationBloc, LocationState>(
-                    builder: (context, state) {
-                      switch (state) {
-                        case LocationInitial _:
-                          return mapLocationInitial(context);
-                        case LocationLoaded _:
-                          return MapLocationLoadedWidget(
-                            initialLatitude: state.position.latitude,
-                            initialLongitude: state.position.longitude,
-                            storeLatitude: storeLatitude,
-                            storeLongitude: storeLongitude,
-                            mapController: _mapController,
-                          );
-                        case LocationLoading _:
-                          return const CircularProgressIndicator();
-                        default:
-                          return const MapLocationError();
+                  BlocConsumer<LocationBloc, LocationState>(
+                    listener: (context, state) {
+                      if (state is OpenNavigationToAddressSuccessful) {
+                        IntentUtils.launchMaps(
+                            state.position.latitude, state.position.longitude);
+                      } else if (state is OpenNavigationToAddressUnsuccessful) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Nije dobro')),
+                        );
                       }
+                    },
+                    builder: (context, state) {
+                      return BlocBuilder<LocationBloc, LocationState>(
+                        builder: (context, state) {
+                          if (state is LocationInitial) {
+                            return mapLocationInitial(context);
+                          } else if (state is LocationLoaded) {
+                            return MapLocationLoadedWidget(
+                              latitude: state.position.latitude,
+                              longitude: state.position.longitude,
+                              isStore: isStore,
+                            );
+                          } else if (state is LocationLoading) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (state is StoreLocationUpdatedSuccess) {
+                            return MapLocationLoadedWidget(
+                              latitude: state.position.latitude,
+                              longitude: state.position.longitude,
+                              isStore: isStore,
+                            );
+                          } else {
+                            return const MapLocationError();
+                          }
+                        },
+                      );
                     },
                   ),
                   const PrimaryBackButton(),
@@ -92,17 +96,19 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                         shape: BoxShape.circle,
                         color: Colors.black.withOpacity(0.3),
                       ),
-                      child: Builder(
-                        builder: (context) {
-                          return IconButton(
-                            onPressed: () {
-                              BlocProvider.of<LocationBloc>(context).add(GetLocation());
-                            },
-                            icon: const Icon(Icons.my_location),
-                            color: Colors.white,
-                          );
-                        },
-                      ),
+                      child: Builder(builder: (context) {
+                        return IconButton(
+                          onPressed: () {
+                            setState(() {
+                              isStore = false;
+                            });
+                            BlocProvider.of<LocationBloc>(context)
+                                .add(GetLocation());
+                          },
+                          icon: const Icon(Icons.my_location),
+                          color: Colors.white,
+                        );
+                      }),
                     ),
                   ),
                 ],
@@ -120,18 +126,27 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Row(
                         children: [
-                          PrimaryDropdownButton(
-                            items: widget.store.addressCities,
-                            selectedItem: selectedDropdownItem,
-                            onChanged: (value) async {
-                              setState(() {
-                                selectedDropdownItem = value;
-                              });
+                          Builder(
+                            builder: (context) {
+                              return PrimaryDropdownButton(
+                                items: widget.store.addressCities,
+                                selectedItem: selectedDropdownItem,
+                                onChanged: (value) async {
+                                  setState(() {
+                                    selectedDropdownItem = value;
+                                  });
 
-                              if (selectedDropdownItem != null) {
-                                String addressCity = "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}";
-                                _setLocationFromAddress(addressCity);
-                              }
+                                  if (selectedDropdownItem != null) {
+                                    String addressCity =
+                                        "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}";
+                                    setState(() {
+                                      isStore = true;
+                                    });
+                                    BlocProvider.of<LocationBloc>(context)
+                                        .add(UpdateStoreLocation(addressCity));
+                                  }
+                                },
+                              );
                             },
                           ),
                           const SizedBox(width: 8),
@@ -142,19 +157,19 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                               shape: BoxShape.circle,
                               color: Theme.of(context).primaryColor,
                             ),
-                            child: IconButton(
-                              onPressed: () {
-                                if (storeLatitude != null && storeLongitude != null) {
-                                  IntentUtils.launchMaps(storeLatitude!, storeLongitude!);
-                                } else {
-                                  // Handle the case where the location is not set
-                                }
-                              },
-                              icon: const Icon(
-                                Icons.directions,
-                              ),
-                              color: Colors.white,
-                            ),
+                            child: Builder(builder: (context) {
+                              return IconButton(
+                                onPressed: () {
+                                  BlocProvider.of<LocationBloc>(context).add(
+                                      OpenNavigationToAddress(
+                                          "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}"));
+                                },
+                                icon: const Icon(
+                                  Icons.directions,
+                                ),
+                                color: Colors.white,
+                              );
+                            }),
                           ),
                         ],
                       ),

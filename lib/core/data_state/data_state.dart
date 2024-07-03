@@ -14,4 +14,5 @@ class DataState<T> {
   factory DataState.error(String message) {
     return DataState._(status: DataStateStatus.error, message: message);
   }
+
 }

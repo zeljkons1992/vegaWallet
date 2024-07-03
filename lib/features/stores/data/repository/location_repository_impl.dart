@@ -1,35 +1,37 @@
-// data/repositories/location_repository_impl.dart
-import 'package:geolocator/geolocator.dart' as geolocator;
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:injectable/injectable.dart';
+import 'package:vegawallet/core/data_state/data_state.dart';
+import 'package:vegawallet/features/stores/domain/entities/position.dart';
+import '../../../../core/services/location_service.dart';
 
-import '../../domain/entities/position.dart';
 import '../../domain/repository/location_repository.dart';
 
 @LazySingleton(as: LocationRepository)
 class LocationRepositoryImpl implements LocationRepository {
+  final LocationService _locationService;
+
+  LocationRepositoryImpl(this._locationService);
+
   @override
-  Future<Position> getCurrentLocation() async {
-    bool serviceEnabled = await geolocator.Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      await geolocator.Geolocator.openLocationSettings();
-      throw ('Location services are disabled.');
+  Future<DataState<Position>> getCurrentLocation() async {
+    try {
+      Position position = await _locationService.getCurrentPosition();
+      return DataState.success(position);
+    } catch (e) {
+      return DataState.error(e.toString());
     }
+  }
 
-    geolocator.LocationPermission permission = await geolocator.Geolocator.checkPermission();
-    if (permission == geolocator.LocationPermission.denied) {
-      permission = await geolocator.Geolocator.requestPermission();
-      if (permission == geolocator.LocationPermission.denied) {
-        throw ('Location permissions are denied');
-      }
+  @override
+  Future<DataState<PositionSimple>> getLocationPickedStore(String address) async{
+    try{
+      List<Location> lists = await locationFromAddress(address);
+      PositionSimple positionSimple = PositionSimple(latitude: lists.first.latitude, longitude: lists.first.longitude);
+      return DataState.success(positionSimple);
+    }catch(e){
+      return DataState.error(e.toString());
     }
-
-    if (permission == geolocator.LocationPermission.deniedForever) {
-      throw ('Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    geolocator.Position position = await geolocator.Geolocator.getCurrentPosition(
-        desiredAccuracy: geolocator.LocationAccuracy.high);
-
-    return Position(latitude: position.latitude, longitude: position.longitude);
   }
 }
+
