@@ -1,15 +1,18 @@
 import 'package:injectable/injectable.dart';
-
-import '../entities/position.dart';
+import 'package:vegawallet/core/data_state/data_state.dart';
+import 'package:vegawallet/core/usecase/use_case.dart';
+import '../../../../core/data_state/no_params.dart';
 import '../repository/location_repository.dart';
 
 @Injectable()
-class GetCurrentLocationUseCase {
+class GetCurrentLocationUseCase extends UseCase<DataState, NoParams> {
   final LocationRepository repository;
 
   GetCurrentLocationUseCase(this.repository);
 
-  Future<Position> call() async {
+  @override
+  Future<DataState> call({required NoParams params}) async{
     return await repository.getCurrentLocation();
   }
+
 }
