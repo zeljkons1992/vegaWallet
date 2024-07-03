@@ -47,44 +47,29 @@ class StoreSearchBarState extends State<StoreSearchBar> {
       children: [
         Container(
           margin: const EdgeInsets.only(top: 20.0),
-          child: PopScope(
-            canPop: true,
-            onPopInvoked: (bool didPop) {
-              if (didPop) {
-                return;
-              }
-              _controller.closeView("");
-              print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!POZVANO");
-              FocusScopeNode currentFocus = FocusScope.of(context);
-              if (!currentFocus.hasPrimaryFocus &&
-                  currentFocus.focusedChild != null) {
-                currentFocus.focusedChild?.unfocus();
-              }
+          child: SearchAnchor.bar(
+            barHintText: "Search stores",
+            onChanged: (value) => {
+              _onSearchChanged(value),
             },
-            child: SearchAnchor.bar(
-              barHintText: "Search stores",
-              onChanged: (value) => {
-                _onSearchChanged(value),
+            suggestionsBuilder: (context, controller) {
+              return _buildSuggestions();
+            },
+            searchController: _controller,
+            viewBackgroundColor: Colors.white,
+            viewLeading: IconButton(
+              icon: const Icon(Icons.arrow_back_outlined),
+              onPressed: () {
+                _controller.closeView("");
+                FocusScopeNode currentFocus = FocusScope.of(context);
+                if (!currentFocus.hasPrimaryFocus &&
+                    currentFocus.focusedChild != null) {
+                  currentFocus.focusedChild?.unfocus();
+                }
               },
-              suggestionsBuilder: (context, controller) {
-                return _buildSuggestions();
-              },
-              searchController: _controller,
-              viewBackgroundColor: Colors.white,
-              viewLeading: IconButton(
-                icon: const Icon(Icons.arrow_back_outlined),
-                onPressed: () {
-                  _controller.closeView("");
-                  FocusScopeNode currentFocus = FocusScope.of(context);
-                  if (!currentFocus.hasPrimaryFocus &&
-                      currentFocus.focusedChild != null) {
-                    currentFocus.focusedChild?.unfocus();
-                  }
-                },
-              ),
-              barBackgroundColor: WidgetStateProperty.all<Color>(Colors.white),
-              barElevation: WidgetStateProperty.all(0),
             ),
+            barBackgroundColor: WidgetStateProperty.all<Color>(Colors.white),
+            barElevation: WidgetStateProperty.all(0),
           ),
         ),
         BlocListener<StoreBloc, StoreState>(
