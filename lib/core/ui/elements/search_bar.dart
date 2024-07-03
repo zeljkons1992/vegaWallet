@@ -47,36 +47,44 @@ class StoreSearchBarState extends State<StoreSearchBar> {
       children: [
         Container(
           margin: const EdgeInsets.only(top: 20.0),
-          child: SearchAnchor(
-            viewOnChanged: (value) {
-              _onSearchChanged(value);
+          child: PopScope(
+            canPop: true,
+            onPopInvoked: (bool didPop) {
+              if (didPop) {
+                return;
+              }
+              _controller.closeView("");
+              print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!POZVANO");
+              FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus &&
+                  currentFocus.focusedChild != null) {
+                currentFocus.focusedChild?.unfocus();
+              }
             },
-            isFullScreen: false,
-            viewConstraints: const BoxConstraints(
-              minHeight: 0,
-              maxHeight: 250,
-            ),
-            searchController: _controller,
-            builder: (context, controller) {
-              return SearchBar(
-                backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
-                shadowColor: WidgetStateProperty.all<Color>(Colors.transparent),
-                trailing: const [Padding(
-                  padding: EdgeInsets.only(right: 8.0),
-                  child: Icon(Icons.search),
-                )],
-                controller: controller,
-                hintText: 'Search stores',
-                onTap: () {
-                  controller.clear();
-                  controller.openView();
+            child: SearchAnchor.bar(
+              barHintText: "Search stores",
+              onChanged: (value) => {
+                _onSearchChanged(value),
+              },
+              suggestionsBuilder: (context, controller) {
+                return _buildSuggestions();
+              },
+              searchController: _controller,
+              viewBackgroundColor: Colors.white,
+              viewLeading: IconButton(
+                icon: const Icon(Icons.arrow_back_outlined),
+                onPressed: () {
+                  _controller.closeView("");
+                  FocusScopeNode currentFocus = FocusScope.of(context);
+                  if (!currentFocus.hasPrimaryFocus &&
+                      currentFocus.focusedChild != null) {
+                    currentFocus.focusedChild?.unfocus();
+                  }
                 },
-              );
-            },
-            suggestionsBuilder: (context, controller) {
-              return _buildSuggestions();
-            },
-            viewBackgroundColor: Colors.white,
+              ),
+              barBackgroundColor: WidgetStateProperty.all<Color>(Colors.white),
+              barElevation: WidgetStateProperty.all(0),
+            ),
           ),
         ),
         BlocListener<StoreBloc, StoreState>(
@@ -103,10 +111,11 @@ class StoreSearchBarState extends State<StoreSearchBar> {
                 widget.onStoreSelected(store);
                 setState(() {
                   _searchStreamController.add([]);
-                  _controller.closeView("");
+                  _controller.closeView(_controller.text);
                 });
                 FocusScopeNode currentFocus = FocusScope.of(context);
-                if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+                if (!currentFocus.hasPrimaryFocus &&
+                    currentFocus.focusedChild != null) {
                   currentFocus.focusedChild?.unfocus();
                 }
               },
