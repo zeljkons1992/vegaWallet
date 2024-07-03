@@ -3,14 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:vegawallet/core/ui/elements/search_bar.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
 import 'package:vegawallet/features/stores/presentation/bloc/store_bloc.dart';
 
 class MockStoreBloc extends MockBloc<StoreEvent, StoreState> implements StoreBloc {}
 
+class FakeStoreEvent extends Fake implements StoreEvent {}
+class FakeStoreState extends Fake implements StoreState {}
+
 void main() {
   late MockStoreBloc mockStoreBloc;
+
+  setUpAll(() {
+    registerFallbackValue(FakeStoreEvent());
+    registerFallbackValue(FakeStoreState());
+  });
 
   setUp(() {
     mockStoreBloc = MockStoreBloc();
