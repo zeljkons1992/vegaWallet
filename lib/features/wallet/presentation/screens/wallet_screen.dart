@@ -104,17 +104,17 @@ class _WalletScreenState extends State<WalletScreen> {
           const SizedBox(
             height: 10.0,
           ),
-          if (_selectedStore != null)
+          if (_selectedStore != null) ...[
             Padding(
               padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
               child: SelectedStoreDisplay(
                 store: _selectedStore!,
               ),
             ),
-          if (_selectedStore != null)
             _selectedStore!.parsedDiscount != null
                 ? DiscountCalculator(store: _selectedStore!)
                 : DiscountInfo(store: _selectedStore!),
+          ],
         ],
       ),
     );

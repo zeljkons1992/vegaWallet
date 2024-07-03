@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
 import 'package:vegawallet/features/stores/presentation/bloc/store_bloc.dart';
 
+import '../../constants/icon_const.dart';
+
 class StoreSearchBar extends StatefulWidget {
   final Function(Store) onStoreSelected;
 
@@ -16,15 +18,6 @@ class StoreSearchBar extends StatefulWidget {
 class StoreSearchBarState extends State<StoreSearchBar> {
   late SearchController _controller;
   late StreamController<List<Store>> _searchStreamController;
-
-  final Map<String, IconData> categoryIcons = {
-    'Kafići i Restorani': Icons.coffee_outlined,
-    'Putovanja': Icons.card_travel,
-    'Zabava': Icons.celebration_outlined,
-    'Usluge': Icons.health_and_safety,
-    'Zdravlje i wellness': Icons.local_hospital_outlined,
-    'Kupovina': Icons.shopping_cart_outlined,
-  };
 
   @override
   void initState() {
@@ -75,6 +68,7 @@ class StoreSearchBarState extends State<StoreSearchBar> {
                 controller: controller,
                 hintText: 'Search stores',
                 onTap: () {
+                  controller.clear();
                   controller.openView();
                 },
               );

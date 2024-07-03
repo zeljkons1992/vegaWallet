@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
 
+import '../../constants/icon_const.dart';
+
 class SelectedStoreDisplay extends StatelessWidget {
   final Store store;
 
@@ -10,15 +12,6 @@ class SelectedStoreDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, IconData> categoryIcons = {
-      'Kafići i Restorani': Icons.coffee_outlined,
-      'Putovanja': Icons.card_travel,
-      'Zabava': Icons.celebration_outlined,
-      'Usluge': Icons.health_and_safety,
-      'Zdravlje i wellness': Icons.local_hospital_outlined,
-      'Kupovina': Icons.shopping_cart_outlined,
-    };
-
     return GestureDetector(
       onTap: () {
         context.go('/stores/store_details', extra: store);
