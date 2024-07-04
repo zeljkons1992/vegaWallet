@@ -23,16 +23,16 @@ void main() {
 
   test('should throw exception when location services are disabled', () async {
     when(() => mockGeolocator.isLocationServiceEnabled()).thenAnswer((_) async => false);
-
     expect(() => locationService.getCurrentPosition(), throwsException);
 
   });
+
+
 
   test('should throw exception when location permissions are denied', () async {
     when(() => mockGeolocator.isLocationServiceEnabled()).thenAnswer((_) async => true);
     when(() => mockGeolocator.checkPermission()).thenAnswer((_) async => LocationPermission.denied);
     when(() => mockGeolocator.requestPermission()).thenAnswer((_) async => LocationPermission.denied);
-
     expect(() => locationService.getCurrentPosition(), throwsException);
 
 
@@ -41,7 +41,6 @@ void main() {
   test('should throw exception when location permissions are permanently denied', () async {
     when(() => mockGeolocator.isLocationServiceEnabled()).thenAnswer((_) async => true);
     when(() => mockGeolocator.checkPermission()).thenAnswer((_) async => LocationPermission.deniedForever);
-
     expect(() => locationService.getCurrentPosition(), throwsException);
 
   });
