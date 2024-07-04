@@ -5,7 +5,7 @@ import 'package:vegawallet/core/data_state/data_state.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
 import 'package:vegawallet/features/stores/domain/usecases/fetch_stores_use_case.dart';
 import 'package:vegawallet/features/stores/domain/usecases/search_stores_use_case.dart';
-import 'package:vegawallet/features/stores/presentation/bloc/store_bloc/store_bloc.dart';
+import 'package:vegawallet/features/stores/presentation/bloc/store_bloc/store_bloc/store_bloc.dart';
 
 class MockFetchStoresUseCase extends Mock implements FetchStoresUseCase {}
 class MockSearchStoresUseCase extends Mock implements SearchStoresUseCase {}
