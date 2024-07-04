@@ -2,21 +2,21 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:vegawallet/core/data_state/data_state.dart';
 import 'package:vegawallet/features/wallet/data/models/wallet_card_information.dart';
-import 'package:vegawallet/features/wallet/domain/usecases/get_user_card_information_use_case.dart';
+import 'package:vegawallet/features/wallet/domain/repository/wallet_repository.dart';
 
-import '../repository/repository_wallet_test.dart';
+class MockWalletRepository extends Mock implements WalletRepository {}
 
-// Mock classes
-class MockGetUserCardInformationUseCase extends Mock implements GetUserCardInformationUseCase {}
+class MockWalletCardInformation extends Mock implements WalletCardInformation {}
 
 void main() {
-  group("Wallet UseCase Tests", () {
-    late MockGetUserCardInformationUseCase mockGetUserCardInformationUseCase;
+  group('WalletRepository Tests', () {
+    late WalletRepository mockWalletRepository;
     late WalletCardInformation fakeWalletCardInformation;
 
     setUpAll(() {
-      mockGetUserCardInformationUseCase = MockGetUserCardInformationUseCase();
-      fakeWalletCardInformation = MockCardInformation();
+      mockWalletRepository = MockWalletRepository();
+      fakeWalletCardInformation = MockWalletCardInformation();
+      registerFallbackValue(MockWalletCardInformation());
     });
 
     setUp(() {
@@ -25,11 +25,11 @@ void main() {
       when(() => fakeWalletCardInformation.cardNo).thenReturn("100 951");
     });
 
-    test("should return success with valid data", () async {
-      when(() => mockGetUserCardInformationUseCase.call())
+    test('should return success with valid data', () async {
+      when(() => mockWalletRepository.getWalletCardInformation())
           .thenAnswer((_) async => DataState.success(fakeWalletCardInformation));
 
-      final result = await mockGetUserCardInformationUseCase.call();
+      final result = await mockWalletRepository.getWalletCardInformation();
 
       expect(result, isA<DataState<WalletCardInformation>>());
       expect(result.data!.name, equals("Nikola Ranković"));
@@ -37,11 +37,11 @@ void main() {
       expect(result.data!.cardNo, equals("100 951"));
     });
 
-    test("should return error when data is invalid", () async {
-      when(() => mockGetUserCardInformationUseCase.call())
+    test('should return error when data is invalid', () async {
+      when(() => mockWalletRepository.getWalletCardInformation())
           .thenAnswer((_) async => DataState.error("Invalid data provided"));
 
-      final result = await mockGetUserCardInformationUseCase.call();
+      final result = await mockWalletRepository.getWalletCardInformation();
 
       expect(result, isA<DataState<WalletCardInformation>>());
       expect(result.message, equals("Invalid data provided"));

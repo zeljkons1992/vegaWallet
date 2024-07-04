@@ -9,6 +9,7 @@ class LocationService {
   final IGeolocatorWrapper geolocator;
 
   LocationService(this.geolocator);
+
   Future<Position> getCurrentPosition() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
