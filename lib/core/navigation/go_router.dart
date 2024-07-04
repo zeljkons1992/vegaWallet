@@ -2,10 +2,10 @@ import 'package:go_router/go_router.dart';
 import 'package:vegawallet/features/maps/presentaion/screens/map_screen.dart';
 import 'package:vegawallet/features/stores/presentation/screens/store_screen.dart';
 import 'package:vegawallet/features/wallet/presentation/screens/wallet_screen.dart';
-
 import '../../features/stores/domain/entities/store.dart';
 import '../../features/stores/presentation/screens/stores_details_screen.dart';
 import '../../main.dart';
+import 'custom_transition_page_builder.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: '/',
@@ -17,12 +17,12 @@ final GoRouter router = GoRouter(
       routes: [
         GoRoute(
           path: '/',
-          builder: (context, state) => const WalletScreen()
+          pageBuilder: (context, state) => customTransitionPage(context, state, const WalletScreen()),
         ),
         GoRoute(
           path: '/stores',
-          builder: (context, state) => const StoresScreen(),
-          routes:[
+          pageBuilder: (context, state) => customTransitionPage(context, state, const StoresScreen()),
+          routes: [
             GoRoute(
               path: 'store_details',
               builder: (context, state) {
@@ -30,11 +30,11 @@ final GoRouter router = GoRouter(
                 return StoreDetailsScreen(store: store);
               },
             ),
-          ]
+          ],
         ),
         GoRoute(
           path: '/maps',
-          builder: (context, state) => const MapsScreen(),
+          pageBuilder: (context, state) => customTransitionPage(context, state, const MapsScreen()),
         ),
       ],
     ),
