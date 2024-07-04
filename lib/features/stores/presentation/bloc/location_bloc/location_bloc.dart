@@ -31,13 +31,14 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   }
 
   Future<void> _onGetLocation(GetLocation event, Emitter<LocationState> emit) async {
-    final result = await _getCurrentLocationUseCase(params: NoParams());
+    final result = await _getCurrentLocationUseCase(params: const NoParams());
     if (result.status == DataStateStatus.success) {
       emit(LocationLoaded(result.data));
     } else {
       emit(LocationError(result.message ?? 'An unknown error occurred'));
     }
   }
+
 
   Future<void> _onRequestLocationPermission(RequestLocationPermission event, Emitter<LocationState> emit) async {
     LocationPermission permission = await Geolocator.requestPermission();
