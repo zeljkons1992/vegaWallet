@@ -18,7 +18,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   final GetPickedStoreUseCase _getPickedStoreUseCase;
   final OpenNativeNavigationUseCase _openNativeNavigationUseCase;
 
-  LocationBloc(this._getCurrentLocationUseCase) : super(LocationInitial()) {
     on<GetLocation>(_onGetLocation);
     on<RequestLocationPermission>(_onRequestLocationPermission);
     on<OpenLocationSettings>(_onOpenLocationSettings);
