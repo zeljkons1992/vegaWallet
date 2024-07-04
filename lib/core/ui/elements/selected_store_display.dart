@@ -4,6 +4,7 @@ import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
 
 import '../../constants/icon_const.dart';
+import '../../constants/size_const.dart';
 
 class SelectedStoreDisplay extends StatelessWidget {
   final Store store;
@@ -17,10 +18,10 @@ class SelectedStoreDisplay extends StatelessWidget {
         context.go('/stores/store_details', extra: store);
       },
       child: Container(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(PADDING_VALUE_LARGE),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.onSecondary,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_SMALL),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -28,8 +29,8 @@ class SelectedStoreDisplay extends StatelessWidget {
             Row(
               children: [
                 Icon(categoryIcons[store.category] ?? Icons.category,
-                    color: Colors.black, size: 30.0),
-                const SizedBox(width: 16.0),
+                    color: Colors.black, size: SELECTED_STORE_CATEGORY_ICON_SIZE),
+                const SizedBox(width: SIZED_BOX_LARGE),
                 Text(store.name, style: Theme.of(context).textTheme.titleSmall),
               ],
             ),

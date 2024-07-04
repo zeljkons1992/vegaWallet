@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vegawallet/core/constants/assets_const.dart';
+import 'package:vegawallet/core/constants/size_const.dart';
 import 'package:vegawallet/core/constants/text_const.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/stores/presentation/bloc/store_bloc.dart';
@@ -45,7 +46,7 @@ class _WalletScreenState extends State<WalletScreen> {
         resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: PADDING_VALUE_SMALL),
             child: BlocBuilder<WalletBloc, WalletState>(
               builder: (context, state) {
                 switch (state) {
@@ -75,7 +76,7 @@ class _WalletScreenState extends State<WalletScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: PADDING_VALUE_SMALL, vertical: PADDING_VALUE_LARGE),
             child: Text(TextConst.wallet, style: AppTextStyles.headline1),
           ),
           GestureDetector(
@@ -88,9 +89,9 @@ class _WalletScreenState extends State<WalletScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 16.0, left: 8.0),
+            padding: const EdgeInsets.only(top: PADDING_VALUE_LARGE, left: PADDING_VALUE_SMALL),
             child: Text(
-              "Calculator",
+              "Discounts",
               style: AppTextStyles.headline1,
             ),
           ),
@@ -102,11 +103,11 @@ class _WalletScreenState extends State<WalletScreen> {
             },
           ),
           const SizedBox(
-            height: 10.0,
+            height: SIZED_BOX_SMALL,
           ),
           if (_selectedStore != null) ...[
             Padding(
-              padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+              padding: const EdgeInsets.only(top: PADDING_VALUE_LARGE, bottom: PADDING_VALUE_LARGE),
               child: SelectedStoreDisplay(
                 store: _selectedStore!,
               ),
@@ -125,7 +126,7 @@ class _WalletScreenState extends State<WalletScreen> {
       key: const ValueKey(true),
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_LARGE),
           child: SizedBox(
             width: double.infinity,
             child: SvgPicture.asset(

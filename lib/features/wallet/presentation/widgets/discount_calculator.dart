@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vegawallet/core/constants/size_const.dart';
+import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
 
 class DiscountCalculator extends StatefulWidget {
@@ -42,7 +44,7 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 16.0),
+              padding: const EdgeInsets.only(top: PADDING_VALUE_LARGE),
               child: Row(
                 children: [
                   Expanded(
@@ -50,13 +52,13 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(color: Theme.of(context).dividerColor),
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(PADDING_VALUE_SMALL),
                             child: Row(
                               children: [
                                 Expanded(
@@ -91,27 +93,21 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: SIZED_BOX_LARGE),
                   Expanded(
                     flex: 1,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Price with discount:',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: AppTextStyles.titleBold,
                         ),
                         Text(
                           _discountedPrice != null
                               ? '${_discountedPrice!.toStringAsFixed(2)} rsd'
                               : 'N/A',
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: AppTextStyles.headline1,
                         ),
                       ],
                     ),
@@ -120,13 +116,13 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 16.0),
+              padding: const EdgeInsets.only(top: PADDING_VALUE_LARGE),
               child:
               TextField(
                 decoration: InputDecoration(
                   labelText: 'Conditions',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
                   ),
                 ),
                 controller: TextEditingController(

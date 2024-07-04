@@ -50,4 +50,5 @@ class AppTextStyles {
     fontWeight: FontWeight.bold,
     color: const Color(0xffb3112b),
   );
+
 }
