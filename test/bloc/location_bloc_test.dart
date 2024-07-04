@@ -1,7 +1,8 @@
-import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:vegawallet/core/services/i_geo_locator_wrapper.dart';
+import 'package:bloc_test/bloc_test.dart';
 import 'package:vegawallet/core/data_state/data_state.dart';
 import 'package:vegawallet/core/data_state/no_params.dart';
 import 'package:vegawallet/features/stores/domain/entities/position.dart';
@@ -10,11 +11,13 @@ import 'package:vegawallet/features/stores/domain/usecases/get_picked_store_use_
 import 'package:vegawallet/features/stores/domain/usecases/open_native_navigation_use_case.dart';
 import 'package:vegawallet/features/stores/presentation/bloc/location_bloc/location_bloc.dart';
 
+class MockGeolocatorWrapper extends Mock implements IGeolocatorWrapper {}
 class MockGetCurrentLocationUseCase extends Mock implements GetCurrentLocationUseCase {}
 class MockOpenNativeNavigationUseCase extends Mock implements OpenNativeNavigationUseCase {}
 class MockGetPickedStoreUseCase extends Mock implements GetPickedStoreUseCase {}
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   late LocationBloc locationBloc;
   late MockGetCurrentLocationUseCase mockGetCurrentLocationUseCase;
   late MockOpenNativeNavigationUseCase mockOpenNativeNavigationUseCase;
@@ -75,7 +78,6 @@ void main() {
       expect: () => [
         LocationError('Failed to fetch location'),
       ],
-
     );
 
     blocTest<LocationBloc, LocationState>(
@@ -89,7 +91,6 @@ void main() {
       expect: () => [
         StoreLocationUpdatedSuccess(testPositionSimple),
       ],
-
     );
 
     blocTest<LocationBloc, LocationState>(
@@ -103,7 +104,6 @@ void main() {
       expect: () => [
         StoreLocationUpdatedUnsuccessful('Failed to update store location'),
       ],
-
     );
 
     blocTest<LocationBloc, LocationState>(
@@ -117,7 +117,6 @@ void main() {
       expect: () => [
         OpenNavigationToAddressSuccessful(testPositionSimple),
       ],
-
     );
 
     blocTest<LocationBloc, LocationState>(

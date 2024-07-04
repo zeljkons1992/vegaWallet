@@ -17,13 +17,24 @@ void main() {
     repository = LocationRepositoryImpl(mockLocationService);
   });
 
-  group('LocationRepositoryImpl', () {
-    final position = Position(latitude: 37.7749, longitude: -122.4194, timestamp: DateTime(DateTime.december), accuracy: 0.0, altitude: 0.0, altitudeAccuracy: 0.0, heading: 0.0, headingAccuracy: 0.0, speed: 0.0, speedAccuracy: 0.0);
+  group('LocationRepositoryImpl', ()
+  {
+    final position = Position(latitude: 37.7749,
+        longitude: -122.4194,
+        timestamp: DateTime(DateTime.december),
+        accuracy: 0.0,
+        altitude: 0.0,
+        altitudeAccuracy: 0.0,
+        heading: 0.0,
+        headingAccuracy: 0.0,
+        speed: 0.0,
+        speedAccuracy: 0.0);
 
 
     test('should return current location successfully', () async {
       // Arrange
-      when(() => mockLocationService.getCurrentPosition()).thenAnswer((_) async => position);
+      when(() => mockLocationService.getCurrentPosition()).thenAnswer((
+          _) async => position);
       final result = await repository.getCurrentLocation();
       expect(result.status, equals(DataStateStatus.success));
       expect(result.data, equals(position));
@@ -31,7 +42,8 @@ void main() {
 
     test('should return error when getting current location fails', () async {
       const errorMessage = 'Location service error';
-      when(() => mockLocationService.getCurrentPosition()).thenThrow(Exception(errorMessage));
+      when(() => mockLocationService.getCurrentPosition()).thenThrow(
+          Exception(errorMessage));
       final result = await repository.getCurrentLocation();
       expect(result.status, equals(DataStateStatus.error));
       expect(result.message, equals('Exception: $errorMessage'));
