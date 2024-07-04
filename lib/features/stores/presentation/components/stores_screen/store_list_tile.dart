@@ -4,7 +4,6 @@ import 'package:vegawallet/core/ui/theme/theme.dart';
 
 import '../../../domain/entities/store.dart';
 
-
 class StoreListTile extends StatelessWidget {
   final Store store;
 
@@ -48,7 +47,6 @@ class StoreListTile extends StatelessWidget {
                     children: [
                       Text(
                         store.name,
-
                       ),
                     ],
                   ),

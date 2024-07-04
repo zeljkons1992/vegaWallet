@@ -56,24 +56,27 @@ class MainScreen extends StatefulWidget {
   @override
   MainScreenState createState() => MainScreenState();
 }
-
 class MainScreenState extends State<MainScreen> {
   TabItem _selectedTab = TabItem.home;
+  int _previousIndex = 0;
 
   void _onItemTapped(int index) {
     setState(() {
+      _previousIndex = _selectedTab.index;
       _selectedTab = TabItem.values[index];
     });
 
+    final isRightToLeft = _previousIndex < _selectedTab.index;
+
     switch (_selectedTab) {
       case TabItem.home:
-        context.go('/');
+        context.go('/', extra: isRightToLeft);
         break;
       case TabItem.stores:
-        context.go('/stores');
+        context.go('/stores', extra: isRightToLeft);
         break;
       case TabItem.maps:
-        context.go('/maps');
+        context.go('/maps', extra: isRightToLeft);
         break;
     }
   }

@@ -24,7 +24,7 @@ class MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
         backgroundColor: colorScheme.onPrimary,
         indicatorColor: colorScheme.primary,
         labelTextStyle: WidgetStateProperty.all(
-           TextStyle(
+          TextStyle(
             color: Color(colorScheme.onSecondaryContainer.value),
             fontWeight: FontWeight.bold,
           ),
@@ -38,7 +38,9 @@ class MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
       ),
       child: NavigationBar(
         selectedIndex: widget.selectedIndex,
-        onDestinationSelected: widget.onItemTapped,
+        onDestinationSelected: (index) {
+          widget.onItemTapped(index);
+        },
         destinations: const <NavigationDestination>[
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
