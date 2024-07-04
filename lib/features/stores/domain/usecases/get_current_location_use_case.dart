@@ -11,7 +11,7 @@ class GetCurrentLocationUseCase extends UseCase<DataState, NoParams> {
   GetCurrentLocationUseCase(this.repository);
 
   @override
-  Future<DataState> call({required NoParams params}) async{
+  Future<DataState> call({NoParams? params}) async{
     return await repository.getCurrentLocation();
   }
 

@@ -11,7 +11,7 @@ class GetPickedStoreUseCase extends UseCase<DataState, String> {
   GetPickedStoreUseCase(this.repository);
 
   @override
-  Future<DataState> call({required String params}) async{
-    return await repository.getLocationPickedStore(params);
+  Future<DataState> call({String? params}) async{
+    return await repository.getLocationPickedStore(params!);
   }
 }
