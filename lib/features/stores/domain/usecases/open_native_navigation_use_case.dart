@@ -11,8 +11,8 @@ class OpenNativeNavigationUseCase extends UseCase<DataState, String>{
   OpenNativeNavigationUseCase(this._repository);
 
   @override
-  Future<DataState> call({required String params}) async{
-    return await _repository.getLocationPickedStore(params);
+  Future<DataState> call({String? params}) async{
+    return await _repository.getLocationPickedStore(params!);
   }
 
 }
