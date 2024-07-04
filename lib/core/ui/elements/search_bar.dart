@@ -1,9 +1,9 @@
 import 'dart:async';
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
 import 'package:vegawallet/features/stores/presentation/bloc/store_bloc.dart';
-
 import '../../constants/icon_const.dart';
 
 class StoreSearchBar extends StatefulWidget {
@@ -24,6 +24,27 @@ class StoreSearchBarState extends State<StoreSearchBar> {
     super.initState();
     _controller = SearchController();
     _searchStreamController = StreamController<List<Store>>.broadcast();
+    BackButtonInterceptor.add(_interceptBackButton);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _searchStreamController.close();
+    BackButtonInterceptor.remove(_interceptBackButton);
+    super.dispose();
+  }
+
+  bool _interceptBackButton(bool stopDefaultButtonEvent, RouteInfo info) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus &&
+        currentFocus.focusedChild != null &&
+        _controller.isOpen) {
+      _controller.closeView("");
+      currentFocus.focusedChild?.unfocus();
+      return true; // Intercept and prevent the default back button behavior
+    }
+    return false; // Allow the default back button behavior
   }
 
   void _onSearchChanged(String value) {
@@ -35,13 +56,6 @@ class StoreSearchBarState extends State<StoreSearchBar> {
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
-    _searchStreamController.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -49,8 +63,8 @@ class StoreSearchBarState extends State<StoreSearchBar> {
           margin: const EdgeInsets.only(top: 20.0),
           child: SearchAnchor.bar(
             barHintText: "Search stores",
-            onChanged: (value) => {
-              _onSearchChanged(value),
+            onChanged: (value) {
+              _onSearchChanged(value);
             },
             suggestionsBuilder: (context, controller) {
               return _buildSuggestions();
@@ -90,22 +104,22 @@ class StoreSearchBarState extends State<StoreSearchBar> {
       final suggestions = stores
           .map(
             (store) => ListTile(
-              leading: Icon(categoryIcons[store.category] ?? Icons.category),
-              title: Text(store.name),
-              onTap: () {
-                widget.onStoreSelected(store);
-                setState(() {
-                  _searchStreamController.add([]);
-                  _controller.closeView(_controller.text);
-                });
-                FocusScopeNode currentFocus = FocusScope.of(context);
-                if (!currentFocus.hasPrimaryFocus &&
-                    currentFocus.focusedChild != null) {
-                  currentFocus.focusedChild?.unfocus();
-                }
-              },
-            ),
-          )
+          leading: Icon(categoryIcons[store.category] ?? Icons.category),
+          title: Text(store.name),
+          onTap: () {
+            widget.onStoreSelected(store);
+            setState(() {
+              _searchStreamController.add([]);
+              _controller.closeView(_controller.text);
+            });
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus &&
+                currentFocus.focusedChild != null) {
+              currentFocus.focusedChild?.unfocus();
+            }
+          },
+        ),
+      )
           .toList();
       completer.complete(suggestions);
     });

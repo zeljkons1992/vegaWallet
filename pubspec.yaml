@@ -44,6 +44,7 @@ dependencies:
   flutter_map: ^7.0.1
   latlong2: ^0.9.1
   vector_graphics_compiler: ^1.1.11+1
+  back_button_interceptor: ^7.0.3
 
 
 dev_dependencies:
