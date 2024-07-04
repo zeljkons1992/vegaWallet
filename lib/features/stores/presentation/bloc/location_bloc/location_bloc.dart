@@ -11,13 +11,18 @@ import '../../../domain/usecases/open_native_navigation_use_case.dart';
 
 part 'location_event.dart';
 part 'location_state.dart';
+
 @Injectable()
 class LocationBloc extends Bloc<LocationEvent, LocationState> {
   final GetCurrentLocationUseCase _getCurrentLocationUseCase;
   final GetPickedStoreUseCase _getPickedStoreUseCase;
   final OpenNativeNavigationUseCase _openNativeNavigationUseCase;
 
-  LocationBloc(this._getCurrentLocationUseCase, this._getPickedStoreUseCase, this._openNativeNavigationUseCase) : super(LocationInitial()) {
+  LocationBloc(
+      this._getCurrentLocationUseCase,
+      this._getPickedStoreUseCase,
+      this._openNativeNavigationUseCase,
+      ) : super(LocationInitial()) {
     on<GetLocation>(_onGetLocation);
     on<RequestLocationPermission>(_onRequestLocationPermission);
     on<OpenLocationSettings>(_onOpenLocationSettings);
@@ -33,7 +38,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       emit(LocationError(result.message ?? 'An unknown error occurred'));
     }
   }
-
 
   Future<void> _onRequestLocationPermission(RequestLocationPermission event, Emitter<LocationState> emit) async {
     LocationPermission permission = await Geolocator.requestPermission();
@@ -51,13 +55,10 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
   Future<void> _onUpdateStoreLocation(UpdateStoreLocation event, Emitter<LocationState> emit) async {
     final result = await _getPickedStoreUseCase(params: event.city);
-    if(result.status == DataStateStatus.success){
+    if (result.status == DataStateStatus.success) {
       emit(StoreLocationUpdatedSuccess(result.data));
-      print("Dobar result "+ result.data.toString());
-    }else{
-      emit(StoreLocationUpdatedUnsuccessful(result.message.toString()));
-      print("Greska "+result.data.toString());
-
+    } else {
+      emit(StoreLocationUpdatedUnsuccessful(result.message ?? 'Failed to update store location'));
     }
   }
 
