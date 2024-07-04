@@ -2,8 +2,13 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:injectable/injectable.dart';
 
+import 'i_geo_locator_wrapper.dart';
+
 @lazySingleton
 class LocationService {
+  final IGeolocatorWrapper geolocator;
+
+  LocationService(this.geolocator);
   Future<Position> getCurrentPosition() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
