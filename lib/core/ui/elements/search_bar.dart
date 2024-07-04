@@ -3,7 +3,7 @@ import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
-import 'package:vegawallet/features/stores/presentation/bloc/store_bloc.dart';
+import '../../../features/stores/presentation/bloc/store_bloc/store_bloc.dart';
 import '../../constants/icon_const.dart';
 
 class StoreSearchBar extends StatefulWidget {

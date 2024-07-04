@@ -5,7 +5,7 @@ import 'package:vegawallet/core/data_state/data_state.dart';
 import '../../../domain/entities/cache_policy.dart';
 import '../../../domain/entities/store.dart';
 import '../../../domain/usecases/fetch_stores_use_case.dart';
-import '../../domain/usecases/search_stores_use_case.dart';
+import '../../../domain/usecases/search_stores_use_case.dart';
 
 part 'store_event.dart';
 
