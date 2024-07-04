@@ -18,6 +18,11 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   final GetPickedStoreUseCase _getPickedStoreUseCase;
   final OpenNativeNavigationUseCase _openNativeNavigationUseCase;
 
+  LocationBloc(
+      this._getCurrentLocationUseCase,
+      this._getPickedStoreUseCase,
+      this._openNativeNavigationUseCase,
+      ) : super(LocationInitial()) {
     on<GetLocation>(_onGetLocation);
     on<RequestLocationPermission>(_onRequestLocationPermission);
     on<OpenLocationSettings>(_onOpenLocationSettings);
@@ -26,11 +31,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   }
 
   Future<void> _onGetLocation(GetLocation event, Emitter<LocationState> emit) async {
-    try {
-      final position = await _getCurrentLocationUseCase();
-      emit(LocationLoaded(position));
-    } catch (e) {
-      emit(LocationError("e"));
     final result = await _getCurrentLocationUseCase(params: const NoParams());
     if (result.status == DataStateStatus.success) {
       emit(LocationLoaded(result.data));

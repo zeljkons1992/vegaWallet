@@ -5,10 +5,13 @@ import '../../../../core/data_state/no_params.dart';
 import '../repository/location_repository.dart';
 
 @Injectable()
+class GetCurrentLocationUseCase extends UseCase<DataState, NoParams> {
   final LocationRepository repository;
 
   GetCurrentLocationUseCase(this.repository);
 
+  @override
+  Future<DataState> call({NoParams? params}) async{
     return await repository.getCurrentLocation();
   }
 
