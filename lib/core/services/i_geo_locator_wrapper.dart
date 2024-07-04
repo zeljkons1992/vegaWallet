@@ -1,4 +1,5 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class IGeolocatorWrapper {
   Future<bool> isLocationServiceEnabled();
@@ -7,7 +8,7 @@ abstract class IGeolocatorWrapper {
   Future<Position> getCurrentPosition({LocationAccuracy desiredAccuracy = LocationAccuracy.best});
   Future<void> openLocationSettings();
 }
-
+@Injectable(as: IGeolocatorWrapper)
 class GeolocatorWrapper implements IGeolocatorWrapper {
   @override
   Future<bool> isLocationServiceEnabled() {

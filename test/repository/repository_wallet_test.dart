@@ -3,9 +3,9 @@ import 'package:mocktail/mocktail.dart';
 import 'package:vegawallet/core/data_state/data_state.dart';
 import 'package:vegawallet/features/wallet/data/models/wallet_card_information.dart';
 import 'package:vegawallet/features/wallet/domain/repository/wallet_repository.dart';
-
 class MockWalletRepository extends Mock implements WalletRepository {}
-class MockCardInformation extends Mock implements WalletCardInformation {}
+
+class MockWalletCardInformation extends Mock implements WalletCardInformation {}
 
 void main() {
   group('WalletRepository Tests', () {
@@ -14,7 +14,8 @@ void main() {
 
     setUpAll(() {
       mockWalletRepository = MockWalletRepository();
-      fakeWalletCardInformation = MockCardInformation();
+      fakeWalletCardInformation = MockWalletCardInformation();
+      registerFallbackValue(MockWalletCardInformation());
     });
 
     setUp(() {
@@ -36,7 +37,6 @@ void main() {
     });
 
     test('should return error when data is invalid', () async {
-
       when(() => mockWalletRepository.getWalletCardInformation())
           .thenAnswer((_) async => DataState.error("Invalid data provided"));
 

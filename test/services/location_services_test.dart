@@ -34,14 +34,34 @@ void main() {
     when(() => mockGeolocator.checkPermission()).thenAnswer((_) async => LocationPermission.denied);
     when(() => mockGeolocator.requestPermission()).thenAnswer((_) async => LocationPermission.denied);
     expect(() => locationService.getCurrentPosition(), throwsException);
-
-
   });
 
   test('should throw exception when location permissions are permanently denied', () async {
     when(() => mockGeolocator.isLocationServiceEnabled()).thenAnswer((_) async => true);
     when(() => mockGeolocator.checkPermission()).thenAnswer((_) async => LocationPermission.deniedForever);
     expect(() => locationService.getCurrentPosition(), throwsException);
+
+  });
+
+  test('should return position when location services are enabled and permission is granted', () async {
+    final tPosition = Position(
+      latitude: 1.0,
+      longitude: 1.0,
+      timestamp: DateTime.now(),
+      accuracy: 0.0,
+      altitude: 0.0,
+      heading: 0.0,
+      speed: 0.0,
+      speedAccuracy: 0.0, altitudeAccuracy: 0.0, headingAccuracy: 0.0,
+    );
+
+    when(() => mockGeolocator.isLocationServiceEnabled()).thenAnswer((_) async => true);
+    when(() => mockGeolocator.checkPermission()).thenAnswer((_) async => LocationPermission.always);
+    when(() => mockGeolocator.getCurrentPosition(desiredAccuracy: any(named: 'desiredAccuracy'))).thenAnswer((_) async => tPosition);
+
+    final result = await mockGeolocator.getCurrentPosition();
+
+    expect(result, tPosition);
 
   });
 }
