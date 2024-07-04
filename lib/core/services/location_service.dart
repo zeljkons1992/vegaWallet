@@ -1,5 +1,6 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:injectable/injectable.dart';
+import 'package:geocoding/geocoding.dart';
 
 import 'i_geo_locator_wrapper.dart';
 
@@ -8,6 +9,14 @@ class LocationService {
   final IGeolocatorWrapper geolocator;
 
   LocationService(this.geolocator);
+
+  Future<List<Location>> getLocationFromAddress(String address) async {
+    try {
+      return await locationFromAddress(address);
+    } catch (e) {
+      throw Exception('Failed to get location from address: $e');
+    }
+  }
 
   Future<Position> getCurrentPosition() async {
     if (!await _isServiceEnabled()) {

@@ -24,14 +24,16 @@ class LocationRepositoryImpl implements LocationRepository {
   }
 
   @override
-  Future<DataState<PositionSimple>> getLocationPickedStore(String address) async{
-    try{
-      List<Location> lists = await locationFromAddress(address);
-      PositionSimple positionSimple = PositionSimple(latitude: lists.first.latitude, longitude: lists.first.longitude);
+  Future<DataState<PositionSimple>> getLocationPickedStore(String address) async {
+    try {
+      List<Location> locations = await _locationService.getLocationFromAddress(address);
+      PositionSimple positionSimple = PositionSimple(
+        latitude: locations.first.latitude,
+        longitude: locations.first.longitude,
+      );
       return DataState.success(positionSimple);
-    }catch(e){
+    } catch (e) {
       return DataState.error(e.toString());
     }
   }
 }
-
