@@ -4,17 +4,21 @@ import 'package:mocktail/mocktail.dart';
 import 'package:vegawallet/core/data_state/data_state.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
 import 'package:vegawallet/features/stores/domain/usecases/fetch_stores_use_case.dart';
+import 'package:vegawallet/features/stores/domain/usecases/search_stores_use_case.dart';
 import 'package:vegawallet/features/stores/presentation/bloc/store_bloc.dart';
 
 class MockFetchStoresUseCase extends Mock implements FetchStoresUseCase {}
+class MockSearchStoresUseCase extends Mock implements SearchStoresUseCase {}
 
 void main() {
   late StoreBloc storeBloc;
   late MockFetchStoresUseCase mockFetchStoresUseCase;
+  late MockSearchStoresUseCase mockSearchStoresUseCase;
 
   setUp(() {
     mockFetchStoresUseCase = MockFetchStoresUseCase();
-    storeBloc = StoreBloc(mockFetchStoresUseCase);
+    mockSearchStoresUseCase = MockSearchStoresUseCase();
+    storeBloc = StoreBloc(mockFetchStoresUseCase, mockSearchStoresUseCase);
   });
 
   group('StoreBloc', () {
@@ -55,6 +59,32 @@ void main() {
       act: (bloc) => bloc.add(LoadStores()),
       expect: () => [
         const StoreError(message: 'Error fetching data'),
+      ],
+    );
+
+    blocTest<StoreBloc, StoreState>(
+      'emits [StoreLoaded] when search is successful',
+      build: () {
+        when(() => mockSearchStoresUseCase(params: any(named: 'params')))
+            .thenAnswer((_) async => DataState.success(stores));
+        return storeBloc;
+      },
+      act: (bloc) => bloc.add(const SearchStores('Store1')),
+      expect: () => [
+        StoreLoaded(stores: stores),
+      ],
+    );
+
+    blocTest<StoreBloc, StoreState>(
+      'emits [StoreError] when search fails',
+      build: () {
+        when(() => mockSearchStoresUseCase(params: any(named: 'params')))
+            .thenAnswer((_) async => DataState.error('Error searching stores'));
+        return storeBloc;
+      },
+      act: (bloc) => bloc.add(const SearchStores('Store1')),
+      expect: () => [
+        const StoreError(message: 'Error searching stores'),
       ],
     );
   });

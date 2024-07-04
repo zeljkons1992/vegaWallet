@@ -45,4 +45,10 @@ class AppTextStyles {
       fontWeight: FontWeight.bold,
       color: const Color(0xff373a40)
   );
+  static final TextStyle discountRed = GoogleFonts.inter(
+    fontSize: 14,
+    fontWeight: FontWeight.bold,
+    color: const Color(0xffb3112b),
+  );
+
 }

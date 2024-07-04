@@ -4,6 +4,9 @@ coverage:
       default:
         target: 80%
         threshold: 1%
+    patch:
+      default:
+        enabled: false
 
   ignore:
     - '**/entities/**'

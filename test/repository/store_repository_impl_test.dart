@@ -114,5 +114,31 @@ void main() {
       expect(result.status, equals(DataStateStatus.error));
       expect(result.message, equals('Error occurred: Exception: Error occurred'));
     });
+
+    test('should return list of stores when the call to local data source is successful', () async {
+      // Arrange
+      final stores = [Store.withData(name: 'Store1', addressCities: [], discounts: [], conditions: [], category: 'Test')];
+      when(() => mockLocalDataSource.searchStores(any())).thenAnswer((_) async => stores);
+
+      // Act
+      final result = await repository.searchStores('Store1');
+
+      // Assert
+      expect(result, DataState<List<Store>>.success(stores));
+      verify(() => mockLocalDataSource.searchStores('Store1')).called(1);
+    });
+
+    test('should return error when the call to local data source is unsuccessful', () async {
+      // Arrange
+      final exception = Exception('Some error');
+      when(() => mockLocalDataSource.searchStores(any())).thenThrow(exception);
+
+      // Act
+      final result = await repository.searchStores('Store1');
+
+      // Assert
+      expect(result, DataState<List<Store>>.error('Error occurred: ${exception.toString()}'));
+      verify(() => mockLocalDataSource.searchStores('Store1')).called(1);
+    });
   });
 }

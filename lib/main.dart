@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:vegawallet/core/constants/assets_const.dart';
 import 'package:vegawallet/core/di/injection.dart';
 import 'package:vegawallet/core/navigation/go_router.dart';
 import 'package:vegawallet/core/ui/elements/bottom_navigation_bar.dart';
@@ -11,7 +13,20 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await configureDependencies();
+  await precacheInitialAssets();
   runApp(const MyApp());
+}
+
+precacheInitialAssets() async {
+  await Future.wait([
+    precacheSvgPicture(vegaCardBackside),
+    precacheSvgPicture(vegaCard)
+  ]);
+}
+
+Future precacheSvgPicture(String svgPath) async {
+  final logo = SvgAssetLoader(svgPath);
+  await svg.cache.putIfAbsent(logo.cacheKey(null), () => logo.loadBytes(null));
 }
 
 class MyApp extends StatelessWidget {
@@ -66,6 +81,7 @@ class MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: widget.child,
       bottomNavigationBar: MyBottomNavigationBar(
         selectedIndex: _selectedTab.index,

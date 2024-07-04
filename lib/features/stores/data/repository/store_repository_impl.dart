@@ -66,4 +66,14 @@ class StoreRepositoryImpl implements StoreRepository {
     prefs.setInt('createdAt', DateTime.now().millisecondsSinceEpoch);
     return stores;
   }
+
+  @override
+  Future<DataState<List<Store>>> searchStores(String query) async {
+    try {
+      final stores = await localDataSource.searchStores(query);
+      return DataState.success(stores);
+    } catch (e) {
+      return DataState.error("Error occurred: ${e.toString()}");
+    }
+  }
 }

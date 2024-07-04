@@ -3,13 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vegawallet/core/constants/assets_const.dart';
+import 'package:vegawallet/core/constants/size_const.dart';
 import 'package:vegawallet/core/constants/text_const.dart';
-import 'package:vegawallet/core/ui/theme/button_style.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
+import 'package:vegawallet/features/stores/presentation/bloc/store_bloc.dart';
 import 'package:vegawallet/features/wallet/presentation/bloc/wallet_bloc.dart';
 import 'package:vegawallet/core/di/injection.dart';
-
+import '../../../../core/ui/elements/search_bar.dart';
+import '../../../../core/ui/elements/selected_store_display.dart';
+import '../../../stores/domain/entities/store.dart';
 import '../../data/models/wallet_card_information.dart';
+import '../widgets/discount_calculator.dart';
+import '../widgets/discount_info.dart';
 
 class WalletScreen extends StatefulWidget {
   const WalletScreen({super.key});
@@ -21,6 +26,9 @@ class WalletScreen extends StatefulWidget {
 class _WalletScreenState extends State<WalletScreen> {
   final FlipCardController _flipCardController = FlipCardController();
   final WalletBloc walletBloc = getIt<WalletBloc>();
+  final StoreBloc storeBloc = getIt<StoreBloc>();
+
+  Store? _selectedStore;
 
   @override
   void initState() {
@@ -29,21 +37,27 @@ class _WalletScreenState extends State<WalletScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => walletBloc..add(FetchCardInfo()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => walletBloc..add(FetchCardInfo())),
+        BlocProvider(create: (context) => storeBloc),
+      ],
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: PADDING_VALUE_SMALL),
             child: BlocBuilder<WalletBloc, WalletState>(
               builder: (context, state) {
                 switch (state) {
                   case WalletStateLoading _:
                     return const Center(child: CircularProgressIndicator());
                   case WalletStateLoaded _:
-                    return _buildContent(context, (state).walletCardInformation);
+                    return _buildContent(
+                        context, (state).walletCardInformation);
                   case WalletStateError _:
-                    return const Center(child: Text('Failed to load card information'));
+                    return const Center(
+                        child: Text('Failed to load card information'));
                   default:
                     return const Center(child: Text('Welcome to your wallet'));
                 }
@@ -62,7 +76,7 @@ class _WalletScreenState extends State<WalletScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: PADDING_VALUE_SMALL, vertical: PADDING_VALUE_LARGE),
             child: Text(TextConst.wallet, style: AppTextStyles.headline1),
           ),
           GestureDetector(
@@ -74,22 +88,34 @@ class _WalletScreenState extends State<WalletScreen> {
               backWidget: _buildBackCard(context),
             ),
           ),
-          const Spacer(),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: primaryButtonStyle(context),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(vertical: 12.0),
-                child: Text(
-                  TextConst.calculateDiscount,
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
+          Padding(
+            padding: const EdgeInsets.only(top: PADDING_VALUE_LARGE, left: PADDING_VALUE_SMALL),
+            child: Text(
+              "Discounts",
+              style: AppTextStyles.headline1,
             ),
           ),
-          const SizedBox(height: 16),
+          StoreSearchBar(
+            onStoreSelected: (store) {
+              setState(() {
+                _selectedStore = store;
+              });
+            },
+          ),
+          const SizedBox(
+            height: SIZED_BOX_SMALL,
+          ),
+          if (_selectedStore != null) ...[
+            Padding(
+              padding: const EdgeInsets.only(top: PADDING_VALUE_LARGE, bottom: PADDING_VALUE_LARGE),
+              child: SelectedStoreDisplay(
+                store: _selectedStore!,
+              ),
+            ),
+            _selectedStore!.parsedDiscount != null
+                ? DiscountCalculator(store: _selectedStore!)
+                : DiscountInfo(store: _selectedStore!),
+          ],
         ],
       ),
     );
@@ -100,7 +126,7 @@ class _WalletScreenState extends State<WalletScreen> {
       key: const ValueKey(true),
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_LARGE),
           child: SizedBox(
             width: double.infinity,
             child: SvgPicture.asset(
@@ -167,7 +193,7 @@ class _WalletScreenState extends State<WalletScreen> {
       child: SizedBox(
         width: double.infinity,
         child: SvgPicture.asset(
-          'assets/img/vega_card_back.svg',
+          vegaCardBackside,
           fit: BoxFit.cover,
         ),
       ),
