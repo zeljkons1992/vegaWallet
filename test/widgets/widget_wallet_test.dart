@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:bloc_test/bloc_test.dart';
-import 'package:vegawallet/features/stores/presentation/bloc/store_bloc.dart';
+import 'package:vegawallet/features/stores/presentation/bloc/store_bloc/store_bloc.dart';
 import 'package:vegawallet/features/wallet/presentation/bloc/wallet_bloc.dart';
 import 'package:vegawallet/features/wallet/presentation/screens/wallet_screen.dart';
 import 'package:vegawallet/features/wallet/data/models/wallet_card_information.dart';
