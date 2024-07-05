@@ -4,7 +4,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:vegawallet/core/services/i_geo_locator_wrapper.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:vegawallet/core/data_state/data_state.dart';
-import 'package:vegawallet/core/data_state/no_params.dart';
 import 'package:vegawallet/features/stores/domain/entities/position.dart';
 import 'package:vegawallet/features/stores/domain/usecases/get_current_location_use_case.dart';
 import 'package:vegawallet/features/stores/domain/usecases/get_picked_store_use_case.dart';
@@ -57,7 +56,7 @@ void main() {
     blocTest<LocationBloc, LocationState>(
       'emits [LocationLoaded] when GetLocation is added and data is fetched successfully',
       build: () {
-        when(() => mockGetCurrentLocationUseCase(params: const NoParams()))
+        when(() => mockGetCurrentLocationUseCase())
             .thenAnswer((_) async => DataState.success(testPosition));
         return locationBloc;
       },
@@ -70,7 +69,7 @@ void main() {
     blocTest<LocationBloc, LocationState>(
       'emits [LocationError] when GetLocation is added and data fetch fails',
       build: () {
-        when(() => mockGetCurrentLocationUseCase(params: const NoParams()))
+        when(() => mockGetCurrentLocationUseCase())
             .thenAnswer((_) async => DataState.error('Failed to fetch location'));
         return locationBloc;
       },

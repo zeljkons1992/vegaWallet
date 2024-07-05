@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegawallet/core/data_state/data_state.dart';
-import 'package:vegawallet/core/data_state/no_params.dart';
 import 'package:vegawallet/features/stores/domain/entities/position.dart';
 import '../../../domain/usecases/get_current_location_use_case.dart';
 import '../../../domain/usecases/get_picked_store_use_case.dart';
@@ -31,7 +30,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   }
 
   Future<void> _onGetLocation(GetLocation event, Emitter<LocationState> emit) async {
-    final result = await _getCurrentLocationUseCase(params: const NoParams());
+    final result = await _getCurrentLocationUseCase();
     if (result.status == DataStateStatus.success) {
       emit(LocationLoaded(result.data));
     } else {
