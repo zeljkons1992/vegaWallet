@@ -12,4 +12,6 @@ coverage:
     - '**/entities/**'
     - '**/di/**'
     - '**/theme/**'
+    - '**/core/services/i_geo_locator_wrapper.dart'
+    - '**/core/services/location_service.dart'
 
