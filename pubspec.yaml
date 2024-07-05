@@ -51,6 +51,7 @@ dependencies:
 
   vector_graphics_compiler: ^1.1.11+1
   back_button_interceptor: ^7.0.3
+  google_sign_in: ^6.2.1
 
 
 dev_dependencies:
