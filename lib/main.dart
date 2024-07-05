@@ -25,6 +25,8 @@ Future<void> precacheInitialAssets() async {
   await Future.wait([
     precacheSvgPicture(vegaCardBackside),
     precacheSvgPicture(vegaCard),
+    precacheSvgPicture('assets/img/flag_of_serbia.svg'),
+    precacheSvgPicture('assets/img/flag_of_uk.svg')
   ]);
 }
 

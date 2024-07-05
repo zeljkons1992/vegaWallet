@@ -19,7 +19,7 @@ class MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final t = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
 
     return NavigationBarTheme(
       data: NavigationBarThemeData(
@@ -47,17 +47,17 @@ class MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
           NavigationDestination(
             icon: const Icon(Icons.home_outlined),
             selectedIcon: const Icon(Icons.home),
-            label: t.walletTitle,
+            label: localization.walletTitle,
           ),
           NavigationDestination(
             icon: const Icon(Icons.store_mall_directory_outlined),
             selectedIcon: const Icon(Icons.store_mall_directory),
-            label: t.storesTitle,
+            label: localization.storesTitle,
           ),
           NavigationDestination(
             icon: const Icon(Icons.map_outlined),
             selectedIcon: const Icon(Icons.map),
-            label: t.mapsTitle,
+            label: localization.mapsTitle,
           ),
         ],
       ),

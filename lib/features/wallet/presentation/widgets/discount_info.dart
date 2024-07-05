@@ -15,7 +15,7 @@ class DiscountInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final uniqueDiscounts = _uniqueElements(store.discounts);
     final uniqueConditions = _uniqueElements(store.conditions);
-    final t = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
 
     return Expanded(
       child: SingleChildScrollView(
@@ -25,7 +25,7 @@ class DiscountInfo extends StatelessWidget {
             const SizedBox(height: 8),
             TextField(
               decoration: InputDecoration(
-                labelText: t.discountsTitle,
+                labelText: localization.discountsTitle,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5),
                 ),
@@ -39,7 +39,7 @@ class DiscountInfo extends StatelessWidget {
             const SizedBox(height: 8),
             TextField(
               decoration: InputDecoration(
-                labelText: t.discountCalculatorConditionsTitle,
+                labelText: localization.discountCalculatorConditionsTitle,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5),
                 ),

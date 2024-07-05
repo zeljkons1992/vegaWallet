@@ -38,7 +38,7 @@ class _WalletScreenState extends State<WalletScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => walletBloc..add(FetchCardInfo())),
@@ -59,7 +59,7 @@ class _WalletScreenState extends State<WalletScreen> {
                         context, (state).walletCardInformation);
                   case WalletStateError _:
                     return  Center(
-                        child: Text(t.cardInformationLoadFailed));
+                        child: Text(localization.cardInformationLoadFailed));
                   default:
                     return const SizedBox();
                 }
@@ -72,7 +72,7 @@ class _WalletScreenState extends State<WalletScreen> {
   }
 
   Widget _buildContent(BuildContext context, WalletCardInformation cardInfo) {
-    final t = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
     return Align(
       alignment: Alignment.topCenter,
       child: Column(
@@ -83,7 +83,7 @@ class _WalletScreenState extends State<WalletScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(t.walletTitle, style: AppTextStyles.headline1),
+                Text(localization.walletTitle, style: AppTextStyles.headline1),
                 const LanguageSwitcher(),
               ],
             ),
@@ -100,7 +100,7 @@ class _WalletScreenState extends State<WalletScreen> {
           Padding(
             padding: const EdgeInsets.only(top: PADDING_VALUE_LARGE, left: PADDING_VALUE_SMALL),
             child: Text(
-              t.discountsTitle,
+              localization.discountsTitle,
               style: AppTextStyles.headline1,
             ),
           ),
@@ -131,7 +131,7 @@ class _WalletScreenState extends State<WalletScreen> {
   }
 
   Widget _buildFrontCard(BuildContext context, WalletCardInformation cardInfo) {
-    final t = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
     return Stack(
       key: const ValueKey(true),
       children: [
@@ -164,7 +164,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    t.cardInformationExpiry,
+                    localization.cardInformationExpiry,
                     style: AppTextStyles.cardLabelTitle,
                   ),
                   const SizedBox(width: 10),
@@ -179,7 +179,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    t.cardInformationNumber,
+                    localization.cardInformationNumber,
                     style: AppTextStyles.cardLabelTitle,
                   ),
                   const SizedBox(width: 10),

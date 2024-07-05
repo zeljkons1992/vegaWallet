@@ -59,13 +59,13 @@ class StoreSearchBarState extends State<StoreSearchBar> {
 
   @override
   Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
     return Column(
       children: [
         Container(
           margin: const EdgeInsets.only(top: 20.0),
           child: SearchAnchor.bar(
-            barHintText: t.searchBarHint,
+            barHintText: localization.searchBarHint,
             onChanged: (value) {
               _onSearchChanged(value);
             },

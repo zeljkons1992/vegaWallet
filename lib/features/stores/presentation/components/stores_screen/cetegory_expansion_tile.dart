@@ -20,16 +20,16 @@ class CategoryExpansionTile extends StatelessWidget {
   });
 
   String _mapCategoryToLocalizationString(String category, BuildContext context) {
-    final t = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
 
     switch (category) {
-      case "Kafići i Restorani": return t.categoryCoffeeShopsAndRestaurants;
-      case "Putovanja": return t.categoryTravel;
-      case "Zabava": return t.categoryEntertainment;
-      case "Usluge": return t.categoryServices;
-      case "Lepota i Zdravlje": return t.categoryBeautyAndHealth;
-      case "Kupovina": return t.categoryShopping;
-      default: return t.error;
+      case "Kafići i Restorani": return localization.categoryCoffeeShopsAndRestaurants;
+      case "Putovanja": return localization.categoryTravel;
+      case "Zabava": return localization.categoryEntertainment;
+      case "Usluge": return localization.categoryServices;
+      case "Lepota i Zdravlje": return localization.categoryBeautyAndHealth;
+      case "Kupovina": return localization.categoryShopping;
+      default: return localization.error;
     }
   }
 

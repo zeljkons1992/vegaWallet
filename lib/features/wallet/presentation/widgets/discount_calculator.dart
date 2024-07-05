@@ -37,7 +37,7 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
 
   @override
   Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
     final uniqueConditions = _uniqueElements(widget.store.conditions);
 
     return Expanded(
@@ -70,7 +70,7 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
                                       FilteringTextInputFormatter.digitsOnly
                                     ],
                                     decoration: InputDecoration(
-                                      labelText: t.discountCalculatorHint,
+                                      labelText: localization.discountCalculatorHint,
                                       border: InputBorder.none,
                                     ),
                                     onChanged: (value) {
@@ -101,13 +101,13 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          t.discountCalculatorResultLabel,
+                          localization.discountCalculatorResultLabel,
                           style: AppTextStyles.titleBold,
                         ),
                         Text(
                           _discountedPrice != null
                               ? '${_discountedPrice!.toStringAsFixed(2)} rsd'
-                              : t.discountCalculatorInvalidResult,
+                              : localization.discountCalculatorInvalidResult,
                           style: AppTextStyles.headline1,
                         ),
                       ],
@@ -121,7 +121,7 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
               child:
               TextField(
                 decoration: InputDecoration(
-                  labelText: t.discountCalculatorConditionsTitle,
+                  labelText: localization.discountCalculatorConditionsTitle,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
                   ),

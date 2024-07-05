@@ -13,7 +13,7 @@ class StoresScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
 
     return BlocProvider(
       create: (context) => getIt<StoreBloc>()..add(LoadStores()),
@@ -28,7 +28,7 @@ class StoresScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      t.storesTitle,
+                      localization.storesTitle,
                       style: AppTextStyles.headline1,
                     ),
                     const LanguageSwitcher(),
