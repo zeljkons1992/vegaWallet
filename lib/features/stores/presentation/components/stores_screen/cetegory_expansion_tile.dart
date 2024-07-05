@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import '../../../../../core/constants/icon_const.dart';
 import '../../../domain/entities/store.dart';
 import 'store_list_tile.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class CategoryExpansionTile extends StatelessWidget {
   final String category;
@@ -8,21 +11,27 @@ class CategoryExpansionTile extends StatelessWidget {
   final bool isExpanded;
   final ValueChanged<bool> onExpansionChanged;
 
-  final Map<String, IconData> categoryIcons = {
-    'Kafići i Restorani': Icons.coffee_outlined,
-    'Putovanja': Icons.card_travel,
-    'Zabava': Icons.celebration_outlined,
-    'Usluge': Icons.health_and_safety,
-    'Zdravlje i wellness': Icons.local_hospital_outlined,
-    'Kupovina': Icons.shopping_cart_outlined,
-  };
-
-  CategoryExpansionTile({super.key,
+  const CategoryExpansionTile({
+    super.key,
     required this.category,
     required this.stores,
     required this.isExpanded,
     required this.onExpansionChanged,
   });
+
+  String _mapCategoryToLocalizationString(String category, BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+
+    switch (category) {
+      case "Kafići i Restorani": return t.categoryCoffeeShopsAndRestaurants;
+      case "Putovanja": return t.categoryTravel;
+      case "Zabava": return t.categoryEntertainment;
+      case "Usluge": return t.categoryServices;
+      case "Lepota i Zdravlje": return t.categoryBeautyAndHealth;
+      case "Kupovina": return t.categoryShopping;
+      default: return t.error;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,17 +46,19 @@ class CategoryExpansionTile extends StatelessWidget {
           dividerColor: Colors.transparent,
         ),
         child: ExpansionTile(
-          leading: Icon(categoryIcons[category] ?? Icons.category),
+          leading: Icon(
+            categoryIcons[category] ?? Icons.category,
+          ),
           title: Text(
-            category,
+            _mapCategoryToLocalizationString(category, context),
             style: const TextStyle(
-                fontSize: 20, fontWeight: FontWeight.bold),
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           initiallyExpanded: isExpanded,
           onExpansionChanged: onExpansionChanged,
-          children: stores
-              .map((store) => StoreListTile(store: store))
-              .toList(),
+          children: stores.map((store) => StoreListTile(store: store)).toList(),
         ),
       ),
     );

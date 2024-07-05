@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:vegawallet/core/ui/elements/search_bar.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
 import 'package:vegawallet/features/stores/presentation/bloc/store_bloc/store_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class MockStoreBloc extends MockBloc<StoreEvent, StoreState> implements StoreBloc {}
 
@@ -27,6 +30,17 @@ void main() {
 
   Widget createWidgetUnderTest() {
     return MaterialApp(
+      locale: const Locale('en'),
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('sr'),
+      ],
       home: Scaffold(
         body: BlocProvider<StoreBloc>(
           create: (context) => mockStoreBloc,

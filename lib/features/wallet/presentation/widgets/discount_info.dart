@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DiscountInfo extends StatelessWidget {
   final Store store;
@@ -14,6 +15,7 @@ class DiscountInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final uniqueDiscounts = _uniqueElements(store.discounts);
     final uniqueConditions = _uniqueElements(store.conditions);
+    final t = AppLocalizations.of(context)!;
 
     return Expanded(
       child: SingleChildScrollView(
@@ -23,7 +25,7 @@ class DiscountInfo extends StatelessWidget {
             const SizedBox(height: 8),
             TextField(
               decoration: InputDecoration(
-                labelText: 'Discounts',
+                labelText: t.discountsTitle,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5),
                 ),
@@ -37,7 +39,7 @@ class DiscountInfo extends StatelessWidget {
             const SizedBox(height: 8),
             TextField(
               decoration: InputDecoration(
-                labelText: 'Conditions',
+                labelText: t.discountCalculatorConditionsTitle,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5),
                 ),

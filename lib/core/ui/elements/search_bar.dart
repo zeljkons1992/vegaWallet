@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
 import '../../../features/stores/presentation/bloc/store_bloc/store_bloc.dart';
 import '../../constants/icon_const.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class StoreSearchBar extends StatefulWidget {
   final Function(Store) onStoreSelected;
@@ -57,12 +59,13 @@ class StoreSearchBarState extends State<StoreSearchBar> {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     return Column(
       children: [
         Container(
           margin: const EdgeInsets.only(top: 20.0),
           child: SearchAnchor.bar(
-            barHintText: "Search stores",
+            barHintText: t.searchBarHint,
             onChanged: (value) {
               _onSearchChanged(value);
             },

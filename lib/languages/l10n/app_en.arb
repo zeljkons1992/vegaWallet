@@ -1,0 +1,22 @@
+{
+    "walletTitle":"Wallet",
+    "cardInformationLoadFailed":"Failed to load card information.",
+    "cardInformationExpiry":"Expiry",
+    "cardInformationNumber":"Card No",
+    "discountsTitle":"Discounts",
+    "searchBarHint":"Search stores",
+    "discountCalculatorHint":"Price",
+    "discountCalculatorResultLabel":"Price with discount:",
+    "discountCalculatorInvalidResult":"N/A",
+    "discountCalculatorConditionsTitle":"Conditions",
+    "storesTitle":"Stores",
+    "storeDetailsNameLabel":"Store name",
+    "mapsTitle":"Maps",
+    "categoryCoffeeShopsAndRestaurants":"Coffee shops and Restaurants",
+    "categoryTravel":"Travel",
+    "categoryEntertainment":"Entertainment",
+    "categoryServices":"Services",
+    "categoryBeautyAndHealth":"Beauty and Health",
+    "categoryShopping":"Shopping",
+    "error":"Error"
+}

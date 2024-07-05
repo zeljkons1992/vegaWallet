@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:bloc_test/bloc_test.dart';
@@ -9,6 +10,7 @@ import 'package:vegawallet/features/stores/presentation/bloc/store_bloc/store_bl
 import 'package:vegawallet/features/wallet/data/models/wallet_card_information.dart';
 import 'package:vegawallet/features/wallet/presentation/bloc/wallet_bloc.dart';
 import 'package:vegawallet/features/wallet/presentation/screens/wallet_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MockWalletBloc extends MockBloc<WalletEvent, WalletState> implements WalletBloc {}
 class MockStoreBloc extends MockBloc<StoreEvent, StoreState> implements StoreBloc {}
@@ -36,6 +38,17 @@ void main() {
 
   Widget createWidgetUnderTest() {
     return MaterialApp(
+      locale: const Locale('en'),
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('sr'),
+      ],
       home: MultiBlocProvider(
         providers: [
           BlocProvider<WalletBloc>(create: (_) => mockWalletBloc),

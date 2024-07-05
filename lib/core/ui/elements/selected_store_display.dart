@@ -23,8 +23,11 @@ class SelectedStoreDisplay extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(categoryIcons[store.category] ?? Icons.category,
-                  color: Colors.black, size: SELECTED_STORE_CATEGORY_ICON_SIZE),
+              Icon(
+                categoryIcons[store.category] ?? Icons.category,
+                color: Colors.black,
+                size: SELECTED_STORE_CATEGORY_ICON_SIZE,
+              ),
               const SizedBox(width: SIZED_BOX_LARGE),
               Text(store.name, style: Theme.of(context).textTheme.titleSmall),
             ],

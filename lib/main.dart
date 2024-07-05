@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vegawallet/core/constants/assets_const.dart';
@@ -8,6 +9,9 @@ import 'package:vegawallet/core/ui/elements/bottom_navigation_bar.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/ui/theme/theme.dart';
 import 'core/ui/theme/util.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'features/localization/presentation/bloc/locale_bloc.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,14 +21,14 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-precacheInitialAssets() async {
+Future<void> precacheInitialAssets() async {
   await Future.wait([
     precacheSvgPicture(vegaCardBackside),
-    precacheSvgPicture(vegaCard)
+    precacheSvgPicture(vegaCard),
   ]);
 }
 
-Future precacheSvgPicture(String svgPath) async {
+Future<void> precacheSvgPicture(String svgPath) async {
   final logo = SvgAssetLoader(svgPath);
   await svg.cache.putIfAbsent(logo.cacheKey(null), () => logo.loadBytes(null));
 }
@@ -37,11 +41,34 @@ class MyApp extends StatelessWidget {
     final brightness = View.of(context).platformDispatcher.platformBrightness;
     TextTheme textTheme = createTextTheme(context, "Inter", "Inter");
     MaterialTheme theme = MaterialTheme(textTheme);
-    return MaterialApp.router(
-      title: 'Flutter Demo',
-      theme: brightness == Brightness.light ? theme.light() : theme.dark(),
-      routerConfig: router,
-      debugShowCheckedModeBanner: false,
+
+    return BlocProvider(
+      create: (context) => LocaleBloc(),
+      child: Builder(
+        builder: (context) {
+          return BlocBuilder<LocaleBloc, LocaleState>(
+            builder: (context, state) {
+              return MaterialApp.router(
+                locale: state.locale,
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: const [
+                  Locale('en'),
+                  Locale('sr'),
+                ],
+                title: 'Flutter Demo',
+                theme: brightness == Brightness.light ? theme.light() : theme.dark(),
+                routerConfig: router,
+                debugShowCheckedModeBanner: false,
+              );
+            },
+          );
+        }
+      ),
     );
   }
 }
@@ -56,6 +83,7 @@ class MainScreen extends StatefulWidget {
   @override
   MainScreenState createState() => MainScreenState();
 }
+
 class MainScreenState extends State<MainScreen> {
   TabItem _selectedTab = TabItem.home;
   int _previousIndex = 0;

@@ -1,0 +1,22 @@
+{
+    "walletTitle":"Novčanik",
+    "cardInformationLoadFailed":"Učitavanje informacija o kartici nije uspelo.",
+    "cardInformationExpiry":"Datum isteka",
+    "cardInformationNumber":"Broj kartice",
+    "discountsTitle":"Popusti",
+    "searchBarHint":"Pretraži prodavnice",
+    "discountCalculatorHint":"Cena",
+    "discountCalculatorResultLabel":"Cena sa popustom:",
+    "discountCalculatorInvalidResult":"N/A",
+    "discountCalculatorConditionsTitle":"Uslovi",
+    "storesTitle":"Prodavnice",
+    "storeDetailsNameLabel":"Ime prodavnice",
+    "mapsTitle":"Mape",
+    "categoryCoffeeShopsAndRestaurants":"Kafići i Restorani",
+    "categoryTravel":"Putovanja",
+    "categoryEntertainment":"Zabava",
+    "categoryServices":"Usluge",
+    "categoryBeautyAndHealth":"Lepota i Zdravlje",
+    "categoryShopping":"Kupovina",
+    "error":"Greška"
+}
