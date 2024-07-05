@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -6,11 +7,13 @@ import 'package:vegawallet/core/di/injection.dart';
 import 'package:vegawallet/core/navigation/go_router.dart';
 import 'package:vegawallet/core/ui/elements/bottom_navigation_bar.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:vegawallet/firebase_options.dart';
 import 'core/ui/theme/theme.dart';
 import 'core/ui/theme/util.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await dotenv.load(fileName: ".env");
   await configureDependencies();
   await precacheInitialAssets();
