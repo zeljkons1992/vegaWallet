@@ -9,7 +9,7 @@ class DataState<T> extends Equatable {
 
   const DataState._({required this.status, this.data, this.message});
 
-  factory DataState.success(T data) {
+  factory DataState.success([T? data]) {
     return DataState._(status: DataStateStatus.success, data: data);
   }
 
