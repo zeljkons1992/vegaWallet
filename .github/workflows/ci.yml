@@ -34,7 +34,7 @@ jobs:
           echo "EXCEL_FORMAT=xlsx" >> .env
 
       - name: Copy firebase_options.dart
-        run: cp path/to/firebase_options.dart lib/firebase_options.dart
+        run: lib/firebase_options.dart
 
       - name: Install dependencies
         run: flutter pub get
