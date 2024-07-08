@@ -50,6 +50,12 @@ jobs:
       - name: Analyze code
         run: flutter analyze
 
+      - name: Copy google-services.json
+        run: |
+          mkdir -p android/app/src/debug
+          mkdir -p android/app/src/Debug
+          cp android/app/google-services.json android/app/src/debug/google-services.json
+          cp android/app/google-services.json android/app/src/Debug/google-services.json
       - name: Build Android project
         run: flutter build apk --debug # Use `flutter build apk` for release build
 
