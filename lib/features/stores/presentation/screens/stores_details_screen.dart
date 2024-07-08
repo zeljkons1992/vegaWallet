@@ -31,10 +31,6 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
 
     if (widget.store.addressCities.isNotEmpty) {
       selectedDropdownItem = widget.store.addressCities.first;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        BlocProvider.of<LocationBloc>(context).add(OpenNavigationToAddress(
-            "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}"));
-      });
     }
   }
 
