@@ -41,9 +41,6 @@ jobs:
           echo "FIREBASE_APP_ID_IOS=keke" >> .env
           echo "FIREBASE_IOS_BUNDLE_ID=keke" >> .env
 
-      - name: Copy firebase_options.dart
-        run: "lib/firebase_options.dart"
-
       - name: Install dependencies
         run: flutter pub get
 
