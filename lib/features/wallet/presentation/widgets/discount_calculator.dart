@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:vegawallet/core/constants/size_const.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DiscountCalculator extends StatefulWidget {
   final Store store;
@@ -21,7 +22,6 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
     return elements.toSet().toList();
   }
 
-
   void _calculateDiscount() {
     final price = double.tryParse(_priceController.text);
     if (price != null && widget.store.parsedDiscount != null) {
@@ -37,6 +37,7 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
     final uniqueConditions = _uniqueElements(widget.store.conditions);
 
     return Expanded(
@@ -68,8 +69,8 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
                                     inputFormatters: <TextInputFormatter>[
                                       FilteringTextInputFormatter.digitsOnly
                                     ],
-                                    decoration: const InputDecoration(
-                                      labelText: "Price",
+                                    decoration: InputDecoration(
+                                      labelText: localization.discountCalculatorHint,
                                       border: InputBorder.none,
                                     ),
                                     onChanged: (value) {
@@ -100,13 +101,13 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Price with discount:',
+                          localization.discountCalculatorResultLabel,
                           style: AppTextStyles.titleBold,
                         ),
                         Text(
                           _discountedPrice != null
                               ? '${_discountedPrice!.toStringAsFixed(2)} rsd'
-                              : 'N/A',
+                              : localization.discountCalculatorInvalidResult,
                           style: AppTextStyles.headline1,
                         ),
                       ],
@@ -120,7 +121,7 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
               child:
               TextField(
                 decoration: InputDecoration(
-                  labelText: 'Conditions',
+                  labelText: localization.discountCalculatorConditionsTitle,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
                   ),

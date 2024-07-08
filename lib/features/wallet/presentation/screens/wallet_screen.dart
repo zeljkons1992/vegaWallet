@@ -4,7 +4,7 @@ import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vegawallet/core/constants/assets_const.dart';
 import 'package:vegawallet/core/constants/size_const.dart';
-import 'package:vegawallet/core/constants/text_const.dart';
+import 'package:vegawallet/core/ui/elements/language_switcher.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/wallet/presentation/bloc/wallet_bloc.dart';
 import 'package:vegawallet/core/di/injection.dart';
@@ -15,6 +15,7 @@ import '../../../stores/presentation/bloc/store_bloc/store_bloc.dart';
 import '../../data/models/wallet_card_information.dart';
 import '../widgets/discount_calculator.dart';
 import '../widgets/discount_info.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WalletScreen extends StatefulWidget {
   const WalletScreen({super.key});
@@ -37,6 +38,7 @@ class _WalletScreenState extends State<WalletScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => walletBloc..add(FetchCardInfo())),
@@ -56,10 +58,10 @@ class _WalletScreenState extends State<WalletScreen> {
                     return _buildContent(
                         context, (state).walletCardInformation);
                   case WalletStateError _:
-                    return const Center(
-                        child: Text('Failed to load card information'));
+                    return  Center(
+                        child: Text(localization.cardInformationLoadFailed));
                   default:
-                    return const Center(child: Text('Welcome to your wallet'));
+                    return const SizedBox();
                 }
               },
             ),
@@ -70,6 +72,7 @@ class _WalletScreenState extends State<WalletScreen> {
   }
 
   Widget _buildContent(BuildContext context, WalletCardInformation cardInfo) {
+    final localization = AppLocalizations.of(context)!;
     return Align(
       alignment: Alignment.topCenter,
       child: Column(
@@ -77,7 +80,13 @@ class _WalletScreenState extends State<WalletScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: PADDING_VALUE_SMALL, vertical: PADDING_VALUE_LARGE),
-            child: Text(TextConst.wallet, style: AppTextStyles.headline1),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(localization.walletTitle, style: AppTextStyles.headline1),
+                const LanguageSwitcher(),
+              ],
+            ),
           ),
           GestureDetector(
             onTap: () => _flipCardController.flipcard(),
@@ -91,7 +100,7 @@ class _WalletScreenState extends State<WalletScreen> {
           Padding(
             padding: const EdgeInsets.only(top: PADDING_VALUE_LARGE, left: PADDING_VALUE_SMALL),
             child: Text(
-              "Discounts",
+              localization.discountsTitle,
               style: AppTextStyles.headline1,
             ),
           ),
@@ -122,6 +131,7 @@ class _WalletScreenState extends State<WalletScreen> {
   }
 
   Widget _buildFrontCard(BuildContext context, WalletCardInformation cardInfo) {
+    final localization = AppLocalizations.of(context)!;
     return Stack(
       key: const ValueKey(true),
       children: [
@@ -154,7 +164,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Expiry',
+                    localization.cardInformationExpiry,
                     style: AppTextStyles.cardLabelTitle,
                   ),
                   const SizedBox(width: 10),
@@ -169,7 +179,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Card No',
+                    localization.cardInformationNumber,
                     style: AppTextStyles.cardLabelTitle,
                   ),
                   const SizedBox(width: 10),

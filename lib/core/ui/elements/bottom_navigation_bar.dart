@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
   final int selectedIndex;
@@ -18,6 +19,7 @@ class MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final localization = AppLocalizations.of(context)!;
 
     return NavigationBarTheme(
       data: NavigationBarThemeData(
@@ -41,21 +43,21 @@ class MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
         onDestinationSelected: (index) {
           widget.onItemTapped(index);
         },
-        destinations: const <NavigationDestination>[
+        destinations:  <NavigationDestination>[
           NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
-            label: 'Wallet',
+            icon: const Icon(Icons.home_outlined),
+            selectedIcon: const Icon(Icons.home),
+            label: localization.walletTitle,
           ),
           NavigationDestination(
-            icon: Icon(Icons.store_mall_directory_outlined),
-            selectedIcon: Icon(Icons.store_mall_directory),
-            label: 'Stores',
+            icon: const Icon(Icons.store_mall_directory_outlined),
+            selectedIcon: const Icon(Icons.store_mall_directory),
+            label: localization.storesTitle,
           ),
           NavigationDestination(
-            icon: Icon(Icons.map_outlined),
-            selectedIcon: Icon(Icons.map),
-            label: 'Maps',
+            icon: const Icon(Icons.map_outlined),
+            selectedIcon: const Icon(Icons.map),
+            label: localization.mapsTitle,
           ),
         ],
       ),
