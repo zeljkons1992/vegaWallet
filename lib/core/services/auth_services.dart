@@ -24,8 +24,6 @@ class AuthService {
       await _firebaseAuth.signInWithCredential(credential);
       return true;
     } catch (e) {
-      // Log the error or handle it accordingly
-      print('Error during Google sign in: $e');
       return false;
     }
   }
