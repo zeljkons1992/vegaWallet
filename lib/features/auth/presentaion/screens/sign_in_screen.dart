@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:vegawallet/core/di/injection.dart';
+import 'package:vegawallet/features/auth/presentaion/bloc/auth_bloc.dart';
 
-import '../../../auth/presentaion/bloc/auth_bloc.dart';
+import '../../../../core/di/injection.dart';
 
-class MapScreen extends StatelessWidget {
-  const MapScreen({super.key});
+class SignInScreen extends StatelessWidget {
+  const SignInScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +15,9 @@ class MapScreen extends StatelessWidget {
       child: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           switch(state){
-            case AuthLogoutSuccess _:
-              return context.replace("/login");
-            case AuthLogoutError _:
+            case AuthLoginWithGoogleSuccess _:
+              return context.replace("/");
+            case AuthLoginWithGoogleError _:
               return context.go("??ASW@!!@DLDKS:L@");
             default:
               return context.go("location");
@@ -27,9 +27,11 @@ class MapScreen extends StatelessWidget {
           body: Center(
             child: Builder(
               builder: (context) {
-                return ElevatedButton(onPressed: () {
-                  BlocProvider.of<AuthBloc>(context).add(LogoutUser());
-                }, child: const Icon(Icons.logout));
+                return ElevatedButton(
+                  onPressed: () {
+                    BlocProvider.of<AuthBloc>(context).add(LoginWithGoogle());
+                  }, child: const Icon(Icons.g_mobiledata_outlined),
+                );
               }
             ),
           ),
