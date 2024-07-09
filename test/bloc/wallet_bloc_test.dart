@@ -48,14 +48,14 @@ void main() {
           when(() => mockWalletRepository.getWalletCardInformation())
               .thenAnswer((_) async => DataState.success(
               const WalletCardInformation(
-                  name: 'Nikola', expiry: '12/21', cardNo: '123 456')));
+                  name: 'Nikola')));
           return WalletBloc(getUserCardInformationUseCase);
         },
         act: (bloc) => bloc.add(FetchCardInfo()),
         expect: () => [
           WalletStateLoading(),
           const WalletStateLoaded(WalletCardInformation(
-              name: 'Nikola', expiry: '12/21', cardNo: '123 456')),
+              name: 'Nikola')),
         ],
       );
       blocTest<WalletBloc, WalletState>(
