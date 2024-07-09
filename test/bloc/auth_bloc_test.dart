@@ -29,7 +29,7 @@ void main() {
   });
 
   blocTest<AuthBloc, AuthState>(
-    'emits [AuthLoading, AuthAuthenticated] when LoginWithGoogle is added',
+    'emits [AuthLoginWithGoogleSuccess] when LoginWithGoogle is added and login is successful',
     build: () {
       when(() => mockLoginUserUseCase()).thenAnswer((_) async => DataState.success());
       return authBloc;
@@ -39,8 +39,9 @@ void main() {
       AuthLoginWithGoogleSuccess(),
     ],
   );
+
   blocTest<AuthBloc, AuthState>(
-    'emmit error',
+    'emits [AuthLoginWithGoogleError] when LoginWithGoogle is added and login fails',
     build: () {
       when(() => mockLoginUserUseCase()).thenAnswer((_) async => DataState.error("error"));
       return authBloc;
@@ -48,6 +49,56 @@ void main() {
     act: (bloc) => bloc.add(LoginWithGoogle()),
     expect: () => [
       AuthLoginWithGoogleError(),
+    ],
+  );
+
+  blocTest<AuthBloc, AuthState>(
+    'emits [AuthLogoutSuccess] when LogoutUser is added and logout is successful',
+    build: () {
+      when(() => mockLogoutUserUseCase()).thenAnswer((_) async => DataState.success());
+      return authBloc;
+    },
+    act: (bloc) => bloc.add(LogoutUser()),
+    expect: () => [
+      AuthLogoutSuccess(),
+    ],
+  );
+
+  blocTest<AuthBloc, AuthState>(
+    'emits [AuthLogoutError] when LogoutUser is added and logout fails',
+    build: () {
+      when(() => mockLogoutUserUseCase()).thenAnswer((_) async => DataState.error("error"));
+      return authBloc;
+    },
+    act: (bloc) => bloc.add(LogoutUser()),
+    expect: () => [
+      AuthLogoutError(),
+    ],
+  );
+
+  blocTest<AuthBloc, AuthState>(
+    'emits [AuthVegaStartAuthorization, AuthVegaConfirmAnimation, AuthVegaConfirm] when CheckIsUserVega is added and user is Vega',
+    build: () {
+      when(() => mockIsUserVegaUseCase()).thenAnswer((_) async => DataState.success());
+      return authBloc;
+    },
+    act: (bloc) => bloc.add(CheckIsUserVega()),
+    expect: () => [
+      AuthVegaStartAuthorization(),
+      AuthVegaConfirmAnimation(),
+    ],
+  );
+
+  blocTest<AuthBloc, AuthState>(
+    'emits [AuthVegaStartAuthorization, AuthVegaNotConfirmAnimation, AuthVegaNotConfirm] when CheckIsUserVega is added and user is not Vega',
+    build: () {
+      when(() => mockIsUserVegaUseCase()).thenAnswer((_) async => DataState.error("Korisnicko ime nije Vega"));
+      return authBloc;
+    },
+    act: (bloc) => bloc.add(CheckIsUserVega()),
+    expect: () => [
+      AuthVegaStartAuthorization(),
+      AuthVegaNotConfirmAnimation(),
     ],
   );
 }
