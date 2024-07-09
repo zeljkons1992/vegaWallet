@@ -169,7 +169,7 @@ class _WalletScreenState extends State<WalletScreen> {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    "11111",
+                    "12/27",
                     style: AppTextStyles.cardLabelDigital,
                   ),
                 ],
@@ -184,7 +184,7 @@ class _WalletScreenState extends State<WalletScreen> {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    "3213123",
+                    "234 178",
                     style: AppTextStyles.cardLabelDigital,
                   ),
                 ],

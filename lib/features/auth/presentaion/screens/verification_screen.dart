@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vegawallet/core/di/injection.dart';
 import 'package:vegawallet/features/auth/presentaion/components/verification_screen/verification_start.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../bloc/auth/auth_bloc.dart';
 
 class VerificationScreen extends StatelessWidget {
@@ -11,6 +11,7 @@ class VerificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
     return Scaffold(
       body: BlocProvider(
         create: (context) => getIt<AuthBloc>()..add(CheckIsUserVega()),
@@ -33,9 +34,9 @@ class VerificationScreen extends StatelessWidget {
               case AuthVegaStartAuthorization _:
                 return verificationStart();
               case AuthVegaConfirmAnimation _:
-                return const Text("JESTE VEGA POTVRDJEN IDENTITET");
+                return  Text(localization.vegaConfIde);
               case AuthVegaNotConfirmAnimation _:
-                return const Text("NIJE VEGA ACCOUNT");
+                return  Text(localization.vegaNoConfIde);
               default:
                 return const SizedBox();
             }

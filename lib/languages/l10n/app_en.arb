@@ -18,5 +18,7 @@
     "categoryServices":"Services",
     "categoryBeautyAndHealth":"Beauty and Health",
     "categoryShopping":"Shopping",
-    "error":"Error"
+    "error":"Error",
+    "vegaConfIde": "Vega confirm identity",
+    "vegaNoConfIde": "Vega identity not confirmed"
 }

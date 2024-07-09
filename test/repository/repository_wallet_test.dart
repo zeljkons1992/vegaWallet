@@ -2,45 +2,41 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:vegawallet/core/data_state/data_state.dart';
 import 'package:vegawallet/features/wallet/data/models/wallet_card_information.dart';
-import 'package:vegawallet/features/wallet/domain/repository/wallet_repository.dart';
-class MockWalletRepository extends Mock implements WalletRepository {}
+import 'package:vegawallet/features/wallet/data/repository/wallet_repository_impl.dart';
+import 'package:vegawallet/core/services/auth_services.dart';
 
-class MockWalletCardInformation extends Mock implements WalletCardInformation {}
+class MockAuthServices extends Mock implements AuthService {}
 
 void main() {
   group('WalletRepository Tests', () {
-    late WalletRepository mockWalletRepository;
-    late WalletCardInformation fakeWalletCardInformation;
-
-    setUpAll(() {
-      mockWalletRepository = MockWalletRepository();
-      fakeWalletCardInformation = MockWalletCardInformation();
-      registerFallbackValue(MockWalletCardInformation());
-    });
+    late WalletRepositoryImpl walletRepositoryImpl;
+    late MockAuthServices mockAuthServices;
 
     setUp(() {
-      when(() => fakeWalletCardInformation.name).thenReturn("Nikola Ranković");
-
+      mockAuthServices = MockAuthServices();
+      walletRepositoryImpl = WalletRepositoryImpl(mockAuthServices);
     });
+
+    const walletCardInformation = WalletCardInformation(name: "Nikola");
 
     test('should return success with valid data', () async {
-      when(() => mockWalletRepository.getWalletCardInformation())
-          .thenAnswer((_) async => DataState.success(fakeWalletCardInformation));
+      when(() => mockAuthServices.getUserName())
+          .thenAnswer((_) async => "Nikola");
+      final result = await walletRepositoryImpl.getWalletCardInformation();
 
-      final result = await mockWalletRepository.getWalletCardInformation();
-
-      expect(result, isA<DataState<WalletCardInformation>>());
-      expect(result.data!.name, equals("Nikola Ranković"));
+      expect(result.status, equals(DataStateStatus.success));
+      expect(result.data?.name, equals(walletCardInformation.name));
     });
 
-    test('should return error when data is invalid', () async {
-      when(() => mockWalletRepository.getWalletCardInformation())
-          .thenAnswer((_) async => DataState.error("Invalid data provided"));
+    test('should return error when user name is null', () async {
+      // Mock the behavior of getUserName to return null
+      when(() => mockAuthServices.getUserName())
+          .thenAnswer((_) async => null);
 
-      final result = await mockWalletRepository.getWalletCardInformation();
+      final result = await walletRepositoryImpl.getWalletCardInformation();
 
-      expect(result, isA<DataState<WalletCardInformation>>());
-      expect(result.message, equals("Invalid data provided"));
+      expect(result.status, equals(DataStateStatus.error));
+      expect(result.message, equals("No information"));
     });
   });
 }

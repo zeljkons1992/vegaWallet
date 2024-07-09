@@ -21,9 +21,9 @@ class SignInScreen extends StatelessWidget {
             case AuthLoginWithGoogleSuccess _:
               return context.replace("/verification");
             case AuthLoginWithGoogleError _:
-              return context.go("??ASW@!!@DLDKS:L@");
+              return context.go("/error");
             default:
-              return context.go("4234234234352131");
+              return context.go("/error");
           }
         },
         child: Scaffold(

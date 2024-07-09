@@ -44,15 +44,15 @@ class AuthService {
 
   Future<bool> isUserEmailValid() async {
     final user = _firebaseAuth.currentUser;
-    if (user != null) {
-      if (user.email?.endsWith('@vegait.rs') ?? false) {
-        return true;
-      } else {
-        await user.delete();
-        return false;
-      }
+
+    if (user == null) return false;
+
+    if (!(user.email?.endsWith('@vegait.rs') ?? false)) {
+      await user.delete();
+      return false;
     }
-    return false;
+
+    return true;
   }
 
   Future<String?> getUserName() async{
