@@ -29,6 +29,9 @@ class VerificationScreen extends StatelessWidget {
                 return context.go("");
             }
           },
+          buildWhen: (previous,current){
+            return current is !AuthVegaConfirm && current is !AuthVegaNotConfirm;
+          },
           builder: (context, state) {
             switch(state) {
               case AuthVegaStartAuthorization _:

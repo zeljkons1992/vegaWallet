@@ -51,7 +51,8 @@ final GoRouter router = GoRouter(
         ),
         GoRoute(
           path: '/maps',
-          builder: (context, state) => const MapScreen(),
+          pageBuilder: (context, state) =>
+              customTransitionPage(context, state, const MapScreen()),
         ),
       ],
     ),
