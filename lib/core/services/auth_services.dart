@@ -42,4 +42,22 @@ class AuthService {
     }
   }
 
+  Future<bool> isUserEmailValid() async {
+    final user = _firebaseAuth.currentUser;
+    if (user != null) {
+      if (user.email?.endsWith('@vegait.rs') ?? false) {
+        return true;
+      } else {
+        await user.delete();
+        return false;
+      }
+    }
+    return false;
+  }
+
+  Future<String?> getUserName() async{
+    final user = _firebaseAuth.currentUser;
+    return user!.displayName;
+  }
 }
+

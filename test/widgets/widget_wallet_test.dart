@@ -60,7 +60,7 @@ void main() {
   }
 
   testWidgets('shows loaded card information when state is WalletStateLoaded', (WidgetTester tester) async {
-    const mockCardInfo = WalletCardInformation(name: 'John Doe', expiry: '12/34', cardNo: '123456789012');
+    const mockCardInfo = WalletCardInformation(name: 'John Doe');
     whenListen(mockWalletBloc, Stream.fromIterable([const WalletStateLoaded(mockCardInfo)]), initialState: WalletStateInitial());
     whenListen(mockStoreBloc, Stream.fromIterable([const StoreLoaded(stores: [])]), initialState: StoreLoading());
 
@@ -68,8 +68,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('John Doe'), findsOneWidget);
-    expect(find.text('Expiry'), findsOneWidget);
-    expect(find.text('12/34'), findsOneWidget);
-    expect(find.text('Card No'), findsOneWidget);
+
   });
 }

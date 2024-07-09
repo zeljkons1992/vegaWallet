@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:vegawallet/features/auth/presentaion/screens/verification_screen.dart';
 import 'package:vegawallet/features/maps/presentaion/screens/map_screen.dart';
 import 'package:vegawallet/features/stores/presentation/screens/store_screen.dart';
 import 'package:vegawallet/features/wallet/presentation/screens/wallet_screen.dart';
@@ -57,6 +58,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/login',
       builder: (context, state) => const SignInScreen(),
+    ),
+    GoRoute(
+      path: '/verification',
+      builder: (context, state) => const VerificationScreen(),
     ),
   ],
 );

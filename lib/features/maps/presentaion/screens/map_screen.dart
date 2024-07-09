@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vegawallet/core/di/injection.dart';
 
-import '../../../auth/presentaion/bloc/auth_bloc.dart';
+import '../../../auth/presentaion/bloc/auth/auth_bloc.dart';
 
 class MapScreen extends StatelessWidget {
   const MapScreen({super.key});

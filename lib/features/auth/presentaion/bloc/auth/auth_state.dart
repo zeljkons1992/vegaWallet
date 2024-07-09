@@ -15,4 +15,14 @@ class AuthLogoutSuccess extends AuthState {}
 
 class AuthLogoutError extends AuthState {}
 
+class AuthVegaStartAuthorization extends AuthState {}
+
+class AuthVegaConfirm extends AuthState {}
+
+class AuthVegaNotConfirm extends AuthState {}
+
+class AuthVegaConfirmAnimation extends AuthState {}
+
+class AuthVegaNotConfirmAnimation extends AuthState {}
+
 

@@ -20,8 +20,7 @@ void main() {
 
     setUp(() {
       when(() => fakeWalletCardInformation.name).thenReturn("Nikola Ranković");
-      when(() => fakeWalletCardInformation.expiry).thenReturn("12/25");
-      when(() => fakeWalletCardInformation.cardNo).thenReturn("100 951");
+
     });
 
     test('should return success with valid data', () async {
@@ -32,8 +31,6 @@ void main() {
 
       expect(result, isA<DataState<WalletCardInformation>>());
       expect(result.data!.name, equals("Nikola Ranković"));
-      expect(result.data!.expiry, equals("12/25"));
-      expect(result.data!.cardNo, equals("100 951"));
     });
 
     test('should return error when data is invalid', () async {

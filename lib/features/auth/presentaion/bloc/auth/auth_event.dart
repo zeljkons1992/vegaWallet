@@ -8,3 +8,5 @@ abstract class AuthEvent extends Equatable{
 class LoginWithGoogle extends AuthEvent {}
 
 class LogoutUser extends AuthEvent {}
+
+class CheckIsUserVega extends AuthEvent {}

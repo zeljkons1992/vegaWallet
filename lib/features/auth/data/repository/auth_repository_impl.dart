@@ -29,4 +29,14 @@ class AuthRepositoryImpl implements AuthRepository {
       return DataState.error("Error");
     }
   }
+
+  @override
+  Future<DataState> isUserVega() async {
+      var result = await _authServices.isUserEmailValid();
+      if(result){
+        return DataState.success();
+      }
+      return DataState.error("Korisnicko ime nije Vega");
+  }
 }
+
