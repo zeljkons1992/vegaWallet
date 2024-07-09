@@ -43,7 +43,82 @@ jobs:
           echo "balboa" >> google-service.json
           echo "balboa" >> GoogleService-Info.plist 
 
+      - name: Create google-services.json
+        run: |
+          mkdir -p android/app
+          echo '{
+            "project_info": {
+              "project_number": "123456789012",
+              "firebase_url": "https://example.firebaseio.com",
+              "project_id": "example",
+              "storage_bucket": "example.appspot.com"
+            },
+            "client": [{
+              "client_info": {
+                "mobilesdk_app_id": "1:123456789012:android:abc123def456",
+                "android_client_info": {
+                  "package_name": "com.example"
+                }
+              },
+              "oauth_client": [{
+                "client_id": "123456789012-abcdefg123456.apps.googleusercontent.com",
+                "client_type": 1,
+                "android_info": {
+                  "package_name": "com.example",
+                  "certificate_hash": "abcdef123456"
+                }
+              }],
+              "api_key": [{
+                "current_key": "kekeke"
+              }],
+              "services": {
+                "appinvite_service": {
+                  "other_platform_oauth_client": []
+                }
+              }
+            }],
+            "configuration_version": "1"
+          }' >> android/app/google-services.json
 
+      - name: Create GoogleService-Info.plist
+        run: |
+          mkdir -p ios/Runner
+          echo '<?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>CLIENT_ID</key>
+            <string>123456789012-abcdefg123456.apps.googleusercontent.com</string>
+            <key>REVERSED_CLIENT_ID</key>
+            <string>com.googleusercontent.apps.123456789012-abcdefg123456</string>
+            <key>API_KEY</key>
+            <string>kekeke</string>
+            <key>GCM_SENDER_ID</key>
+            <string>123456789012</string>
+            <key>PLIST_VERSION</key>
+            <string>1</string>
+            <key>BUNDLE_ID</key>
+            <string>com.example</string>
+            <key>PROJECT_ID</key>
+            <string>example</string>
+            <key>STORAGE_BUCKET</key>
+            <string>example.appspot.com</string>
+            <key>IS_ADS_ENABLED</key>
+            <false/>
+            <key>IS_ANALYTICS_ENABLED</key>
+            <true/>
+            <key>IS_APPINVITE_ENABLED</key>
+            <true/>
+            <key>IS_GCM_ENABLED</key>
+            <true/>
+            <key>IS_SIGNIN_ENABLED</key>
+            <true/>
+            <key>GOOGLE_APP_ID</key>
+            <string>1:123456789012:ios:abc123def456</string>
+            <key>DATABASE_URL</key>
+            <string>https://example.firebaseio.com</string>
+          </dict>
+          </plist>' >> ios/Runner/GoogleService-Info.plist
       - name: Install dependencies
         run: flutter pub get
 
@@ -52,13 +127,6 @@ jobs:
 
       - name: Analyze code
         run: flutter analyze
-
-      - name: Copy google-services.json
-        run: |
-          mkdir -p android/app/src/debug
-          mkdir -p android/app/src/Debug
-          cp android/app/google-services.json android/app/src/debug/google-services.json
-          cp android/app/google-services.json android/app/src/Debug/google-services.json
 
       - name: Build Android project
         run: flutter build apk --debug # Use `flutter build apk` for release build
