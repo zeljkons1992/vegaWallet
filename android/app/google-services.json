@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "1098052959751",
+    "project_id": "vega-wallet",
+    "storage_bucket": "vega-wallet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1098052959751:android:254e0397ce18024be534a2",
+        "android_client_info": {
+          "package_name": "com.example.vegawallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1098052959751-1jsrei14ecdcmedh80bgm9fk6anmlnlj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vegawallet",
+            "certificate_hash": "992825befbfc260eaab972da40ea7ac014e2f931"
+          }
+        },
+        {
+          "client_id": "1098052959751-j7nbvqkvn8l343gldgtn6ag3tj53ad4p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtfife10wzqoeVp7k8RtisHyIfqzuUd-U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1098052959751-j7nbvqkvn8l343gldgtn6ag3tj53ad4p.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1098052959751-4r3i01crr8e5gfi9vd9q25jde3schn5n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.vegawallet"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
