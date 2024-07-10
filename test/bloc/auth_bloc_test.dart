@@ -83,9 +83,11 @@ void main() {
       return authBloc;
     },
     act: (bloc) => bloc.add(CheckIsUserVega()),
+    wait: const Duration(seconds: 11),
     expect: () => [
       AuthVegaStartAuthorization(),
       AuthVegaConfirmAnimation(),
+      AuthVegaConfirm(),
     ],
   );
 
@@ -96,9 +98,11 @@ void main() {
       return authBloc;
     },
     act: (bloc) => bloc.add(CheckIsUserVega()),
+    wait: const Duration(seconds: 15),
     expect: () => [
       AuthVegaStartAuthorization(),
       AuthVegaNotConfirmAnimation(),
+      AuthVegaNotConfirm(),
     ],
   );
 }
