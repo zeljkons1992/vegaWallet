@@ -49,7 +49,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthVegaConfirm());
     }else{
       emit(AuthVegaNotConfirmAnimation());
-      await Future.delayed(const Duration(seconds: 10));
+      await Future.delayed(const Duration(seconds: 6));
       emit(AuthVegaNotConfirm());
     }
   }
