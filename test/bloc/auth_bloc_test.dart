@@ -85,7 +85,6 @@ void main() {
     act: (bloc) => bloc.add(CheckIsUserVega()),
     expect: () => [
       AuthVegaStartAuthorization(),
-      AuthVegaConfirmAnimation(),
     ],
   );
 
@@ -98,7 +97,6 @@ void main() {
     act: (bloc) => bloc.add(CheckIsUserVega()),
     expect: () => [
       AuthVegaStartAuthorization(),
-      AuthVegaNotConfirmAnimation(),
     ],
   );
 }

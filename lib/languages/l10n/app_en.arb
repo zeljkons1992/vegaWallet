@@ -20,5 +20,8 @@
     "categoryShopping":"Shopping",
     "error":"Error",
     "vegaConfIde": "Vega confirm identity",
-    "vegaNoConfIde": "Vega identity not confirmed"
+    "vegaNoConfIde": "Vega identity not confirmed",
+    "googleStartVer": "Google Verification process in progress",
+    "googleVerSuc": "Verification process has been successfully completed.\nYou will be redirected to the main page.",
+    "googleVerUns": "Verification process has not been successfully completed.\nYou will be redirected to the login page.\nFor more information, please contact our admin team."
 }

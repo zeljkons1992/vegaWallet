@@ -41,14 +41,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _isUserVega(CheckIsUserVega event, Emitter<AuthState> emit) async {
     emit(AuthVegaStartAuthorization());
+    await Future.delayed(const Duration(seconds: 4));
     final result = await _isUserVegaUseCase();
     if(result.status == DataStateStatus.success){
       emit(AuthVegaConfirmAnimation());
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 4));
       emit(AuthVegaConfirm());
     }else{
       emit(AuthVegaNotConfirmAnimation());
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 10));
       emit(AuthVegaNotConfirm());
     }
   }
