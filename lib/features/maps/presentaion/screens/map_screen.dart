@@ -24,23 +24,14 @@ class MapScreen extends StatelessWidget {
           }
         },
         child: Scaffold(
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () { throw Exception(); },
-                child: const Text('Throw Exception'),
-              ),
-              Center(
-                child: Builder(
-                  builder: (context) {
-                    return ElevatedButton(onPressed: () {
-                      BlocProvider.of<AuthBloc>(context).add(LogoutUser());
-                    }, child: const Icon(Icons.logout));
-                  }
-                ),
-              ),
-            ],
+          body: Center(
+            child: Builder(
+              builder: (context) {
+                return ElevatedButton(onPressed: () {
+                  BlocProvider.of<AuthBloc>(context).add(LogoutUser());
+                }, child: const Icon(Icons.logout));
+              }
+            ),
           ),
         ),
       ),
