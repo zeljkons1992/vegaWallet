@@ -143,9 +143,18 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Set up pod for firebase
+        run: |
+          pod repo update
+          pod deintegrate
+          flutter clean
+          flutter pub get
+          flutter pub run build_runner build
+          pod install
+
       - name: Update Podfile with Deployment Target
         run: |
-          sed -i '' 's/platform :ios, .*/platform :ios, '12.0'/g' ios/Podfile
+          sed -i '' 's/platform :ios, .*/platform :ios, '16.0'/g' ios/Podfile
       
 
       - name: Run build runner
