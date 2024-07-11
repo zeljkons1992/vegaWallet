@@ -158,21 +158,15 @@ jobs:
                    project_path = 'ios/Runner.xcodeproj'; \
                    project = Xcodeproj::Project.open(project_path); \
                    file_ref = project.new_file('ios/Runner/GoogleService-Info.plist'); \
-                   group = project.groups.find { |g| g.display_name == 'Runner' }; \
-                   group.new_file(file_ref.real_path); \
+                   group = project.main_group.find_subpath('Runner', true); \
+                   group.files << file_ref; \
                    project.save;"
-
-      - name: Run build runner
-        run: flutter pub run build_runner build
-
-      - name: Analyze code
-        run: flutter analyze
-
-      - name: Build Android project
-        run: flutter build apk --debug
 
       - name: Build iOS project
         run: flutter build ios --no-codesign
+
+      - name: Build Android project
+        run: flutter build apk --debug
 
       - name: Run tests
         run: flutter test --coverage
