@@ -40,8 +40,6 @@ jobs:
           echo "FIREBASE_API_KEY_IOS=kekeke" >> .env
           echo "FIREBASE_APP_ID_IOS=keke" >> .env
           echo "FIREBASE_IOS_BUNDLE_ID=keke" >> .env
-          echo "balboa" >> google-service.json
-          echo "balboa" >> GoogleService-Info.plist 
 
       - name: Create google-services.json
         run: |
@@ -139,37 +137,29 @@ jobs:
             <key>DATABASE_URL</key>
             <string>https://example.firebaseio.com</string>
           </dict>
-          </plist>' >> ios/Runner/GoogleService-Info.plist
+          </plist>' > ios/Runner/GoogleService-Info.plist
+
       - name: Install dependencies
         run: flutter pub get
 
       - name: Update Podfile with Deployment Target
-        run: |
-          sed -i '' 's/platform :ios, .*/platform :ios, '16.0'/g' ios/Podfile
+        run: sed -i '' 's/platform :ios, .*/platform :ios, '12.0'/g' ios/Podfile
 
       - name: Add GoogleService-Info.plist to Xcode project
         run: |
-          plutil -convert xml1 ios/Runner.xcodeproj/project.pbxproj
-          echo -e "\n/* Begin PBXFileReference section */\n" >> ios/Runner.xcodeproj/project.pbxproj
-          echo -e "    1234567890 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = \"GoogleService-Info.plist\"; sourceTree = \"<group>\"; };\n" >> ios/Runner.xcodeproj/project.pbxproj
-          echo -e "\n/* End PBXFileReference section */\n" >> ios/Runner.xcodeproj/project.pbxproj
-          echo -e "\n/* Begin PBXGroup section */\n" >> ios/Runner.xcodeproj/project.pbxproj
-          echo -e "    0987654321 /* Runner */ = {\n" >> ios/Runner.xcodeproj/project.pbxproj
-          echo -e "        isa = PBXGroup;\n" >> ios/Runner.xcodeproj/project.pbxproj
-          echo -e "        children = (\n" >> ios/Runner.xcodeproj/project.pbxproj
-          echo -e "            1234567890 /* GoogleService-Info.plist */,\n" >> ios/Runner.xcodeproj/project.pbxproj
-          echo -e "        );\n" >> ios/Runner.xcodeproj/project.pbxproj
-          echo -e "        path = Runner;\n" >> ios/Runner.xcodeproj/project.pbxproj
-          echo -e "        sourceTree = \"<group>\";\n" >> ios/Runner.xcodeproj/project.pbxproj
-          echo -e "    };\n" >> ios/Runner.xcodeproj/project.pbxproj
-          echo -e "\n/* End PBXGroup section */\n" >> ios/Runner.xcodeproj/project.pbxproj
-      
+          ruby -e "require 'xcodeproj'; project = Xcodeproj::Project.open('ios/Runner.xcodeproj'); file_ref = project.new_file('ios/Runner/GoogleService-Info.plist'); main_group = project.main_group.find_subpath(File.join('Runner'), true); main_group.new_reference(file_ref); project.save"
 
       - name: Run build runner
         run: flutter pub run build_runner build
 
       - name: Analyze code
         run: flutter analyze
+
+      - name: Install CocoaPods
+        run: |
+          cd ios
+          pod install
+          cd ..
 
       - name: Build Android project
         run: flutter build apk --debug # Use `flutter build apk` for release build
