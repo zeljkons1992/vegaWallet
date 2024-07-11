@@ -32,14 +32,14 @@ jobs:
           echo "EXCEL_BASE_URL=https://example.com" >> .env
           echo "EXCEL_URL=/spreadsheet.xlsx" >> .env
           echo "EXCEL_FORMAT=xlsx" >> .env
-          echo "FIREBASE_API_KEY_ANDROID=kekeke" >> .env
-          echo "FIREBASE_APP_ID_ANDROID=kekeke" >> .env
+          echo "FIREBASE_API_KEY_ANDROID=dummy" >> .env
+          echo "FIREBASE_APP_ID_ANDROID=dummy" >> .env
           echo "FIREBASE_MESSAGING_SENDER_ID=123" >> .env
-          echo "FIREBASE_PROJECT_ID=keke" >> .env
-          echo "FIREBASE_STORAGE_BUCKET=keke" >> .env
-          echo "FIREBASE_API_KEY_IOS=kekeke" >> .env
-          echo "FIREBASE_APP_ID_IOS=keke" >> .env
-          echo "FIREBASE_IOS_BUNDLE_ID=keke" >> .env
+          echo "FIREBASE_PROJECT_ID=dummy" >> .env
+          echo "FIREBASE_STORAGE_BUCKET=dummy" >> .env
+          echo "FIREBASE_API_KEY_IOS=dummy" >> .env
+          echo "FIREBASE_APP_ID_IOS=dummy" >> .env
+          echo "FIREBASE_IOS_BUNDLE_ID=dummy" >> .env
 
       - name: Create google-services.json
         run: |
@@ -107,25 +107,27 @@ jobs:
           <plist version="1.0">
           <dict>
             <key>CLIENT_ID</key>
-            <string>123456789012-abcdefg123456.apps.googleusercontent.com</string>
+            <string>dummy-client-id.apps.googleusercontent.com</string>
             <key>REVERSED_CLIENT_ID</key>
-            <string>com.googleusercontent.apps.123456789012-abcdefg123456</string>
+            <string>com.googleusercontent.apps.dummy-client-id</string>
+            <key>ANDROID_CLIENT_ID</key>
+            <string>dummy-android-client-id.apps.googleusercontent.com</string>
             <key>API_KEY</key>
-            <string>kekeke</string>
+            <string>dummy-api-key</string>
             <key>GCM_SENDER_ID</key>
             <string>123456789012</string>
             <key>PLIST_VERSION</key>
             <string>1</string>
             <key>BUNDLE_ID</key>
-            <string>com.example</string>
+            <string>com.example.vegawallet</string>
             <key>PROJECT_ID</key>
-            <string>example</string>
+            <string>vega-wallet</string>
             <key>STORAGE_BUCKET</key>
-            <string>example.appspot.com</string>
+            <string>vega-wallet.appspot.com</string>
             <key>IS_ADS_ENABLED</key>
             <false/>
             <key>IS_ANALYTICS_ENABLED</key>
-            <true/>
+            <false/>
             <key>IS_APPINVITE_ENABLED</key>
             <true/>
             <key>IS_GCM_ENABLED</key>
@@ -133,9 +135,7 @@ jobs:
             <key>IS_SIGNIN_ENABLED</key>
             <true/>
             <key>GOOGLE_APP_ID</key>
-            <string>1:123456789012:ios:abc123def456</string>
-            <key>DATABASE_URL</key>
-            <string>https://example.firebaseio.com</string>
+            <string>1:1098052959751:ios:dummy-app-id</string>
           </dict>
           </plist>' > ios/Runner/GoogleService-Info.plist
 
