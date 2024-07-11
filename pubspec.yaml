@@ -83,6 +83,7 @@ flutter:
     - .env
     - assets/img/
     - assets/icons/
+    - assets/lottie/
 
 flutter_native_splash:
   color: "#C35535"
