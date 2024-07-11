@@ -143,18 +143,26 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Set up pod for firebase
-        run: |
-          pod repo update
-          pod deintegrate
-          flutter clean
-          flutter pub get
-          flutter pub run build_runner build
-          pod install
-
       - name: Update Podfile with Deployment Target
         run: |
           sed -i '' 's/platform :ios, .*/platform :ios, '16.0'/g' ios/Podfile
+
+      - name: Add GoogleService-Info.plist to Xcode project
+        run: |
+          plutil -convert xml1 ios/Runner.xcodeproj/project.pbxproj
+          echo -e "\n/* Begin PBXFileReference section */\n" >> ios/Runner.xcodeproj/project.pbxproj
+          echo -e "    1234567890 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = \"GoogleService-Info.plist\"; sourceTree = \"<group>\"; };\n" >> ios/Runner.xcodeproj/project.pbxproj
+          echo -e "\n/* End PBXFileReference section */\n" >> ios/Runner.xcodeproj/project.pbxproj
+          echo -e "\n/* Begin PBXGroup section */\n" >> ios/Runner.xcodeproj/project.pbxproj
+          echo -e "    0987654321 /* Runner */ = {\n" >> ios/Runner.xcodeproj/project.pbxproj
+          echo -e "        isa = PBXGroup;\n" >> ios/Runner.xcodeproj/project.pbxproj
+          echo -e "        children = (\n" >> ios/Runner.xcodeproj/project.pbxproj
+          echo -e "            1234567890 /* GoogleService-Info.plist */,\n" >> ios/Runner.xcodeproj/project.pbxproj
+          echo -e "        );\n" >> ios/Runner.xcodeproj/project.pbxproj
+          echo -e "        path = Runner;\n" >> ios/Runner.xcodeproj/project.pbxproj
+          echo -e "        sourceTree = \"<group>\";\n" >> ios/Runner.xcodeproj/project.pbxproj
+          echo -e "    };\n" >> ios/Runner.xcodeproj/project.pbxproj
+          echo -e "\n/* End PBXGroup section */\n" >> ios/Runner.xcodeproj/project.pbxproj
       
 
       - name: Run build runner
