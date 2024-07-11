@@ -143,6 +143,12 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Install CocoaPods dependencies
+        run: |
+          cd ios
+          pod install
+          cd ..
+
       - name: Run build runner
         run: flutter pub run build_runner build
 
