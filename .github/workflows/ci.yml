@@ -19,7 +19,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.2' # Specify the Flutter version
+          flutter-version: '3.22.2'
 
       - name: Set up Java 11
         uses: actions/setup-java@v3
@@ -143,25 +143,7 @@ jobs:
         run: flutter pub get
 
       - name: Update Podfile with Deployment Target
-        run: sed -i '' 's/platform :ios, .*/platform :ios, '16.0'/g' ios/Podfile
-
-      - name: Add GoogleService-Info.plist to Xcode project
-        run: |
-          echo 'require "xcodeproj"
-          project_path = "ios/Runner.xcodeproj"
-          project = Xcodeproj::Project.open(project_path)
-          file_ref = project.new_file("ios/Runner/GoogleService-Info.plist")
-          main_group = project.main_group.find_subpath(File.join("Runner"), true)
-          main_group.set_source_tree("SOURCE_ROOT")
-          main_group << file_ref
-          project.save' > add_plist.rb
-          ruby add_plist.rb
-
-      - name: Run build runner
-        run: flutter pub run build_runner build
-
-      - name: Analyze code
-        run: flutter analyze
+        run: sed -i '' 's/platform :ios, .*/platform :ios, '12.0'/g' ios/Podfile
 
       - name: Install CocoaPods
         run: |
@@ -169,8 +151,25 @@ jobs:
           pod install
           cd ..
 
+      - name: Add GoogleService-Info.plist to Xcode project
+        run: |
+          sudo gem install xcodeproj
+          ruby -e "require 'xcodeproj'; \
+                   project_path = 'ios/Runner.xcodeproj'; \
+                   project = Xcodeproj::Project.open(project_path); \
+                   file_ref = project.new_file('ios/Runner/GoogleService-Info.plist'); \
+                   group = project.groups.find { |g| g.display_name == 'Runner' }; \
+                   group.new_file(file_ref.real_path); \
+                   project.save;"
+
+      - name: Run build runner
+        run: flutter pub run build_runner build
+
+      - name: Analyze code
+        run: flutter analyze
+
       - name: Build Android project
-        run: flutter build apk --debug # Use `flutter build apk` for release build
+        run: flutter build apk --debug
 
       - name: Build iOS project
         run: flutter build ios --no-codesign
