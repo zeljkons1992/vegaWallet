@@ -22,6 +22,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onUserLogin(LoginWithGoogle event, Emitter<AuthState> emit) async{
+    emit(AuthVegaStartAuthorization());
     final result = await _loginUserUseCase();
     if(result.status == DataStateStatus.success){
       emit(AuthLoginWithGoogleSuccess());

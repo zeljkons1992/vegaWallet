@@ -78,7 +78,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-enum TabItem { home, stores, maps }
+enum TabItem { home, stores, maps, profile}
 
 class MainScreen extends StatefulWidget {
   final Widget child;
@@ -110,6 +110,9 @@ class MainScreenState extends State<MainScreen> {
         break;
       case TabItem.maps:
         context.go('/maps', extra: isRightToLeft);
+        break;
+      case TabItem.profile:
+        context.go('/profile', extra: isRightToLeft);
         break;
     }
   }

@@ -59,6 +59,11 @@ class MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
             selectedIcon: const Icon(Icons.map),
             label: localization.mapsTitle,
           ),
+          NavigationDestination(
+            icon: const Icon(Icons.account_circle_outlined),
+            selectedIcon: const Icon(Icons.account_circle_rounded),
+            label: localization.profileTitle,
+          ),
         ],
       ),
     );

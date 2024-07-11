@@ -36,6 +36,7 @@ void main() {
     },
     act: (bloc) => bloc.add(LoginWithGoogle()),
     expect: () => [
+      AuthVegaStartAuthorization(),
       AuthLoginWithGoogleSuccess(),
     ],
   );
@@ -48,6 +49,7 @@ void main() {
     },
     act: (bloc) => bloc.add(LoginWithGoogle()),
     expect: () => [
+      AuthVegaStartAuthorization(),
       AuthLoginWithGoogleError(),
     ],
   );

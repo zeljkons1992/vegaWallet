@@ -13,6 +13,16 @@ class AppTextStyles {
     fontWeight: FontWeight.w500,
     color: const Color(-13157824));
 
+  static final TextStyle headline3 = GoogleFonts.inter(
+      fontSize: 16,
+      fontWeight: FontWeight.w600,
+      color: const Color(0xff131313));
+
+  static final TextStyle headline4 = GoogleFonts.inter(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    color: const Color(-13157824));
+
   static final TextStyle bodyText1 = GoogleFonts.inter(
     fontSize: 16,
     fontWeight: FontWeight.normal,
