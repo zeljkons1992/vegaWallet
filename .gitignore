@@ -15,6 +15,7 @@ lib/injection.config.dart
 *.lock
 *.xcconfig
 *.env
+*/GoogleService-Info.plist
 
 # IntelliJ related
 *.iml
