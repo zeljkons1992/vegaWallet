@@ -38,60 +38,64 @@ class ProfileScreen extends StatelessWidget {
             builder: (context, state) {
               return BlocBuilder<ProfileBloc, ProfileState>(
                 builder: (context, state) {
-                  if (state is ProfileInitial) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state is ProfileInformationSuccess) {
-                    final userProfileInformation = state.userProfileInformation;
-                    return SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const SizedBox(height: 40),
-                          CircleAvatar(
-                            radius: 80,
-                            backgroundImage: NetworkImage(
-                                userProfileInformation.profileImage),
-                          ),
-                          Text(userProfileInformation.nameAndSurname,
-                              style: AppTextStyles.headline1),
-                          const SizedBox(height: 4),
-                          Text(
-                              "${localization.joined} ${state.userProfileInformation.dateTime}",
-                              style: AppTextStyles.bodyText1),
-                          profileGeneralSection(state.userProfileInformation,context),
-                          const ProfileNotificationSection(),
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: SizedBox(
-                              width: double.infinity,
-                              height: 50,
-                              child: Builder(builder: (context) {
-                                return ElevatedButton(
-                                  onPressed: () {
-                                    BlocProvider.of<AuthBloc>(context)
-                                        .add(LogoutUser());
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Theme.of(context).primaryColor,
-                                  ),
-                                  child:  Text(localization.logout,
-                                      style: const TextStyle(
-                                          fontSize: 18, color: Colors.white)),
-                                );
-                              }),
+                  switch (state) {
+                    case ProfileInitial _:
+                      return const Center(child: CircularProgressIndicator());
+                    case ProfileInformationSuccess _:
+                      final userProfileInformation = state.userProfileInformation;
+                      return SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 40),
+                            CircleAvatar(
+                              radius: 80,
+                              backgroundImage: NetworkImage(
+                                  userProfileInformation.profileImage),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  } else if (state is ProfileInformationError) {
-                    return  Center(
-                        child: Text(localization.failedToLoadProfileInfo));
-                  } else {
-                    return const Center(child: Text('Unknown state'));
+                            Text(userProfileInformation.nameAndSurname,
+                                style: AppTextStyles.headline1),
+                            const SizedBox(height: 4),
+                            Text(
+                                "${localization.joined} ${state
+                                    .userProfileInformation.dateTime}",
+                                style: AppTextStyles.bodyText1),
+                            profileGeneralSection(
+                                state.userProfileInformation, context),
+                            const ProfileNotificationSection(),
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: SizedBox(
+                                width: double.infinity,
+                                height: 50,
+                                child: Builder(builder: (context) {
+                                  return ElevatedButton(
+                                    onPressed: () {
+                                      BlocProvider.of<AuthBloc>(context)
+                                          .add(LogoutUser());
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                      Theme
+                                          .of(context)
+                                          .primaryColor,
+                                    ),
+                                    child: Text(localization.logout,
+                                        style: const TextStyle(
+                                            fontSize: 18, color: Colors.white)),
+                                  );
+                                }),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    case ProfileInformationError _:
+                      return Text(localization.error);
+                    default:
+                      return const SizedBox();
                   }
-                },
+                }
               );
             },
           ),

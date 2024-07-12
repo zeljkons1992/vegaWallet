@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
+import 'package:vegawallet/core/constants/text_const.dart';
 import 'package:vegawallet/core/data_state/data_state.dart';
 import 'package:vegawallet/features/profile/domain/entites/user_profile_information.dart';
 import 'package:vegawallet/features/profile/domain/repository/profile_repository.dart';
@@ -28,7 +29,7 @@ class ProfileRepositoryImpl implements ProfileRepository{
         uid: user.uid,
         nameAndSurname: user.displayName!,
         email: user.email!,
-        phoneNumber: user.phoneNumber ?? "No number",
+        phoneNumber: user.phoneNumber ?? TextConst.noNumber,
         profileImage: user.photoURL!,
           dateTime: formattedDate,
           isEpsilon: true

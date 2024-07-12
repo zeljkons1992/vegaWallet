@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../constants/text_const.dart';
+
 
 String getPhoneNumber(String phoneNumber,BuildContext context) {
-  if (phoneNumber=="No number") {
+  if (phoneNumber==TextConst.noNumber) {
     final localization = AppLocalizations.of(context)!;
-    return localization.localeName == 'sr' ? 'Nema Broja' : 'No Number';
+    return localization.noNumber;
   }
   return phoneNumber;
 }
