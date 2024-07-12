@@ -12,10 +12,11 @@ class SelectedStoreDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.all(PADDING_VALUE_LARGE),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onSecondary,
+        color: colorScheme.onSecondary,
         borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_SMALL),
       ),
       child: Row(
@@ -25,7 +26,7 @@ class SelectedStoreDisplay extends StatelessWidget {
             children: [
               Icon(
                 categoryIcons[store.category] ?? Icons.category,
-                color: Colors.black,
+                color: colorScheme.onSurface,
                 size: SELECTED_STORE_CATEGORY_ICON_SIZE,
               ),
               const SizedBox(width: SIZED_BOX_LARGE),
@@ -35,7 +36,7 @@ class SelectedStoreDisplay extends StatelessWidget {
           if (store.parsedDiscount != null)
             Text(
               "-${store.parsedDiscount}%",
-              style: AppTextStyles.discountRed,
+              style: AppTextStyles(context).discountRed,
             )
         ],
       ),

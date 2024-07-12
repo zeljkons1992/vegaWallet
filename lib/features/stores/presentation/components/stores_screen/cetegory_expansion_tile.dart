@@ -35,10 +35,12 @@ class CategoryExpansionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.onSecondary,
         borderRadius: BorderRadius.circular(15.0),
       ),
       child: Theme(
@@ -48,12 +50,14 @@ class CategoryExpansionTile extends StatelessWidget {
         child: ExpansionTile(
           leading: Icon(
             categoryIcons[category] ?? Icons.category,
+            color: colorScheme.onSurface,
           ),
           title: Text(
             _mapCategoryToLocalizationString(category, context),
-            style: const TextStyle(
+            style:  TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
+              color: colorScheme.onSurface
             ),
           ),
           initiallyExpanded: isExpanded,

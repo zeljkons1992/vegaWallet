@@ -23,7 +23,7 @@ Widget verificationSuccess(BuildContext context) {
             const SizedBox(height: 16.0),
             Text(
               localization.googleVerSuc,
-              style: AppTextStyles.headline2,
+              style: AppTextStyles(context).headline2,
               textAlign: TextAlign.center,
             ),
           ],

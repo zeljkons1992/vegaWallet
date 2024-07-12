@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
 import '../../../features/stores/presentation/bloc/store_bloc/store_bloc.dart';
 import '../../constants/icon_const.dart';
@@ -20,6 +21,7 @@ class StoreSearchBar extends StatefulWidget {
 class StoreSearchBarState extends State<StoreSearchBar> {
   late SearchController _controller;
   late StreamController<List<Store>> _searchStreamController;
+
 
   @override
   void initState() {
@@ -59,6 +61,7 @@ class StoreSearchBarState extends State<StoreSearchBar> {
 
   @override
   Widget build(BuildContext context) {
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
     final localization = AppLocalizations.of(context)!;
     return Column(
       children: [
@@ -66,6 +69,7 @@ class StoreSearchBarState extends State<StoreSearchBar> {
           margin: const EdgeInsets.only(top: 20.0),
           child: SearchAnchor.bar(
             barHintText: localization.searchBarHint,
+            barHintStyle: WidgetStatePropertyAll(AppTextStyles(context).searchBarText),
             onChanged: (value) {
               _onSearchChanged(value);
             },
@@ -73,7 +77,8 @@ class StoreSearchBarState extends State<StoreSearchBar> {
               return _buildSuggestions();
             },
             searchController: _controller,
-            viewBackgroundColor: Colors.white,
+            viewBackgroundColor: colorScheme.surface,
+            viewHeaderHintStyle: AppTextStyles(context).searchBarText,
             viewLeading: IconButton(
               icon: const Icon(Icons.arrow_back_outlined),
               onPressed: () {
@@ -85,7 +90,7 @@ class StoreSearchBarState extends State<StoreSearchBar> {
                 }
               },
             ),
-            barBackgroundColor: WidgetStateProperty.all<Color>(Colors.white),
+            barBackgroundColor: WidgetStateProperty.all<Color>(colorScheme.onPrimary),
             barElevation: WidgetStateProperty.all(0),
           ),
         ),
@@ -108,7 +113,7 @@ class StoreSearchBarState extends State<StoreSearchBar> {
           .map(
             (store) => ListTile(
           leading: Icon(categoryIcons[store.category] ?? Icons.category),
-          title: Text(store.name),
+          title: Text(store.name, style: AppTextStyles(context).searchBarText,),
           onTap: () {
             widget.onStoreSelected(store);
             setState(() {
