@@ -27,15 +27,15 @@ class MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
         indicatorColor: colorScheme.primary,
         labelTextStyle: WidgetStateProperty.all(
           TextStyle(
-            color: Color(colorScheme.onSecondaryContainer.value),
+            color: Color(colorScheme.onSurface.value),
             fontWeight: FontWeight.bold,
           ),
         ),
         iconTheme: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return IconThemeData(color: colorScheme.onPrimary);
+            return IconThemeData(color: colorScheme.onTertiaryFixed);
           }
-          return  IconThemeData(color:colorScheme.primary );
+          return  IconThemeData(color: colorScheme.tertiaryFixed);
         }),
       ),
       child: NavigationBar(

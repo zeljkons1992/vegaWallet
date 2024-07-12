@@ -14,10 +14,11 @@ class StoreListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.only(bottom: 4.0),
       child: Material(
-        color: Colors.white,
+        color: colorScheme.onSecondary,
         child: InkWell(
           onTap: () {
             context.go('/stores/store_details', extra: store);
@@ -37,7 +38,7 @@ class StoreListTile extends StatelessWidget {
                   ),
                   child: Icon(
                     Icons.location_city_rounded,
-                    color: MaterialTheme.lightScheme().inversePrimary,
+                    color: MaterialTheme.lightScheme().primary,
                   ),
                 ),
                 const SizedBox(width: 8),
