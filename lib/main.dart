@@ -68,9 +68,7 @@ class MyApp extends StatelessWidget {
                   Locale('sr'),
                 ],
                 title: 'Flutter Demo',
-                theme: theme.light(),
-                darkTheme: theme.dark(),
-                themeMode: ThemeMode.system,
+                theme: brightness == Brightness.light ? theme.light() : theme.dark(),
                 routerConfig: router,
                 debugShowCheckedModeBanner: false,
               );

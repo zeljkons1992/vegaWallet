@@ -37,7 +37,6 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final localization = AppLocalizations.of(context)!;
     final uniqueConditions = _uniqueElements(widget.store.conditions);
 
@@ -53,7 +52,7 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
                     flex: 2,
                     child: Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: colorScheme.onSurface),
+                        border: Border.all(color: Theme.of(context).dividerColor),
                         borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
                       ),
                       child: Column(
@@ -71,8 +70,6 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
                                       FilteringTextInputFormatter.digitsOnly
                                     ],
                                     decoration: InputDecoration(
-                                      helperStyle: AppTextStyles(context).searchBarText,
-                                      labelStyle: AppTextStyles(context).searchBarText,
                                       labelText: localization.discountCalculatorHint,
                                       border: InputBorder.none,
                                     ),
@@ -82,8 +79,7 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
                                   ),
                                 ),
                                 IconButton(
-                                  icon:  const Icon(Icons.clear),
-                                  style: ButtonStyle(iconColor: WidgetStatePropertyAll(colorScheme.onSurface)),
+                                  icon: const Icon(Icons.clear),
                                   onPressed: () {
                                     _priceController.clear();
                                     setState(() {
@@ -106,13 +102,13 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
                       children: [
                         Text(
                           localization.discountCalculatorResultLabel,
-                          style: AppTextStyles(context).titleBold,
+                          style: AppTextStyles.titleBold,
                         ),
                         Text(
                           _discountedPrice != null
                               ? '${_discountedPrice!.toStringAsFixed(2)} rsd'
                               : localization.discountCalculatorInvalidResult,
-                          style: AppTextStyles(context).headline1,
+                          style: AppTextStyles.headline1,
                         ),
                       ],
                     ),
@@ -126,14 +122,8 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
               TextField(
                 decoration: InputDecoration(
                   labelText: localization.discountCalculatorConditionsTitle,
-                  labelStyle: AppTextStyles(context).searchBarText,
-                  enabledBorder: OutlineInputBorder(
+                  border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
-                    borderSide: BorderSide(color: colorScheme.onSurface),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
-                    borderSide: BorderSide(color: colorScheme.onSurface),
                   ),
                 ),
                 controller: TextEditingController(

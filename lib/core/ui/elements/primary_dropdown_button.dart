@@ -128,15 +128,13 @@ class PrimaryDropdownButtonState extends State<PrimaryDropdownButton> {
 
   @override
   Widget build(BuildContext context) {
-    ColorScheme colorScheme = Theme.of(context).colorScheme;
-
     return Expanded(
       child: InkWell(
         onTap: () => _showDropdownMenu(context),
         child: Container(
           height: 50,
           decoration: BoxDecoration(
-            color: colorScheme.primary,
+            color: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(10.0),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
