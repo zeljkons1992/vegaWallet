@@ -58,7 +58,7 @@ class ProfileScreen extends StatelessWidget {
                           Text(
                               "${localization.joined} ${state.userProfileInformation.dateTime}",
                               style: AppTextStyles.bodyText1),
-                          profileGeneralSection(state.userProfileInformation),
+                          profileGeneralSection(state.userProfileInformation,context),
                           const ProfileNotificationSection(),
                           Padding(
                             padding: const EdgeInsets.all(16.0),

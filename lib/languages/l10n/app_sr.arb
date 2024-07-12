@@ -27,7 +27,12 @@
     "profileTitle": "Profil",
     "joined": "Pridužio se",
     "logout": "Odjavi se",
-    "failedToLoadProfileInfo":"Ne uspešno učitani korisnički podaci"
+    "failedToLoadProfileInfo":"Ne uspešno učitani korisnički podaci",
+    "notification": "Obaveštenja",
+    "general": "Opšte",
+    "feedback": "Povratne informacije",
+    "pushNotifications": "Slanje Obaveštenja",
+    "enableLocation":"Dozvoli Lokaciju"
 
 
 

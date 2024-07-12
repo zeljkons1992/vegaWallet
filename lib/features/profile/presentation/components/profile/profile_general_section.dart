@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
+import 'package:vegawallet/core/utils/get_phone_number_localization.dart';
 import 'package:vegawallet/features/profile/domain/entites/user_profile_information.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-Widget profileGeneralSection(UserProfileInformation user) {
+
+Widget profileGeneralSection(UserProfileInformation user,BuildContext context) {
+  final localization = AppLocalizations.of(context)!;
+
   return Padding(
     padding: const EdgeInsets.all(16),
     child: Container(
@@ -13,7 +18,7 @@ Widget profileGeneralSection(UserProfileInformation user) {
       child:  Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("General",style: AppTextStyles.headline4,),
+          Text(localization.general,style: AppTextStyles.headline4,),
           const SizedBox(height: 10,),
           Padding(
             padding: const EdgeInsets.symmetric(vertical:12),
@@ -49,7 +54,7 @@ Widget profileGeneralSection(UserProfileInformation user) {
               children: [
                 const Icon(Icons.phone_android_outlined),
                 const SizedBox(width: 8,),
-                Text(user.phoneNumber,style: AppTextStyles.headline3),
+                Text(getPhoneNumber(user.phoneNumber,context),style: AppTextStyles.headline3),
               ],
             ),
           ),
@@ -63,7 +68,7 @@ Widget profileGeneralSection(UserProfileInformation user) {
               children: [
                 const Icon(Icons.messenger_outline),
                 const SizedBox(width: 8,),
-                Text("Feedback",style: AppTextStyles.headline3,),
+                Text(localization.feedback,style: AppTextStyles.headline3,),
               ],
             ),
           )

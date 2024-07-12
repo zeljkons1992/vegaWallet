@@ -27,7 +27,12 @@
     "profileTitle": "Profile",
     "joined": "Joined",
     "logout": "Logout",
-    "failedToLoadProfileInfo":"Failed to load profile information"
+    "failedToLoadProfileInfo":"Failed to load profile information",
+    "notification": "Notification",
+    "general": "General",
+    "feedback": "Feedback",
+    "pushNotifications": "Push notifications",
+    "enableLocation":"Enable Location"
 
 
 }
