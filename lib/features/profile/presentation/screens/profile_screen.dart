@@ -7,12 +7,16 @@ import 'package:vegawallet/features/profile/presentation/bloc/profile_bloc.dart'
 import 'package:vegawallet/features/profile/presentation/components/profile/profile_notification_section.dart';
 import '../../../../core/di/injection.dart';
 import '../components/profile/profile_general_section.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -52,9 +56,8 @@ class ProfileScreen extends StatelessWidget {
                               style: AppTextStyles.headline1),
                           const SizedBox(height: 4),
                           Text(
-                              "Joined ${state.userProfileInformation.dateTime}",
+                              "${localization.joined} ${state.userProfileInformation.dateTime}",
                               style: AppTextStyles.bodyText1),
-                          // Consider dynamic data if available
                           profileGeneralSection(state.userProfileInformation),
                           const ProfileNotificationSection(),
                           Padding(
@@ -72,8 +75,8 @@ class ProfileScreen extends StatelessWidget {
                                     backgroundColor:
                                         Theme.of(context).primaryColor,
                                   ),
-                                  child: const Text("Logout",
-                                      style: TextStyle(
+                                  child:  Text(localization.logout,
+                                      style: const TextStyle(
                                           fontSize: 18, color: Colors.white)),
                                 );
                               }),
@@ -83,8 +86,8 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     );
                   } else if (state is ProfileInformationError) {
-                    return const Center(
-                        child: Text('Failed to load profile information'));
+                    return  Center(
+                        child: Text(localization.failedToLoadProfileInfo));
                   } else {
                     return const Center(child: Text('Unknown state'));
                   }

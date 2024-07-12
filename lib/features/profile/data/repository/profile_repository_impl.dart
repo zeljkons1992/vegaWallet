@@ -7,6 +7,7 @@ import 'package:vegawallet/features/profile/domain/repository/profile_repository
 
 import '../../../../core/services/auth_services.dart';
 
+
 @Injectable(as: ProfileRepository)
 class ProfileRepositoryImpl implements ProfileRepository{
 
@@ -24,11 +25,13 @@ class ProfileRepositoryImpl implements ProfileRepository{
       final String formattedDate = formatter.format(user.metadata.creationTime!);
 
       UserProfileInformation userProfileInformation = UserProfileInformation(
+        uid: user.uid,
         nameAndSurname: user.displayName!,
         email: user.email!,
         phoneNumber: user.phoneNumber ?? "No number",
         profileImage: user.photoURL!,
-          dateTime: formattedDate
+          dateTime: formattedDate,
+          isEpsilon: true
       );
       return DataState.success(userProfileInformation);
     } catch (e) {
