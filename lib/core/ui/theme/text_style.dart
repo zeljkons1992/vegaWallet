@@ -2,20 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTextStyles {
-  final BuildContext context;
-
-  AppTextStyles(this.context);
-
-  TextStyle get headline1 => GoogleFonts.inter(
+  static final TextStyle headline1 = GoogleFonts.inter(
     fontSize: 24,
     fontWeight: FontWeight.bold,
-    color: Theme.of(context).colorScheme.onSurface,
+    color: const Color(-13157824),
   );
 
-  TextStyle get headline2 => GoogleFonts.inter(
+  static final TextStyle headline2 = GoogleFonts.inter(
     fontSize: 16,
     fontWeight: FontWeight.w500,
-    color: Theme.of(context).colorScheme.onSurface,
+    color: const Color(-13157824));
+
+  static final TextStyle bodyText1 = GoogleFonts.inter(
+    fontSize: 16,
+    fontWeight: FontWeight.normal,
+    color: Colors.black,
   );
 
   static final TextStyle headline3 = GoogleFonts.inter(
@@ -24,55 +25,40 @@ class AppTextStyles {
       color: const Color(0xff131313));
 
   static final TextStyle headline4 = GoogleFonts.inter(
-    fontSize: 20,
-    fontWeight: FontWeight.bold,
-    color: const Color(-13157824));
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      color: const Color(-13157824));
 
-  static final TextStyle bodyText1 = GoogleFonts.inter(
-  TextStyle get bodyText1 => GoogleFonts.inter(
-    fontSize: 16,
-    fontWeight: FontWeight.normal,
-    color: Theme.of(context).colorScheme.surface,
-  );
-
-  TextStyle get bodyText2 => GoogleFonts.inter(
+  static final TextStyle bodyText2 = GoogleFonts.inter(
     fontSize: 14,
     fontWeight: FontWeight.normal,
-    color: Theme.of(context).colorScheme.surface,
+    color: Colors.black,
   );
 
-  TextStyle get cardNameStyle => GoogleFonts.inter(
+  static final TextStyle cardNameStyle = GoogleFonts.inter(
     fontSize: 24,
     fontWeight: FontWeight.w300,
-    color: Colors.white,
+    color: Colors.white
   );
-
-  TextStyle get cardLabelTitle => GoogleFonts.inter(
-    fontSize: 12,
-    fontWeight: FontWeight.w500,
-    color: Theme.of(context).colorScheme.onSurface,
+  static final TextStyle cardLabelTitle = GoogleFonts.inter(
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+      color: const Color(-9868951)
   );
-
-  TextStyle get cardLabelDigital => GoogleFonts.robotoMono(
-    fontSize: 18,
-    fontWeight: FontWeight.w600,
-    color: Colors.white,
+  static final TextStyle cardLabelDigital = GoogleFonts.robotoMono(
+      fontSize: 18,
+      fontWeight: FontWeight.w600,
+      color:  Colors.white
   );
-
-  TextStyle get titleBold => GoogleFonts.inter(
-    fontSize: 12,
-    fontWeight: FontWeight.bold,
-    color: Theme.of(context).colorScheme.onSurface,
+  static final TextStyle titleBold = GoogleFonts.inter(
+      fontSize: 12,
+      fontWeight: FontWeight.bold,
+      color: const Color(0xff373a40)
   );
-
-  TextStyle get discountRed => GoogleFonts.inter(
+  static final TextStyle discountRed = GoogleFonts.inter(
     fontSize: 14,
     fontWeight: FontWeight.bold,
-    color: Theme.of(context).colorScheme.error,
+    color: const Color(0xffb3112b),
   );
 
-  TextStyle get searchBarText => GoogleFonts.inter(
-    fontSize: 18,
-    color: Theme.of(context).colorScheme.onSurface
-  );
 }

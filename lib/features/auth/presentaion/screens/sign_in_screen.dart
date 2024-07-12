@@ -72,7 +72,7 @@ class SignInScreen extends StatelessWidget {
                               const SizedBox(width: 8),
                               Text(
                                 'Login with Google',
-                                style: AppTextStyles(context).headline2,
+                                style: AppTextStyles.headline2,
                               ),
                             ],
                           ),

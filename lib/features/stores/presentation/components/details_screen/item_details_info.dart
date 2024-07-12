@@ -12,14 +12,14 @@ Widget itemDetailsInfo(Store store, BuildContext context) {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionText(localization.storeDetailsNameLabel, AppTextStyles(context).titleBold.copyWith(fontSize: 14)),
-        _buildSectionText(store.name, AppTextStyles(context).titleBold.copyWith(fontSize: 18.0)),
+        _buildSectionText(localization.storeDetailsNameLabel, AppTextStyles.titleBold.copyWith(fontSize: 14)),
+        _buildSectionText(store.name, AppTextStyles.titleBold.copyWith(fontSize: 18.0)),
         _buildDivider(context),
-        _buildSectionText(localization.discountsTitle, AppTextStyles(context).titleBold.copyWith(fontSize: 14)),
-        _buildSectionText(_formatList(store.discounts), AppTextStyles(context).headline2.copyWith(fontSize: 14.0)),
+        _buildSectionText(localization.discountsTitle, AppTextStyles.titleBold.copyWith(fontSize: 14)),
+        _buildSectionText(_formatList(store.discounts), AppTextStyles.headline2.copyWith(fontSize: 14.0)),
         _buildDivider(context),
-        _buildSectionText(localization.discountCalculatorConditionsTitle, AppTextStyles(context).titleBold.copyWith(fontSize: 14)),
-        _buildSectionText(_formatList(store.conditions), AppTextStyles(context).headline2.copyWith(fontSize: 14.0)),
+        _buildSectionText(localization.discountCalculatorConditionsTitle, AppTextStyles.titleBold.copyWith(fontSize: 14)),
+        _buildSectionText(_formatList(store.conditions), AppTextStyles.headline2.copyWith(fontSize: 14.0)),
       ],
     ),
   );
@@ -29,7 +29,7 @@ Widget itemDetailsInfo(Store store, BuildContext context) {
 Widget _buildSectionText(String content,TextStyle appTextStyle) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 4.0),
-    child: Text(content, style: appTextStyle,),
+    child: Text(content,style: appTextStyle,),
   );
 }
 

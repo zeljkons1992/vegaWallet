@@ -21,7 +21,7 @@ Widget verificationUnsuccessful(BuildContext context) {
           const SizedBox(height: 16.0),
           Text(
             localization.googleVerUns,
-            style: AppTextStyles(context).bodyText1,
+            style: AppTextStyles.bodyText1,
             textAlign: TextAlign.center,
           ),
         ],

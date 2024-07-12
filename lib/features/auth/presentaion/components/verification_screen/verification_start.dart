@@ -38,7 +38,7 @@ class VerificationStartState extends State<VerificationStart> {
                     highlightColor: Colors.white,
                     child: Text(
                       localization.googleStartVer,
-                      style: AppTextStyles(context).bodyText1,
+                      style: AppTextStyles.bodyText1,
                     ),
                   );
                 } else {

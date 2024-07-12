@@ -36,8 +36,6 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-
     return BlocProvider(
       create: (context) => getIt<LocationBloc>()..add(GetLocation()),
       child: Scaffold(
@@ -120,7 +118,7 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                   children: [
                     Container(
                       height: 70,
-                      color: colorScheme.surfaceBright,
+                      color: Colors.white,
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Row(
                         children: [
@@ -153,7 +151,7 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                             width: 50,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: colorScheme.primary,
+                              color: Theme.of(context).primaryColor,
                             ),
                             child: Builder(builder: (context) {
                               return IconButton(
