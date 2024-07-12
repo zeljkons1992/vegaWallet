@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../../../core/constants/size_const.dart';
 
 class DiscountInfo extends StatelessWidget {
   final Store store;
@@ -16,6 +19,7 @@ class DiscountInfo extends StatelessWidget {
     final uniqueDiscounts = _uniqueElements(store.discounts);
     final uniqueConditions = _uniqueElements(store.conditions);
     final localization = AppLocalizations.of(context)!;
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return Expanded(
       child: SingleChildScrollView(
@@ -26,8 +30,14 @@ class DiscountInfo extends StatelessWidget {
             TextField(
               decoration: InputDecoration(
                 labelText: localization.discountsTitle,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
+                labelStyle: AppTextStyles(context).searchBarText,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
+                  borderSide: BorderSide(color: colorScheme.onSurface),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
+                  borderSide: BorderSide(color: colorScheme.onSurface),
                 ),
               ),
               controller: TextEditingController(
@@ -40,8 +50,14 @@ class DiscountInfo extends StatelessWidget {
             TextField(
               decoration: InputDecoration(
                 labelText: localization.discountCalculatorConditionsTitle,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
+                labelStyle: AppTextStyles(context).searchBarText,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
+                  borderSide: BorderSide(color: colorScheme.onSurface),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
+                  borderSide: BorderSide(color: colorScheme.onSurface),
                 ),
               ),
               controller: TextEditingController(

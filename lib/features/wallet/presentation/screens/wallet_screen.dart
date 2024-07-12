@@ -38,6 +38,8 @@ class _WalletScreenState extends State<WalletScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     final localization = AppLocalizations.of(context)!;
     return MultiBlocProvider(
       providers: [
@@ -45,6 +47,7 @@ class _WalletScreenState extends State<WalletScreen> {
         BlocProvider(create: (context) => storeBloc),
       ],
       child: Scaffold(
+        backgroundColor: colorScheme.surface,
         resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Padding(
@@ -83,7 +86,7 @@ class _WalletScreenState extends State<WalletScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(localization.walletTitle, style: AppTextStyles.headline1),
+                Text(localization.walletTitle, style: AppTextStyles(context).headline1,),
                 const LanguageSwitcher(),
               ],
             ),
@@ -101,7 +104,7 @@ class _WalletScreenState extends State<WalletScreen> {
             padding: const EdgeInsets.only(top: PADDING_VALUE_LARGE, left: PADDING_VALUE_SMALL),
             child: Text(
               localization.discountsTitle,
-              style: AppTextStyles.headline1,
+              style: AppTextStyles(context).headline1,
             ),
           ),
           StoreSearchBar(
@@ -150,7 +153,7 @@ class _WalletScreenState extends State<WalletScreen> {
           left: 16,
           child: Text(
             cardInfo.name,
-            style: AppTextStyles.cardNameStyle,
+            style: AppTextStyles(context).cardNameStyle,
           ),
         ),
         Positioned(
@@ -165,12 +168,12 @@ class _WalletScreenState extends State<WalletScreen> {
                 children: [
                   Text(
                     localization.cardInformationExpiry,
-                    style: AppTextStyles.cardLabelTitle,
+                    style: AppTextStyles(context).cardLabelTitle,
                   ),
                   const SizedBox(width: 10),
                   Text(
                     "12/27",
-                    style: AppTextStyles.cardLabelDigital,
+                    style: AppTextStyles(context).cardLabelDigital,
                   ),
                 ],
               ),
@@ -180,12 +183,12 @@ class _WalletScreenState extends State<WalletScreen> {
                 children: [
                   Text(
                     localization.cardInformationNumber,
-                    style: AppTextStyles.cardLabelTitle,
+                    style: AppTextStyles(context).cardLabelTitle,
                   ),
                   const SizedBox(width: 10),
                   Text(
                     "234 178",
-                    style: AppTextStyles.cardLabelDigital,
+                    style: AppTextStyles(context).cardLabelDigital,
                   ),
                 ],
               ),

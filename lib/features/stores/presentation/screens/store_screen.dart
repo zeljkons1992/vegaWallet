@@ -29,7 +29,7 @@ class StoresScreen extends StatelessWidget {
                   children: [
                     Text(
                       localization.storesTitle,
-                      style: AppTextStyles.headline1,
+                      style: AppTextStyles(context).headline1,
                     ),
                     const LanguageSwitcher(),
                   ],
