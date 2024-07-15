@@ -61,6 +61,7 @@ class PrimaryDropdownButtonState extends State<PrimaryDropdownButton> {
 
     final selectedItem = await showMenu<AddressCity>(
       context: context,
+      surfaceTintColor: Theme.of(context).colorScheme.onSurface,
       position: position,
       items: _items.map((AddressCity item) {
         return PopupMenuItem<AddressCity>(
@@ -81,7 +82,7 @@ class PrimaryDropdownButtonState extends State<PrimaryDropdownButton> {
                     decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      color: MaterialTheme.lightScheme().primaryContainer,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                     child: Icon(
                       Icons.location_city_rounded,
@@ -95,12 +96,12 @@ class PrimaryDropdownButtonState extends State<PrimaryDropdownButton> {
                       children: [
                         Text(
                           item.city,
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold,),
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
                           item.address,
-                          style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                          style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.onSurface,),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ],
@@ -112,7 +113,7 @@ class PrimaryDropdownButtonState extends State<PrimaryDropdownButton> {
           ),
         );
       }).toList(),
-      color: Colors.white,
+      color: Theme.of(context).colorScheme.surface,
       elevation: 0,
     );
 
