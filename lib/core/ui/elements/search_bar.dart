@@ -52,11 +52,7 @@ class StoreSearchBarState extends State<StoreSearchBar> {
   }
 
   void _onSearchChanged(String value) {
-    if (value.isNotEmpty) {
       BlocProvider.of<StoreBloc>(context).add(SearchStores(value));
-    } else {
-      _searchStreamController.add([]);
-    }
   }
 
   @override
@@ -83,6 +79,7 @@ class StoreSearchBarState extends State<StoreSearchBar> {
               icon: const Icon(Icons.arrow_back_outlined),
               onPressed: () {
                 _controller.closeView("");
+                _onSearchChanged("");
                 FocusScopeNode currentFocus = FocusScope.of(context);
                 if (!currentFocus.hasPrimaryFocus &&
                     currentFocus.focusedChild != null) {
@@ -95,8 +92,9 @@ class StoreSearchBarState extends State<StoreSearchBar> {
           ),
         ),
         BlocListener<StoreBloc, StoreState>(
+          listenWhen: (previous, current) => true,
           listener: (context, state) {
-            if (state is StoreLoaded) {
+            if (state is StoreSearchDone) {
               _searchStreamController.add(state.stores);
             }
           },

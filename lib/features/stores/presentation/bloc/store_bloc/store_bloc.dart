@@ -36,7 +36,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   Future<void> _onSearchStores(SearchStores event, Emitter<StoreState> emit) async {
     final dataState = await _searchStoresUseCase(params: event.query);
     if (dataState.status == DataStateStatus.success) {
-      emit(StoreLoaded(stores: dataState.data!));
+      emit(StoreSearchDone(dataState.data!));
     } else {
       emit(StoreError(message: dataState.message.toString()));
     }
