@@ -4,6 +4,7 @@ import 'package:vegawallet/features/auth/presentaion/components/verification_scr
 import 'package:vegawallet/features/auth/presentaion/screens/error_auth_screen.dart';
 import 'package:vegawallet/features/auth/presentaion/screens/verification_screen.dart';
 import 'package:vegawallet/features/maps/presentaion/screens/map_screen.dart';
+import 'package:vegawallet/features/profile/presentation/screens/profile_screen.dart';
 import 'package:vegawallet/features/stores/presentation/screens/store_screen.dart';
 import 'package:vegawallet/features/wallet/presentation/screens/wallet_screen.dart';
 import '../../features/auth/presentaion/screens/sign_in_screen.dart';
@@ -56,6 +57,11 @@ final GoRouter router = GoRouter(
           path: '/maps',
           pageBuilder: (context, state) =>
               customTransitionPage(context, state, const MapScreen()),
+        ),
+        GoRoute(
+          path: '/profile',
+          pageBuilder: (context, state) =>
+              customTransitionPage(context, state, const ProfileScreen()),
         ),
       ],
     ),

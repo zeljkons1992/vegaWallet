@@ -22,6 +22,18 @@
     "vegaConfIde": "Vega confirm identity",
     "vegaNoConfIde": "Vega identity not confirmed",
     "googleStartVer": "Google Verification process in progress",
-    "googleVerSuc": "Verification process has been successfully completed.\nYou will be redirected to the main page.",
-    "googleVerUns": "Verification process has not been successfully completed.\nYou will be redirected to the login page.\nThis app is for VegaIT employees only"
+    "googleVerSuc": "Verification process has been successfully completed",
+    "googleVerUns": "This app is for VegaIT employees only",
+    "profileTitle": "Profile",
+    "joined": "Joined",
+    "logout": "Logout",
+    "failedToLoadProfileInfo":"Failed to load profile information",
+    "notification": "Notification",
+    "general": "General",
+    "feedback": "Feedback",
+    "pushNotifications": "Push notifications",
+    "enableLocation":"Enable Location",
+    "noNumber": "No Number"
+
+
 }

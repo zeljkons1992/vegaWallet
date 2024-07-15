@@ -22,6 +22,20 @@
     "vegaConfIde": "Potvrdjen Vega identitet",
     "vegaNoConfIde": "Nije potvrdjen Vega identitet",
     "googleStartVer": "Proces verifikacije je u toku",
-    "googleVerSuc": "Proces verifikacije je uspesno zavrseno.\nBice te preusmereni na glavnu stranicu.",
-    "googleVerUns": "Proces verifikacije nije uspesno zavrsen.\nBice te preusmerenu na stranicu za prijavljivanje.\nOva aplikacija je samo za radnike Vega IT kompanije."
+    "googleVerSuc": "Proces verifikacije je uspesno zavrseno.",
+    "googleVerUns": "Ova aplikacija je samo za radnike Vega IT kompanije.",
+    "profileTitle": "Profil",
+    "joined": "Pridužio se",
+    "logout": "Odjavi se",
+    "failedToLoadProfileInfo":"Ne uspešno učitani korisnički podaci",
+    "notification": "Obaveštenja",
+    "general": "Opšte",
+    "feedback": "Povratne informacije",
+    "pushNotifications": "Slanje Obaveštenja",
+    "enableLocation":"Dozvoli Lokaciju",
+    "noNumber": "Nema broja"
+
+
+
+
 }
