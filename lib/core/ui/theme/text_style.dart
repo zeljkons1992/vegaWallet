@@ -21,24 +21,24 @@ class AppTextStyles {
   TextStyle get bodyText1 => GoogleFonts.inter(
     fontSize: 16,
     fontWeight: FontWeight.normal,
-    color: Theme.of(context).colorScheme.surface,
+    color: Theme.of(context).colorScheme.onSurface,
   );
 
   TextStyle get bodyText2 => GoogleFonts.inter(
     fontSize: 14,
     fontWeight: FontWeight.normal,
-    color: Theme.of(context).colorScheme.surface,
+    color: Theme.of(context).colorScheme.onSurface,
   );
 
-  static final TextStyle headline3 = GoogleFonts.inter(
+  TextStyle get headline3 => GoogleFonts.inter(
       fontSize: 16,
       fontWeight: FontWeight.w600,
-      color: const Color(0xff131313));
+      color: Theme.of(context).colorScheme.onSurface);
 
-  static final TextStyle headline4 = GoogleFonts.inter(
+  TextStyle get headline4 => GoogleFonts.inter(
       fontSize: 20,
       fontWeight: FontWeight.bold,
-      color: const Color(-13157824));
+      color: Theme.of(context).colorScheme.onSurface);
 
   TextStyle get cardNameStyle => GoogleFonts.inter(
     fontSize: 24,

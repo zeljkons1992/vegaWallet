@@ -16,6 +16,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return MultiBlocProvider(
       providers: [
@@ -54,12 +55,12 @@ class ProfileScreen extends StatelessWidget {
                                   userProfileInformation.profileImage),
                             ),
                             Text(userProfileInformation.nameAndSurname,
-                                style: AppTextStyles.headline1),
+                                style: AppTextStyles(context).headline1),
                             const SizedBox(height: 4),
                             Text(
                                 "${localization.joined} ${state
                                     .userProfileInformation.dateTime}",
-                                style: AppTextStyles.bodyText1),
+                                style: AppTextStyles(context).bodyText1),
                             profileGeneralSection(
                                 state.userProfileInformation, context),
                             const ProfileNotificationSection(),
@@ -75,14 +76,11 @@ class ProfileScreen extends StatelessWidget {
                                           .add(LogoutUser());
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                      Theme
-                                          .of(context)
-                                          .primaryColor,
+                                      backgroundColor: colorScheme.primary,
                                     ),
                                     child: Text(localization.logout,
-                                        style: const TextStyle(
-                                            fontSize: 18, color: Colors.white)),
+                                        style: TextStyle(
+                                            fontSize: 18, color: colorScheme.onSurface)),
                                   );
                                 }),
                               ),

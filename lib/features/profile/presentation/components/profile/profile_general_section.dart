@@ -17,7 +17,7 @@ Widget profileGeneralSection(UserProfileInformation user,BuildContext context) {
       child:  Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(localization.general,style: AppTextStyles.headline4,),
+          Text(localization.general ,style: AppTextStyles(context).headline4,),
           const SizedBox(height: 10,),
           Padding(
             padding: const EdgeInsets.symmetric(vertical:12),
@@ -25,7 +25,7 @@ Widget profileGeneralSection(UserProfileInformation user,BuildContext context) {
               children: [
                 const Icon(Icons.account_circle_outlined),
                 const SizedBox(width: 8,),
-                Text(user.nameAndSurname,style: AppTextStyles.headline3,),
+                Text(user.nameAndSurname,style: AppTextStyles(context).headline3,),
               ],
             ),
           ),
@@ -39,7 +39,7 @@ Widget profileGeneralSection(UserProfileInformation user,BuildContext context) {
               children: [
                 const Icon(Icons.mail_outline_rounded),
                 const SizedBox(width: 8,),
-                Text(user.email,style: AppTextStyles.headline3),
+                Text(user.email,style: AppTextStyles(context).headline3),
               ],
             ),
           ),
@@ -55,7 +55,7 @@ Widget profileGeneralSection(UserProfileInformation user,BuildContext context) {
                 const SizedBox(width: 8,),
                 Text(
                   user.phoneNumber ?? localization.noNumber,
-                  style: AppTextStyles.headline3,
+                  style: AppTextStyles(context).headline3,
                 )
           ],
             ),
@@ -70,7 +70,7 @@ Widget profileGeneralSection(UserProfileInformation user,BuildContext context) {
               children: [
                 const Icon(Icons.messenger_outline),
                 const SizedBox(width: 8,),
-                Text(localization.feedback,style: AppTextStyles.headline3,),
+                Text(localization.feedback,style: AppTextStyles(context).headline3,),
               ],
             ),
           )
