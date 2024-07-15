@@ -40,7 +40,7 @@ class CategoryExpansionTile extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
-        color: colorScheme.onSecondary,
+        color: colorScheme.onPrimary,
         borderRadius: BorderRadius.circular(15.0),
       ),
       child: Theme(
