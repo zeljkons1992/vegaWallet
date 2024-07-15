@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
-import 'package:vegawallet/core/utils/get_phone_number_localization.dart';
 import 'package:vegawallet/features/profile/domain/entites/user_profile_information.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -54,8 +53,11 @@ Widget profileGeneralSection(UserProfileInformation user,BuildContext context) {
               children: [
                 const Icon(Icons.phone_android_outlined),
                 const SizedBox(width: 8,),
-                Text(getPhoneNumber(user.phoneNumber,context),style: AppTextStyles.headline3),
-              ],
+                Text(
+                  user.phoneNumber ?? localization.noNumber,
+                  style: AppTextStyles.headline3,
+                )
+          ],
             ),
           ),
           const Divider(
