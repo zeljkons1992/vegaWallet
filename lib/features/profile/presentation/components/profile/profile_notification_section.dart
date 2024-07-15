@@ -29,7 +29,7 @@ class ProfileNotificationSectionState extends State<ProfileNotificationSection> 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(localization.notification, style: AppTextStyles.headline4),
+            Text(localization.notification, style: AppTextStyles(context).headline4),
             const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
@@ -37,7 +37,7 @@ class ProfileNotificationSectionState extends State<ProfileNotificationSection> 
                 children: [
                   const Icon(Icons.notification_add_outlined),
                   const SizedBox(width: 8),
-                  Text(localization.pushNotifications, style: AppTextStyles.headline3),
+                  Text(localization.pushNotifications, style: AppTextStyles(context).headline3),
                   const Spacer(),
                   Switch(
                     value: isPushNotificationEnabled,
@@ -60,7 +60,7 @@ class ProfileNotificationSectionState extends State<ProfileNotificationSection> 
                 children: [
                   const Icon(Icons.location_history),
                   const SizedBox(width: 8),
-                  Text(localization.enableLocation, style: AppTextStyles.headline3),
+                  Text(localization.enableLocation, style: AppTextStyles(context).headline3),
                   const Spacer(),
                   Switch(
                     value: isLocationEnabled,

@@ -45,7 +45,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final brightness = View.of(context).platformDispatcher.platformBrightness;
     TextTheme textTheme = createTextTheme(context, "Inter", "Inter");
     MaterialTheme theme = MaterialTheme(textTheme);
 
@@ -68,7 +67,9 @@ class MyApp extends StatelessWidget {
                   Locale('sr'),
                 ],
                 title: 'Flutter Demo',
-                theme: brightness == Brightness.light ? theme.light() : theme.dark(),
+                theme: theme.light(),
+                darkTheme: theme.dark(),
+                themeMode: ThemeMode.system,
                 routerConfig: router,
                 debugShowCheckedModeBanner: false,
               );
