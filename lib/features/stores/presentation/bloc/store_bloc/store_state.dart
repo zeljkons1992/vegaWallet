@@ -26,3 +26,12 @@ class StoreError extends StoreState {
   @override
   List<Object> get props => [message];
 }
+
+class StoreSearchDone extends StoreState {
+  final List<Store> stores;
+
+  const StoreSearchDone(this.stores);
+
+  @override
+  List<Object> get props => [stores];
+ }
