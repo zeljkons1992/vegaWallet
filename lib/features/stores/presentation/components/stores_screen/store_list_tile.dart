@@ -18,7 +18,7 @@ class StoreListTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4.0),
       child: Material(
-        color: colorScheme.onSecondary,
+        color: colorScheme.onPrimary,
         child: InkWell(
           onTap: () {
             context.go('/stores/store_details', extra: store);
@@ -34,11 +34,12 @@ class StoreListTile extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    color: MaterialTheme.lightScheme().primaryContainer,
+                    color: Theme.of(context).colorScheme.surfaceContainerHigh,
+
                   ),
                   child: Icon(
                     Icons.location_city_rounded,
-                    color: MaterialTheme.lightScheme().primary,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 const SizedBox(width: 8),

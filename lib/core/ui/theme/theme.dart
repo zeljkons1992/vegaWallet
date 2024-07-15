@@ -216,7 +216,7 @@ class MaterialTheme {
       surfaceContainerLowest: Color(0xff140c0a),
       surfaceContainerLow: Color(0xff231917),
       surfaceContainer: Color(0xff271d1b),
-      surfaceContainerHigh: Color(0xff322825),
+      surfaceContainerHigh: Color(0xff212121),
       surfaceContainerHighest: Color(0xff3d322f),
     );
   }
