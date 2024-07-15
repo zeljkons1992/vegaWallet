@@ -63,7 +63,7 @@ void main() {
     );
 
     blocTest<StoreBloc, StoreState>(
-      'emits [StoreLoaded] when search is successful',
+      'emits [StoreSearchDone] when search is successful',
       build: () {
         when(() => mockSearchStoresUseCase(params: any(named: 'params')))
             .thenAnswer((_) async => DataState.success(stores));
@@ -71,7 +71,7 @@ void main() {
       },
       act: (bloc) => bloc.add(const SearchStores('Store1')),
       expect: () => [
-        StoreLoaded(stores: stores),
+        StoreSearchDone(stores),
       ],
     );
 
