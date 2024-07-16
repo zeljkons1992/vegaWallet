@@ -152,7 +152,7 @@ jobs:
         run: flutter build ios --no-codesign
 
       - name: Build Android project
-        run: flutter build apk --release
+        run: flutter build apk --debug
 
       - name: Run tests
         run: flutter test --coverage
@@ -162,7 +162,7 @@ jobs:
         with:
           app: ${{secrets.APP_ID}}
           credentials: ${{secrets.CREDENTIAL_FILE_CONTENT}}
-          file: build/app/outputs/flutter-apk/app-release.apk
+          file: build/app/outputs/flutter-apk/app-debug.apk
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
