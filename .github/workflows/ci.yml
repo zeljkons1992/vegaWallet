@@ -163,7 +163,7 @@ jobs:
           app: ${{secrets.APP_ID}}
           credentials: ${{secrets.CREDENTIAL_FILE_CONTENT}}
           file: build/app/outputs/flutter-apk/app-release.apk
-          groups: "testeri"
+          groups: "testers"
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
