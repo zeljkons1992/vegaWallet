@@ -13,15 +13,13 @@ class MockLogoutUserUseCase extends Mock implements LogoutUserUseCase {}
 
 void main() {
   late AuthBloc authBloc;
-  late MockIsUserVegaUseCase mockIsUserVegaUseCase;
   late MockLoginUserUseCase mockLoginUserUseCase;
   late MockLogoutUserUseCase mockLogoutUserUseCase;
 
   setUp(() {
-    mockIsUserVegaUseCase = MockIsUserVegaUseCase();
     mockLoginUserUseCase = MockLoginUserUseCase();
     mockLogoutUserUseCase = MockLogoutUserUseCase();
-    authBloc = AuthBloc(mockLoginUserUseCase, mockLogoutUserUseCase, mockIsUserVegaUseCase);
+    authBloc = AuthBloc(mockLoginUserUseCase, mockLogoutUserUseCase);
   });
 
   test('initial state is AuthInitial', () {
@@ -78,33 +76,6 @@ void main() {
     ],
   );
 
-  blocTest<AuthBloc, AuthState>(
-    'emits [AuthVegaStartAuthorization, AuthVegaConfirmAnimation, AuthVegaConfirm] when CheckIsUserVega is added and user is Vega',
-    build: () {
-      when(() => mockIsUserVegaUseCase()).thenAnswer((_) async => DataState.success());
-      return authBloc;
-    },
-    act: (bloc) => bloc.add(CheckIsUserVega()),
-    wait: const Duration(seconds: 11),
-    expect: () => [
-      AuthVegaStartAuthorization(),
-      AuthVegaConfirmAnimation(),
-      AuthVegaConfirm(),
-    ],
-  );
 
-  blocTest<AuthBloc, AuthState>(
-    'emits [AuthVegaStartAuthorization, AuthVegaNotConfirmAnimation, AuthVegaNotConfirm] when CheckIsUserVega is added and user is not Vega',
-    build: () {
-      when(() => mockIsUserVegaUseCase()).thenAnswer((_) async => DataState.error("Korisnicko ime nije Vega"));
-      return authBloc;
-    },
-    act: (bloc) => bloc.add(CheckIsUserVega()),
-    wait: const Duration(seconds: 15),
-    expect: () => [
-      AuthVegaStartAuthorization(),
-      AuthVegaNotConfirmAnimation(),
-      AuthVegaNotConfirm(),
-    ],
-  );
+
 }

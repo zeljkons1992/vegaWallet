@@ -13,15 +13,21 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
     return BlocProvider(
       create: (context) => getIt<AuthBloc>(),
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           switch(state){
-            case AuthLoginWithGoogleSuccess _:
-              return context.replace("/verification");
             case AuthLoginWithGoogleError _:
-              return context.go("/error");
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Login unsuccessful. The application is only for Vega employees."),
+                  duration: Duration(seconds: 3),
+                ),
+              );
+            case AuthLoginWithGoogleSuccess _:
+              return context.go("/");
           }
         },
         builder: (context, state) {
@@ -31,6 +37,10 @@ class SignInScreen extends StatelessWidget {
                 body: Center(
                   child: CircularProgressIndicator(),
                 ),
+              );
+            case AuthLoginWithGoogleSuccess _:
+              return  Scaffold(
+                backgroundColor: colorScheme.surface,
               );
           }
           return Scaffold(

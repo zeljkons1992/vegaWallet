@@ -51,36 +51,35 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => LocaleBloc(),
       child: Builder(
-        builder: (context) {
-          return BlocBuilder<LocaleBloc, LocaleState>(
-            builder: (context, state) {
-              return MaterialApp.router(
-                locale: state.locale,
-                localizationsDelegates: const [
-                  AppLocalizations.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                supportedLocales: const [
-                  Locale('en'),
-                  Locale('sr'),
-                ],
-                title: 'Flutter Demo',
-                theme: theme.light(),
-                darkTheme: theme.dark(),
-                themeMode: ThemeMode.system,
-                routerConfig: router,
-                debugShowCheckedModeBanner: false,
-              );
-            },
-          );
-        }
+          builder: (context) {
+            return BlocBuilder<LocaleBloc, LocaleState>(
+              builder: (context, state) {
+                return MaterialApp.router(
+                  locale: state.locale,
+                  localizationsDelegates: const [
+                    AppLocalizations.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  supportedLocales: const [
+                    Locale('en'),
+                    Locale('sr'),
+                  ],
+                  title: 'Flutter Demo',
+                  theme: theme.light(),
+                  darkTheme: theme.dark(),
+                  themeMode: ThemeMode.system,
+                  routerConfig: router,
+                  debugShowCheckedModeBanner: false,
+                );
+              },
+            );
+          }
       ),
     );
   }
 }
-
 enum TabItem { home, stores, maps, profile}
 
 class MainScreen extends StatefulWidget {
