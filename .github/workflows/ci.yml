@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -25,7 +25,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '17'
+          java-version: '11'
 
       - name: Create .env file
         run: |
@@ -152,17 +152,18 @@ jobs:
         run: flutter build ios --no-codesign
 
       - name: Build Android project
-        run: flutter build apk --debug
+        run: flutter build apk --release
 
       - name: Run tests
         run: flutter test --coverage
 
-      - name: Upload artifact to Firebase App Distribution
+      - name: Upload Android build to Firebase App Distribution
         uses: nickwph/firebase-app-distribution-action@v1
         with:
           app: ${{secrets.APP_ID}}
           credentials: ${{secrets.CREDENTIAL_FILE_CONTENT}}
-          file: build/app/outputs/flutter-apk/app-debug.apk
+          file: build/app/outputs/flutter-apk/app-release.apk
+          groups: "testeri"
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
