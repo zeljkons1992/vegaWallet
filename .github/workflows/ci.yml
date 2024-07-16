@@ -148,11 +148,11 @@ jobs:
       - name: Analyze code
         run: flutter analyze
 
-      - name: Build iOS project
-        run: flutter build ios --no-codesign
-
       - name: Build Android project
         run: flutter build apk --release
+
+      - name: Build iOS project
+        run: flutter build ios --no-codesign
 
       - name: Run tests
         run: flutter test --coverage
