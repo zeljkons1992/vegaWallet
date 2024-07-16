@@ -61,6 +61,7 @@ dependencies:
   firebase_analytics: ^11.2.0
   shimmer: ^2.0.0
   firebase_performance: ^0.10.0+3
+  flutter_launcher_icons: ^0.13.1
 
 
 dev_dependencies:
@@ -85,6 +86,7 @@ flutter:
     - assets/img/
     - assets/icons/
     - assets/lottie/
+    - assets/icon/
 
 flutter_native_splash:
   color: "#C35535"
@@ -94,3 +96,12 @@ flutter_native_splash:
     android: true
     color: "#C35535"
     image: assets/img/vega_splash.png
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
+  min_sdk_android: 21
+  background_color_ios: "#0E0E0E"
+  android_adaptive_icon_background: "#0E0E0E"
+  remove_alpha_ios: true
