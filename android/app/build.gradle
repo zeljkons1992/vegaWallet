@@ -28,6 +28,8 @@ if (flutterVersionName == null) {
     flutterVersionName = "1.0"
 }
 
+def isCiBuild = System.getenv('CI') != null
+
 android {
     namespace = "com.example.vegawallet"
     compileSdk = flutter.compileSdkVersion
@@ -54,6 +56,18 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.debug
+
+            if (isCiBuild) {
+                ext.enableCrashlytics = false
+            }
+        }
+    }
+}
+
+if (isCiBuild) {
+    tasks.whenTaskAdded { task ->
+        if (task.name == 'uploadCrashlyticsMappingFileRelease') {
+            task.enabled = false
         }
     }
 }
