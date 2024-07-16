@@ -46,49 +46,57 @@ jobs:
           mkdir -p android/app
           echo '{
             "project_info": {
-              "project_number": "1234",
-              "project_id": "vega-wallet",
-              "storage_bucket": "vega-wallet.appspot.com"
+              "project_number": "${{ secrets.PROJECT_NUMBER }}",
+              "project_id": "${{ secrets.PROJECT_ID }}",
+              "storage_bucket": "${{ secrets.STORAGE_BUCKET }}"
             },
             "client": [
               {
                 "client_info": {
-                  "mobilesdk_app_id": "1111",
+                  "mobilesdk_app_id": "${{ secrets.MOBILESDK_APP_ID }}",
                   "android_client_info": {
                     "package_name": "com.example.vegawallet"
                   }
                 },
                 "oauth_client": [
                   {
-                    "client_id": "1111",
+                    "client_id": "${{ secrets.OAUTH_CLIENT_ID_1 }}",
                     "client_type": 1,
                     "android_info": {
                       "package_name": "com.example.vegawallet",
-                      "certificate_hash": "1111"
+                      "certificate_hash": "${{ secrets.CERTIFICATE_HASH_1 }}"
                     }
                   },
                   {
-                    "client_id": "1111",
+                    "client_id": "${{ secrets.OAUTH_CLIENT_ID_2 }}",
+                    "client_type": 1,
+                    "android_info": {
+                      "package_name": "com.example.vegawallet",
+                      "certificate_hash": "${{ secrets.CERTIFICATE_HASH_2 }}"
+                    }
+                  },
+                  {
+                    "client_id": "${{ secrets.OAUTH_CLIENT_ID_3 }}",
                     "client_type": 3
                   }
                 ],
                 "api_key": [
                   {
-                    "current_key": "123"
+                    "current_key": "${{ secrets.API_KEY }}"
                   }
                 ],
                 "services": {
                   "appinvite_service": {
                     "other_platform_oauth_client": [
                       {
-                        "client_id": "1111",
+                        "client_id": "${{ secrets.OAUTH_CLIENT_ID_3 }}",
                         "client_type": 3
                       },
                       {
-                        "client_id": "1111",
+                        "client_id": "${{ secrets.OAUTH_CLIENT_ID_4 }}",
                         "client_type": 2,
                         "ios_info": {
-                          "bundle_id": "com.example.vegawallet"
+                          "bundle_id": "vegawallet"
                         }
                       }
                     ]
@@ -98,6 +106,7 @@ jobs:
             ],
             "configuration_version": "1"
           }' > android/app/google-services.json
+      
 
       - name: Create GoogleService-Info.plist
         run: |
