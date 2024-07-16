@@ -21,7 +21,14 @@ class AuthService {
         idToken: gAuth.idToken,
       );
 
-      await _firebaseAuth.signInWithCredential(credential);
+      final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
+      final User? user = userCredential.user;
+
+      if (user == null || !(user.email?.endsWith('@vegait.rs') ?? false)) {
+        await _firebaseAuth.signOut();
+        await _googleSignIn.signOut();
+        return false;
+      }
       return true;
     } catch (e) {
       return false;

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class PrimaryBackButton extends StatelessWidget {
   const PrimaryBackButton({super.key});
@@ -10,7 +9,7 @@ class PrimaryBackButton extends StatelessWidget {
       top: MediaQuery.of(context).padding.top + 16.0,
       left: 16.0,
       child: GestureDetector(
-        onTap: () => context.pop(),
+        onTap: () => Navigator.of(context).pop(),
         child: Container(
           decoration:  BoxDecoration(
             color: Colors.black.withOpacity(0.3),

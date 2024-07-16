@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vegawallet/features/auth/presentaion/components/verification_screen/verification_start.dart';
 import 'package:vegawallet/features/auth/presentaion/screens/error_auth_screen.dart';
-import 'package:vegawallet/features/auth/presentaion/screens/verification_screen.dart';
 import 'package:vegawallet/features/maps/presentaion/screens/map_screen.dart';
 import 'package:vegawallet/features/profile/presentation/screens/profile_screen.dart';
 import 'package:vegawallet/features/stores/presentation/screens/store_screen.dart';
@@ -15,6 +14,7 @@ import '../services/auth_services.dart';
 import 'custom_transition_page_builder.dart';
 
 final AuthService _authService = AuthService();
+
 
 final GoRouter router = GoRouter(
   initialLocation: '/',
@@ -71,20 +71,6 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => CustomTransitionPage(
         key: state.pageKey,
         child: const SignInScreen(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: animation,
-            child: child,
-          );
-        },
-      ),
-    ),
-    GoRoute(
-      path: '/verification',
-      builder: (context, state) => const VerificationScreen(),
-      pageBuilder: (context, state) => CustomTransitionPage(
-        key: state.pageKey,
-        child: const VerificationScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
             opacity: animation,
