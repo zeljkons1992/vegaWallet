@@ -43,14 +43,10 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
         setState(() {
           zoomLevel = 16.0;
         });
-        final addressCity = "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}";
-        BlocProvider.of<LocationBloc>(context).add(UpdateStoreLocation(addressCity));
-        isStore = true;
       } else {
         setState(() {
           zoomLevel = 18.0;
         });
-        isStore = false;
       }
     });
   }
@@ -159,28 +155,7 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                       ),
                     ),
                   ),
-                  if (isMapExpanded)
-                    Positioned(
-                      bottom: 16,
-                      right: 16,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.black.withOpacity(0.3),
-                        ),
-                        child: Builder(
-                            builder: (context) {
-                              return IconButton(
-                                onPressed: () => _expandMapAndShowLocations(context),
-                                icon: const Icon(
-                                  Icons.store,
-                                  color: Colors.white,
-                                ),
-                              );
-                            }
-                        ),
-                      ),
-                    ),
+
                 ],
               ),
             ),
