@@ -148,6 +148,39 @@ jobs:
           </dict>
           </plist>' > ios/Runner/GoogleService-Info.plist
 
+      - name: Create firebase.json
+        run: |
+          echo '{
+            "flutter": {
+              "platforms": {
+                "android": {
+                  "default": {
+                    "projectId": "${{ secrets.FIREBASE_PROJECT_ID }}",
+                    "appId": "${{ secrets.FIREBASE_APP_ID_ANDROID }}",
+                    "fileOutput": "android/app/google-services.json"
+                  }
+                },
+                "ios": {
+                  "default": {
+                    "projectId": "${{ secrets.FIREBASE_PROJECT_ID }}",
+                    "appId": "${{ secrets.FIREBASE_APP_ID_IOS }}",
+                    "uploadDebugSymbols": false,
+                    "fileOutput": "ios/Runner/GoogleService-Info.plist"
+                  }
+                },
+                "dart": {
+                  "lib/firebase_options.dart": {
+                    "projectId": "${{ secrets.FIREBASE_PROJECT_ID }}",
+                    "configurations": {
+                      "android": "${{ secrets.FIREBASE_APP_ID_ANDROID }}",
+                      "ios": "${{ secrets.FIREBASE_APP_ID_IOS }}"
+                    }
+                  }
+                }
+              }
+            }
+          }' > firebase.json
+
       - name: Install dependencies
         run: flutter pub get
 
@@ -169,8 +202,8 @@ jobs:
       - name: Upload Android build to Firebase App Distribution
         uses: nickwph/firebase-app-distribution-action@v1
         with:
-          app: ${{secrets.APP_ID}}
-          credentials: ${{secrets.CREDENTIAL_FILE_CONTENT}}
+          app: ${{ secrets.APP_ID }}
+          credentials: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           file: build/app/outputs/flutter-apk/app-release.apk
           groups: "testers"
 
