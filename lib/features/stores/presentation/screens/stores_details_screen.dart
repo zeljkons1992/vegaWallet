@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/constants/size_const.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/ui/elements/primary_back_button.dart';
 import '../../../../core/ui/elements/primary_dropdown_button.dart';
@@ -24,6 +25,8 @@ class StoreDetailsScreen extends StatefulWidget {
 class StoreDetailsScreenState extends State<StoreDetailsScreen> {
   AddressCity? selectedDropdownItem;
   bool isStore = false;
+  bool isMapExpanded = false;
+  double zoomLevel = 18.0;
 
   @override
   void initState() {
@@ -32,6 +35,11 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
     if (widget.store.addressCities.isNotEmpty) {
       selectedDropdownItem = widget.store.addressCities.first;
     }
+  }
+
+  void _expandMapAndShowLocations() {
+      isMapExpanded = !isMapExpanded;
+      setState(() { zoomLevel = isMapExpanded ? 16.0 : 18.0; });
   }
 
   @override
@@ -43,8 +51,12 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
       child: Scaffold(
         body: Column(
           children: [
-            Expanded(
-              flex: 1,
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+              height: isMapExpanded
+                  ? MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - SIZE_OF_BOTTOM_NAVIGATION_BAR
+                  : MediaQuery.of(context).size.height / 3,
               child: Stack(
                 children: [
                   BlocConsumer<LocationBloc, LocationState>(
@@ -68,6 +80,7 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                               latitude: state.position.latitude,
                               longitude: state.position.longitude,
                               isStore: isStore,
+                              zoomLevel: zoomLevel,
                             );
                           } else if (state is LocationLoading) {
                             return const Center(
@@ -77,6 +90,7 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                               latitude: state.position.latitude,
                               longitude: state.position.longitude,
                               isStore: isStore,
+                              zoomLevel: zoomLevel,
                             );
                           } else {
                             return const MapLocationError();
@@ -109,74 +123,94 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                       }),
                     ),
                   ),
+                  Positioned(
+                    bottom: 16,
+                    left: 16,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.black.withOpacity(0.3),
+                      ),
+                      child: IconButton(
+                        onPressed: () => _expandMapAndShowLocations(),
+                        icon: Icon(
+                          isMapExpanded
+                              ? Icons.fullscreen_exit
+                              : Icons.fullscreen,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+
                 ],
               ),
             ),
-            Expanded(
-              flex: 2,
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 70,
-                      color: colorScheme.surfaceBright,
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        children: [
-                          Builder(
-                            builder: (context) {
-                              return PrimaryDropdownButton(
-                                items: widget.store.addressCities,
-                                selectedItem: selectedDropdownItem,
-                                onChanged: (value) async {
-                                  setState(() {
-                                    selectedDropdownItem = value;
-                                  });
-
-                                  if (selectedDropdownItem != null) {
-                                    String addressCity =
-                                        "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}";
+            if (!isMapExpanded)
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 70,
+                        color: colorScheme.surfaceBright,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          children: [
+                            Builder(
+                              builder: (context) {
+                                return PrimaryDropdownButton(
+                                  items: widget.store.addressCities,
+                                  selectedItem: selectedDropdownItem,
+                                  onChanged: (value) async {
                                     setState(() {
-                                      isStore = true;
+                                      selectedDropdownItem = value;
                                     });
-                                    BlocProvider.of<LocationBloc>(context)
-                                        .add(UpdateStoreLocation(addressCity));
-                                  }
-                                },
-                              );
-                            },
-                          ),
-                          const SizedBox(width: 8),
-                          Container(
-                            height: 50,
-                            width: 50,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: colorScheme.primary,
+
+                                    if (selectedDropdownItem != null) {
+                                      String addressCity =
+                                          "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}";
+                                      setState(() {
+                                        isStore = true;
+                                      });
+                                      BlocProvider.of<LocationBloc>(context)
+                                          .add(UpdateStoreLocation(addressCity));
+                                    }
+                                  },
+                                );
+                              },
                             ),
-                            child: Builder(builder: (context) {
-                              return IconButton(
-                                onPressed: () {
-                                  BlocProvider.of<LocationBloc>(context).add(
-                                      OpenNavigationToAddress(
-                                          "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}"));
-                                },
-                                icon: const Icon(
-                                  Icons.directions,
-                                ),
-                                color: Colors.white,
-                              );
-                            }),
-                          ),
-                        ],
+                            const SizedBox(width: 8),
+                            Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: colorScheme.primary,
+                              ),
+                              child: Builder(builder: (context) {
+                                return IconButton(
+                                  onPressed: () {
+                                    BlocProvider.of<LocationBloc>(context).add(
+                                        OpenNavigationToAddress(
+                                            "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}"));
+                                  },
+                                  icon: const Icon(
+                                    Icons.directions,
+                                  ),
+                                  color: Colors.white,
+                                );
+                              }),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    itemDetailsInfo(widget.store, context),
-                  ],
+                      itemDetailsInfo(widget.store, context),
+                    ],
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),

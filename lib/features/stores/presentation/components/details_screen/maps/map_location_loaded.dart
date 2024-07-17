@@ -7,12 +7,15 @@ class MapLocationLoadedWidget extends StatefulWidget {
   final double latitude;
   final double longitude;
   final bool isStore;
+  final double zoomLevel;
+
 
   const MapLocationLoadedWidget({
     super.key,
     required this.latitude,
     required this.longitude,
     required this.isStore,
+    required this.zoomLevel
   });
 
   @override
@@ -31,8 +34,10 @@ class MapLocationLoadedWidgetState extends State<MapLocationLoadedWidget> {
   @override
   void didUpdateWidget(MapLocationLoadedWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.latitude != widget.latitude || oldWidget.longitude != widget.longitude) {
-      _mapController.move(LatLng(widget.latitude, widget.longitude), 18);
+    if (oldWidget.latitude != widget.latitude ||
+        oldWidget.longitude != widget.longitude||
+        oldWidget.zoomLevel != widget.zoomLevel) {
+      _mapController.move(LatLng(widget.latitude, widget.longitude), widget.zoomLevel);
     }
   }
 
@@ -42,23 +47,25 @@ class MapLocationLoadedWidgetState extends State<MapLocationLoadedWidget> {
       mapController: _mapController,
       options: MapOptions(
         initialCenter: LatLng(widget.latitude, widget.longitude),
-        initialZoom: 18,
+        initialZoom: widget.zoomLevel,
+
       ),
       children: [
         TileLayer(
           urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-          userAgentPackageName: 'net.tlserver6y.flutter_map_location_marker.example',
+          userAgentPackageName:
+              'net.tlserver6y.flutter_map_location_marker.example',
         ),
         if (widget.isStore)
-          CircleLayer(
-            circles: [
-              CircleMarker(
+          MarkerLayer(markers: [
+            Marker(
                 point: LatLng(widget.latitude, widget.longitude),
-                color: Colors.red.withOpacity(0.7),
-                radius: 10,
-              ),
-            ],
-          )
+                child: const Icon(
+                  Icons.location_on,
+                  color: Colors.orange,
+                  size: 40,
+                ))
+          ])
         else
           currentLocationLayer(),
       ],
