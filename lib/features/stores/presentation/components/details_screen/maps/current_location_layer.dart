@@ -3,8 +3,8 @@ import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 
 Widget currentLocationLayer() {
   return CurrentLocationLayer(
-    alignPositionOnUpdate: AlignOnUpdate.always,
-    alignDirectionOnUpdate: AlignOnUpdate.always,
+    alignPositionOnUpdate: AlignOnUpdate.never,
+    alignDirectionOnUpdate: AlignOnUpdate.never,
     style: const LocationMarkerStyle(
       marker: DefaultLocationMarker(
         child: Icon(

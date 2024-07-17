@@ -6,16 +6,16 @@ import 'current_location_layer.dart';
 class MapLocationLoadedWidget extends StatefulWidget {
   final double latitude;
   final double longitude;
-  final bool isStore;
   final double zoomLevel;
+  final bool shouldCenter;
 
 
   const MapLocationLoadedWidget({
     super.key,
     required this.latitude,
     required this.longitude,
-    required this.isStore,
-    required this.zoomLevel
+    required this.zoomLevel,
+    required this.shouldCenter
   });
 
   @override
@@ -24,6 +24,7 @@ class MapLocationLoadedWidget extends StatefulWidget {
 
 class MapLocationLoadedWidgetState extends State<MapLocationLoadedWidget> {
   late MapController _mapController;
+
 
   @override
   void initState() {
@@ -35,7 +36,7 @@ class MapLocationLoadedWidgetState extends State<MapLocationLoadedWidget> {
   void didUpdateWidget(MapLocationLoadedWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.latitude != widget.latitude ||
-        oldWidget.longitude != widget.longitude||
+        oldWidget.longitude != widget.longitude ||
         oldWidget.zoomLevel != widget.zoomLevel) {
       _mapController.move(LatLng(widget.latitude, widget.longitude), widget.zoomLevel);
     }
@@ -56,7 +57,6 @@ class MapLocationLoadedWidgetState extends State<MapLocationLoadedWidget> {
           userAgentPackageName:
               'net.tlserver6y.flutter_map_location_marker.example',
         ),
-        if (widget.isStore)
           MarkerLayer(markers: [
             Marker(
                 point: LatLng(widget.latitude, widget.longitude),
@@ -65,9 +65,8 @@ class MapLocationLoadedWidgetState extends State<MapLocationLoadedWidget> {
                   color: Colors.orange,
                   size: 40,
                 ))
-          ])
-        else
-          currentLocationLayer(),
+          ]),
+        currentLocationLayer(),
       ],
     );
   }
