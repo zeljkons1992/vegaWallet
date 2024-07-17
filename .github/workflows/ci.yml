@@ -191,7 +191,7 @@ jobs:
         run: flutter analyze
 
       - name: Build Android project
-        run: flutter build apk --release
+        run: flutter build apk --release --no-shrink
 
       - name: Build iOS project
         run: flutter build ios --no-codesign
