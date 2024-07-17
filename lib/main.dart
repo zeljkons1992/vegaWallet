@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
     MaterialTheme theme = MaterialTheme(textTheme);
 
     return BlocProvider(
-      create: (context) => LocaleBloc(),
+      create: (context) => LocaleBloc()..add(const GetInitialLocale()),
       child: Builder(
           builder: (context) {
             return BlocBuilder<LocaleBloc, LocaleState>(
