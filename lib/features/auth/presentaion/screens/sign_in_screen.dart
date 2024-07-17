@@ -61,7 +61,7 @@ class SignInScreen extends StatelessWidget {
                       builder: (context) {
                         return ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
+                            backgroundColor: colorScheme.onPrimary,
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -105,6 +105,7 @@ class SignInScreen extends StatelessWidget {
                           vegaDarkLogo,
                           width: 70,
                           height: 24,
+                          color: colorScheme.onSurface,
                         ),
                       ],
                     ),
