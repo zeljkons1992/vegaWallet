@@ -181,6 +181,11 @@ jobs:
             }
           }' > firebase.json
 
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.RELEASE_KEYSTORE }}" > release.keystore.asc
+          gpg -d --passphrase "${{ secrets.KEY_PASSWORD }}" - - batch    release.keystore.asc > android/key.jks
+
       - name: Install dependencies
         run: flutter pub get
 
@@ -190,8 +195,21 @@ jobs:
       - name: Analyze code
         run: flutter analyze
 
+      - name: Create key.properties
+        run: |
+          touch android/key.properties
+          echo "storePassword=${{ secrets.KEY_PASSWORD }}
+          keyPassword=${{ secrets.KEY_PASSWORD }}
+          keyAlias=${{ secrets.ALIAS }}
+          storeFile=../key.jks"  > ./android/key.properties
+
       - name: Build Android project
-        run: flutter build apk --release --no-shrink
+        env:
+          KEY_JKS: ${{ secrets.RELEASE_KEYSTORE }}
+          SIGNING_KEY_ALIAS: ${{ secrets.ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: flutter build apk --release
 
       - name: Build iOS project
         run: flutter build ios --no-codesign
