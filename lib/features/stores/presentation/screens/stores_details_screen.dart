@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/constants/size_const.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/ui/elements/primary_back_button.dart';
 import '../../../../core/ui/elements/primary_dropdown_button.dart';
@@ -36,19 +37,9 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
     }
   }
 
-  void _expandMapAndShowLocations(BuildContext context) {
-    setState(() {
+  void _expandMapAndShowLocations() {
       isMapExpanded = !isMapExpanded;
-      if (isMapExpanded) {
-        setState(() {
-          zoomLevel = 16.0;
-        });
-      } else {
-        setState(() {
-          zoomLevel = 18.0;
-        });
-      }
-    });
+      setState(() { zoomLevel = isMapExpanded ? 16.0 : 18.0; });
   }
 
   @override
@@ -64,7 +55,7 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
               duration: const Duration(milliseconds: 500),
               curve: Curves.easeInOut,
               height: isMapExpanded
-                  ? MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - 70
+                  ? MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - SIZE_OF_BOTTOM_NAVIGATION_BAR
                   : MediaQuery.of(context).size.height / 3,
               child: Stack(
                 children: [
@@ -140,18 +131,14 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                         shape: BoxShape.circle,
                         color: Colors.black.withOpacity(0.3),
                       ),
-                      child: Builder(
-                          builder: (context) {
-                            return IconButton(
-                              onPressed: () => _expandMapAndShowLocations(context),
-                              icon: Icon(
-                                isMapExpanded
-                                    ? Icons.fullscreen_exit
-                                    : Icons.fullscreen,
-                                color: Colors.white,
-                              ),
-                            );
-                          }
+                      child: IconButton(
+                        onPressed: () => _expandMapAndShowLocations(),
+                        icon: Icon(
+                          isMapExpanded
+                              ? Icons.fullscreen_exit
+                              : Icons.fullscreen,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
