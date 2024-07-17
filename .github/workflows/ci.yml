@@ -184,7 +184,7 @@ jobs:
       - name: Decode Keystore
         run: |
           echo "${{secrets.RELEASE_KEYSTORE}}" > release.keystore.asc
-          gpg -d --passphrase "${{secrets.KEY_PASSWORD}}" -- batch release.keystore.asc > android/key.jks
+          gpg --quiet --batch --yes  -d --passphrase "${{secrets.KEY_PASSWORD}}" release.keystore.asc > android/key.jks
 
 #      - name: Decode Keystore
 #        run: |
