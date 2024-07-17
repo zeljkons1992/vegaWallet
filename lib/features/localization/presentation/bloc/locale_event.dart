@@ -12,3 +12,12 @@ class LocaleChanged extends LocaleEvent {
   @override
   List<Object> get props => [locale];
 }
+
+class GetInitialLocale extends LocaleEvent {
+
+  const GetInitialLocale();
+
+  @override
+  List<Object?> get props => [];
+
+}
