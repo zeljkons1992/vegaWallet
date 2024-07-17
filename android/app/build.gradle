@@ -59,6 +59,9 @@ android {
             minifyEnabled false
             shrinkResources false
 
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
             if (isCiBuild) {
                 ext.enableCrashlytics = false
             }
