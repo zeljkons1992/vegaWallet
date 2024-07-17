@@ -51,51 +51,49 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
                 children: [
                   Expanded(
                     flex: 2,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: colorScheme.onSurface),
-                        borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(PADDING_VALUE_SMALL),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: TextField(
-                                    controller: _priceController,
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                    decoration: InputDecoration(
-                                      helperStyle: AppTextStyles(context).searchBarText,
-                                      labelStyle: AppTextStyles(context).searchBarText,
-                                      labelText: localization.discountCalculatorHint,
-                                      border: InputBorder.none,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: _priceController,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                decoration: InputDecoration(
+                                  helperStyle: AppTextStyles(context).searchBarText,
+                                  labelStyle: AppTextStyles(context).searchBarText,
+                                  labelText: localization.discountCalculatorHint,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
+                                      borderSide: BorderSide(color: colorScheme.onSurface),
                                     ),
-                                    onChanged: (value) {
-                                      _calculateDiscount();
-                                    },
-                                  ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
+                                      borderSide: BorderSide(color: colorScheme.onSurface),
+                                    ),
                                 ),
-                                IconButton(
-                                  icon:  const Icon(Icons.clear),
-                                  style: ButtonStyle(iconColor: WidgetStatePropertyAll(colorScheme.onSurface)),
-                                  onPressed: () {
-                                    _priceController.clear();
-                                    setState(() {
-                                      _discountedPrice = null;
-                                    });
-                                  },
-                                ),
-                              ],
+                                onChanged: (value) {
+                                  _calculateDiscount();
+                                },
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
+                            IconButton(
+                              icon:  const Icon(Icons.clear),
+                              style: ButtonStyle(iconColor: WidgetStatePropertyAll(colorScheme.onSurface)),
+                              onPressed: () {
+                                _priceController.clear();
+                                setState(() {
+                                  _discountedPrice = null;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(width: SIZED_BOX_LARGE),
