@@ -183,8 +183,13 @@ jobs:
 
       - name: Decode Keystore
         run: |
-          echo "${{ secrets.RELEASE_KEYSTORE }}" > release.keystore.asc
-          gpg --quiet --batch --yes --decrypt --passphrase="${{ secrets.KEY_PASSWORD }}" --output android/app/key.jks release.keystore.asc
+          echo "${{secrets.RELEASE_KEYSTORE}}" > release.keystore.asc
+          gpg -d --passphrase "${{secrets.RELEASE_KEYSTORE_PASSPHRASE}}" -- batch release.keystore.asc > android/key.jks
+
+#      - name: Decode Keystore
+#        run: |
+#          echo "${{ secrets.RELEASE_KEYSTORE }}" > release.keystore.asc
+#          gpg --quiet --batch --yes --decrypt --passphrase="${{ secrets.KEY_PASSWORD }}" --output android/app/key.jks release.keystore.asc
 
       - name: Install dependencies
         run: flutter pub get
