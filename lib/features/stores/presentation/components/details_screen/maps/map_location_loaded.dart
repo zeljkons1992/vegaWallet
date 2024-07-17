@@ -61,8 +61,8 @@ class MapLocationLoadedWidgetState extends State<MapLocationLoadedWidget> {
             Marker(
                 point: LatLng(widget.latitude, widget.longitude),
                 child: const Icon(
-                  Icons.store,
-                  color: Colors.black,
+                  Icons.location_on,
+                  color: Colors.orange,
                   size: 40,
                 ))
           ])
