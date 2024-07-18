@@ -33,7 +33,6 @@
     "feedback": "Feedback",
     "pushNotifications": "Push notifications",
     "enableLocation":"Enable Location",
-    "noNumber": "No Number"
-
-
+    "noNumber": "No Number",
+    "defaultConditionsText": "No conditions specified"
 }

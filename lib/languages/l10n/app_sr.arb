@@ -33,9 +33,6 @@
     "feedback": "Povratne informacije",
     "pushNotifications": "Slanje Obaveštenja",
     "enableLocation":"Dozvoli Lokaciju",
-    "noNumber": "Nema broja"
-
-
-
-
+    "noNumber": "Nema broja",
+    "defaultConditionsText": "Uslovi nisu navedeni"
 }
