@@ -4,6 +4,7 @@ import 'package:vegawallet/core/constants/size_const.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:vegawallet/features/wallet/presentation/widgets/discount_conditions.dart';
 
 class DiscountCalculator extends StatefulWidget {
   final Store store;
@@ -17,10 +18,6 @@ class DiscountCalculator extends StatefulWidget {
 class DiscountCalculatorState extends State<DiscountCalculator> {
   final TextEditingController _priceController = TextEditingController();
   double? _discountedPrice;
-
-  List<String> _uniqueElements(List<String> elements) {
-    return elements.toSet().toList();
-  }
 
   void _calculateDiscount() {
     final price = double.tryParse(_priceController.text);
@@ -39,7 +36,6 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final localization = AppLocalizations.of(context)!;
-    final uniqueConditions = _uniqueElements(widget.store.conditions);
 
     return Expanded(
       child: SingleChildScrollView(
@@ -64,17 +60,24 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
                                   FilteringTextInputFormatter.digitsOnly
                                 ],
                                 decoration: InputDecoration(
-                                  helperStyle: AppTextStyles(context).searchBarText,
-                                  labelStyle: AppTextStyles(context).searchBarText,
-                                  labelText: localization.discountCalculatorHint,
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
-                                      borderSide: BorderSide(color: colorScheme.onSurface),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
-                                      borderSide: BorderSide(color: colorScheme.onSurface),
-                                    ),
+                                  helperStyle:
+                                      AppTextStyles(context).searchBarText,
+                                  labelStyle:
+                                      AppTextStyles(context).searchBarText,
+                                  labelText:
+                                      localization.discountCalculatorHint,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        CIRCULAR_BORDER_RADIUS_TINY),
+                                    borderSide: BorderSide(
+                                        color: colorScheme.onSurface),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        CIRCULAR_BORDER_RADIUS_TINY),
+                                    borderSide: BorderSide(
+                                        color: colorScheme.onSurface),
+                                  ),
                                 ),
                                 onChanged: (value) {
                                   _calculateDiscount();
@@ -82,8 +85,10 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
                               ),
                             ),
                             IconButton(
-                              icon:  const Icon(Icons.clear),
-                              style: ButtonStyle(iconColor: WidgetStatePropertyAll(colorScheme.onSurface)),
+                              icon: const Icon(Icons.clear),
+                              style: ButtonStyle(
+                                  iconColor: WidgetStatePropertyAll(
+                                      colorScheme.onSurface)),
                               onPressed: () {
                                 _priceController.clear();
                                 setState(() {
@@ -120,25 +125,8 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: PADDING_VALUE_LARGE),
-              child:
-              TextField(
-                decoration: InputDecoration(
-                  labelText: localization.discountCalculatorConditionsTitle,
-                  labelStyle: AppTextStyles(context).searchBarText,
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
-                    borderSide: BorderSide(color: colorScheme.onSurface),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
-                    borderSide: BorderSide(color: colorScheme.onSurface),
-                  ),
-                ),
-                controller: TextEditingController(
-                  text: uniqueConditions.join(', '),
-                ),
-                readOnly: true,
-                maxLines: null,
+              child: DiscountConditions(
+                conditions: widget.store.conditions,
               ),
             ),
           ],
