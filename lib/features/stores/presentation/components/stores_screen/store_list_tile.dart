@@ -35,7 +35,6 @@ class StoreListTile extends StatelessWidget {
                     shape: BoxShape.rectangle,
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     color: Theme.of(context).colorScheme.surfaceContainerHigh,
-
                   ),
                   child: Icon(
                     Icons.location_city_rounded,
