@@ -26,6 +26,7 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
   AddressCity? selectedDropdownItem;
   bool isStore = false;
   bool isMapExpanded = false;
+  bool isMyCurrentLocationActive = false;
   double zoomLevel = 18.0;
 
   @override
@@ -35,19 +36,27 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
     if (widget.store.addressCities.isNotEmpty) {
       selectedDropdownItem = widget.store.addressCities.first;
     }
+
   }
 
   void _expandMapAndShowLocations() {
+    setState(() {
       isMapExpanded = !isMapExpanded;
-      setState(() { zoomLevel = isMapExpanded ? 16.0 : 18.0; });
+      zoomLevel = isMapExpanded ? 16.0 : 18.0;
+      isMyCurrentLocationActive = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    String? addressCity;
+    if (selectedDropdownItem != null) {
+      addressCity = "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}";
+    }
 
     return BlocProvider(
-      create: (context) => getIt<LocationBloc>()..add(GetLocation()),
+      create: (context) => getIt<LocationBloc>()..add(UpdateStoreLocation(addressCity ?? '')),
       child: Scaffold(
         body: Column(
           children: [
@@ -77,9 +86,9 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                             return mapLocationInitial(context);
                           } else if (state is LocationLoaded) {
                             return MapLocationLoadedWidget(
+                              shouldCenter: isMyCurrentLocationActive,
                               latitude: state.position.latitude,
                               longitude: state.position.longitude,
-                              isStore: isStore,
                               zoomLevel: zoomLevel,
                             );
                           } else if (state is LocationLoading) {
@@ -87,9 +96,9 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                                 child: CircularProgressIndicator());
                           } else if (state is StoreLocationUpdatedSuccess) {
                             return MapLocationLoadedWidget(
+                              shouldCenter: isMyCurrentLocationActive,
                               latitude: state.position.latitude,
                               longitude: state.position.longitude,
-                              isStore: isStore,
                               zoomLevel: zoomLevel,
                             );
                           } else {
@@ -100,29 +109,6 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                     },
                   ),
                   const PrimaryBackButton(),
-                  Positioned(
-                    right: 16,
-                    top: MediaQuery.of(context).padding.top + 16.0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.black.withOpacity(0.3),
-                      ),
-                      child: Builder(builder: (context) {
-                        return IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isStore = false;
-                            });
-                            BlocProvider.of<LocationBloc>(context)
-                                .add(GetLocation());
-                          },
-                          icon: const Icon(Icons.my_location),
-                          color: Colors.white,
-                        );
-                      }),
-                    ),
-                  ),
                   Positioned(
                     bottom: 16,
                     left: 16,
@@ -142,7 +128,6 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                       ),
                     ),
                   ),
-
                 ],
               ),
             ),
@@ -171,9 +156,6 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                                     if (selectedDropdownItem != null) {
                                       String addressCity =
                                           "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}";
-                                      setState(() {
-                                        isStore = true;
-                                      });
                                       BlocProvider.of<LocationBloc>(context)
                                           .add(UpdateStoreLocation(addressCity));
                                     }
