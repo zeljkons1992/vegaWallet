@@ -67,10 +67,10 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/login',
-      builder: (context, state) => const SignInScreen(),
+      builder: (context, state) => SignInScreen(),
       pageBuilder: (context, state) => CustomTransitionPage(
         key: state.pageKey,
-        child: const SignInScreen(),
+        child: SignInScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
             opacity: animation,
