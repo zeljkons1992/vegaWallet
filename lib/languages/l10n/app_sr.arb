@@ -38,7 +38,9 @@
     "invalidEmailDomain": "Email domen nije važeći. Mora se završiti sa @vegait.rs.",
     "unknownError": "Došlo je do nepoznate greške.",
     "defaultConditionsText": "Uslovi nisu navedeni",
-    "noNetwork": "Nema konekcije sa internetom"
+    "noNetwork": "Nema konekcije sa internetom",
+    "techProb": "Došlo je do tehničkih problema. Probajte ponovo kasnije"
+
 }
 
 

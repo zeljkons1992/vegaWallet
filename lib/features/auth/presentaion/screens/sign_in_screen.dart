@@ -6,7 +6,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/auth/presentaion/bloc/auth/auth_bloc.dart';
-import 'package:vegawallet/features/stores/presentation/bloc/store_bloc/store_bloc.dart';
 
 import '../../../../core/constants/assets_const.dart';
 import '../../../../core/di/injection.dart';
@@ -32,13 +31,13 @@ class _SignInScreenState extends State<SignInScreen> {
     _startListeningToAuthStream();
 
   }
-
+  
   _startListeningToAuthStream() {
     navigationStream = authBloc.streamNavigationSuccess.listen((event) {
       context.go('/');
     });
   }
-
+  
   @override
   void dispose() {
     navigationStream.cancel();
@@ -95,6 +94,10 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: CircularProgressIndicator(),
                 ),
               );
+            case AuthLoginWithGoogleSuccess _:
+              return Scaffold(
+                backgroundColor: colorScheme.surface,
+              );
             default:
               return Scaffold(
                 body: Center(
@@ -136,8 +139,9 @@ class _SignInScreenState extends State<SignInScreen> {
                                   ),
                                 ],
                               ),
-                            ),
-
+                            );
+                          },
+                        ),
                         const SizedBox(height: 40),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -165,7 +169,6 @@ class _SignInScreenState extends State<SignInScreen> {
               );
           }
         },
-        ),
       ),
     );
   }
