@@ -60,20 +60,6 @@ Widget profileGeneralSection(UserProfileInformation user,BuildContext context) {
           ],
             ),
           ),
-          const Divider(
-            color: Colors.black12,
-            height: 3,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Row(
-              children: [
-                const Icon(Icons.messenger_outline),
-                const SizedBox(width: 8,),
-                Text(localization.feedback,style: AppTextStyles(context).headline3,),
-              ],
-            ),
-          )
         ],
       ),
     ),
