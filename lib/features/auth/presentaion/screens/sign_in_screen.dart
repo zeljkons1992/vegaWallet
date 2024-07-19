@@ -12,10 +12,12 @@ import '../../../../core/di/injection.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../core/utils/localization_helper.dart';
+import '../../../stores/presentation/bloc/store_bloc/store_bloc.dart';
 
 class SignInScreen extends StatefulWidget {
   final StoreBloc _storeBloc = getIt<StoreBloc>();
   final AuthBloc _authBloc = getIt<AuthBloc>();
+
   SignInScreen({super.key});
 
   @override
@@ -23,38 +25,39 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final authBloc = getIt<AuthBloc>();
-  late StreamSubscription<bool> navigationStream;
+  late StreamSubscription<bool> _navigationStream;
+
   @override
   void initState() {
     super.initState();
     _startListeningToAuthStream();
-
   }
 
-  _startListeningToAuthStream() {
-    navigationStream = authBloc.streamNavigationSuccess.listen((event) {
-      context.go('/');
+  void _startListeningToAuthStream() {
+    _navigationStream = widget._authBloc.streamNavigationSuccess.listen((event) {
+        widget._storeBloc.add(LoadStores());
+        context.go('/');
     });
   }
 
   @override
   void dispose() {
-    navigationStream.cancel();
+    _navigationStream.cancel();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
 
-    ColorScheme colorScheme = Theme.of(context).colorScheme;
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => _authBloc,
+        BlocProvider.value(
+          value: widget._authBloc,
         ),
-        BlocProvider(
-          create: (context) => _storeBloc,
+        BlocProvider.value(
+          value: widget._storeBloc,
         ),
       ],
       child: MultiBlocListener(
@@ -63,21 +66,11 @@ class _SignInScreenState extends State<SignInScreen> {
             listener: (context, state) {
               if (state is AuthLoginWithGoogleError) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text(
-                        "Login unsuccessful. The application is only for Vega employees."),
-                    duration: Duration(seconds: 3),
+                  SnackBar(
+                    content: Text(translate(state.message, localization)),
+                    duration: const Duration(seconds: 3),
                   ),
                 );
-              } else if (state is AuthLoginWithGoogleSuccess) {
-                _storeBloc.add(LoadStores());
-              }
-            },
-          ),
-          BlocListener<StoreBloc, StoreState>(
-            listener: (context, state) {
-              if (state is StoreLoaded) {
-                context.go("/");
               }
             },
           ),
@@ -86,7 +79,6 @@ class _SignInScreenState extends State<SignInScreen> {
           builder: (context) {
             final authState = context.watch<AuthBloc>().state;
             final storeState = context.watch<StoreBloc>().state;
-
             if (authState is AuthVegaStartAuthorization ||
                 storeState is StoreLoading) {
               return const Scaffold(
@@ -94,81 +86,75 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: CircularProgressIndicator(),
                 ),
               );
-            case AuthLoginWithGoogleSuccess _:
-              return Scaffold(
-                backgroundColor: colorScheme.surface,
-              );
-            default:
-              return Scaffold(
-                body: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          vegaWalletLogo,
-                          width: 150,
-                          height: 150,
+            }
+            return Scaffold(
+              body: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        vegaWalletLogo,
+                        width: 150,
+                        height: 150,
+                      ),
+                      const SizedBox(height: 40),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: colorScheme.onPrimary,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
-                        const SizedBox(height: 40),
-                         ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: colorScheme.onPrimary,
-                                padding: const EdgeInsets.symmetric(vertical: 12),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              onPressed: () {
-                                BlocProvider.of<AuthBloc>(context).add(LoginWithGoogle());
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    googleIcon,
-                                    width: 24,
-                                    height: 24,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    'Login with Google',
-                                    style: AppTextStyles(context).headline2,
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 40),
-                        Row(
+                        onPressed: () {
+                          context.read<AuthBloc>().add(LoginWithGoogle());
+                        },
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
-                              "Powered by",
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            Image.asset(
-                              vegaDarkLogo,
-                              width: 70,
+                            SvgPicture.asset(
+                              googleIcon,
+                              width: 24,
                               height: 24,
-                              color: colorScheme.onSurface,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              localization.loginWithGoogle,
+                              style: AppTextStyles(context).headline2,
                             ),
                           ],
                         ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 40),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Powered by",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          Image.asset(
+                            vegaDarkLogo,
+                            width: 70,
+                            height: 24,
+                            color: colorScheme.onSurface,
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-              );
-          }
-        },
+              ),
+            );
+          },
+        ),
       ),
     );
   }
