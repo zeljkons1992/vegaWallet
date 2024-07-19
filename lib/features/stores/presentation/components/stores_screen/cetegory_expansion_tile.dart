@@ -46,6 +46,7 @@ class CategoryExpansionTile extends StatelessWidget {
       child: Theme(
         data: Theme.of(context).copyWith(
           dividerColor: Colors.transparent,
+          shadowColor: Colors.transparent,
         ),
         child: ExpansionTile(
           leading: Icon(
