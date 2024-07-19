@@ -47,9 +47,4 @@ abstract class InjectableModule {
   SpreadsheetDownloader provideApiClient(Dio dio) {
     return SpreadsheetDownloader(dio);
   }
-  @singleton
-  StreamController<void> get navigationStreamController {
-    final controller = StreamController<void>.broadcast();
-    return controller;
-  }
 }
