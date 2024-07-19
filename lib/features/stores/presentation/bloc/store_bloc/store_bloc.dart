@@ -16,13 +16,14 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   final FetchStoresUseCase _fetchStoresUseCase;
   final SearchStoresUseCase _searchStoresUseCase;
 
-  StoreBloc(this._fetchStoresUseCase, this._searchStoresUseCase) : super(StoreLoading()) {
+  StoreBloc(this._fetchStoresUseCase, this._searchStoresUseCase) : super(StoreInitial()) {
     on<LoadStores>(_onLoadStores);
     on<SearchStores>(_onSearchStores);
 
   }
 
   Future<void> _onLoadStores(LoadStores event, Emitter<StoreState> emit) async {
+    emit(StoreLoading());
     final cachePolicy =
         CachePolicy(type: CacheType.EXPIRES, expires: const Duration(days: 7));
     final dataState = await _fetchStoresUseCase(params: cachePolicy);

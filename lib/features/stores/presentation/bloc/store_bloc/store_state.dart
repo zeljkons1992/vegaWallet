@@ -7,6 +7,8 @@ abstract class StoreState extends Equatable {
   List<Object> get props => [];
 }
 
+class StoreInitial extends StoreState {}
+
 class StoreLoading extends StoreState {}
 
 class StoreLoaded extends StoreState {

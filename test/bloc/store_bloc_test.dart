@@ -32,8 +32,8 @@ void main() {
       ),
     ];
 
-    test('initial state is StoreLoading', () {
-      expect(storeBloc.state, equals(StoreLoading()));
+    test('initial state is StoreInitial', () {
+      expect(storeBloc.state, equals(StoreInitial()));
     });
 
     blocTest<StoreBloc, StoreState>(
@@ -45,6 +45,7 @@ void main() {
       },
       act: (bloc) => bloc.add(LoadStores()),
       expect: () => [
+        StoreLoading(),
         StoreLoaded(stores: stores),
       ],
     );
@@ -58,6 +59,7 @@ void main() {
       },
       act: (bloc) => bloc.add(LoadStores()),
       expect: () => [
+        StoreLoading(),
         const StoreError(message: 'Error fetching data'),
       ],
     );
