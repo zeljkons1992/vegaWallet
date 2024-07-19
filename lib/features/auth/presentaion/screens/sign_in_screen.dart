@@ -58,9 +58,6 @@ class _SignInScreenState extends State<SignInScreen> {
                   duration: const Duration(seconds: 3),
                 ),
               );
-            // case AuthLoginWithGoogleSuccess _:
-            //   return context.go("/");
-
           }
         },
         builder: (context, state) {

@@ -32,7 +32,7 @@ class AuthRepositoryImpl implements AuthRepository {
         return DataState.error(e.toString());
       }
     } catch (e) {
-      return DataState.error("User canceled $e");
+      return DataState.error("tech_prob");
     }
   }
 

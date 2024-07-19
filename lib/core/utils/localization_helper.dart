@@ -8,6 +8,8 @@ String translate(String key, AppLocalizations localization) {
       return localization.unknownError;
     case "no_network":
       return localization.noNetwork;
+    case "tech_prob":
+      return localization.techProb;
     default:
       return key;
   }
