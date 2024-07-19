@@ -34,5 +34,8 @@
     "pushNotifications": "Push notifications",
     "enableLocation":"Enable Location",
     "noNumber": "No Number",
-    "defaultConditionsText": "No conditions specified"
+    "loginWithGoogle": "Login with Google",
+    "invalidEmailDomain": "Email domain is not valid. Must end with @vegait.rs.",
+    "unknownError": "An unknown error occurred."
 }
+

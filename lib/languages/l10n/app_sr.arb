@@ -34,5 +34,9 @@
     "pushNotifications": "Slanje Obaveštenja",
     "enableLocation":"Dozvoli Lokaciju",
     "noNumber": "Nema broja",
-    "defaultConditionsText": "Uslovi nisu navedeni"
+    "loginWithGoogle": "Prijavite se putem Google-a",
+    "invalidEmailDomain": "Email domen nije važeći. Mora se završiti sa @vegait.rs.",
+    "unknownError": "Došlo je do nepoznate greške."
 }
+
+

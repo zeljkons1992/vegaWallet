@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
@@ -44,5 +46,10 @@ abstract class InjectableModule {
   @LazySingleton()
   SpreadsheetDownloader provideApiClient(Dio dio) {
     return SpreadsheetDownloader(dio);
+  }
+  @singleton
+  StreamController<void> get navigationStreamController {
+    final controller = StreamController<void>.broadcast();
+    return controller;
   }
 }

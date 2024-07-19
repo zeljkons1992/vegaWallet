@@ -2,18 +2,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
 
+import '../domain/exceptions/auth_exception_message.dart';
+
 @LazySingleton()
 class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  Future<bool> signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? gUser = await _googleSignIn.signIn();
-      if (gUser == null) {
-        return false;
-      }
 
+  Future<bool> signInWithGoogle() async {
+    final GoogleSignInAccount? gUser = await _googleSignIn.signIn();
+    if (gUser == null) {
+      return false;
+    }
+    try {
       final GoogleSignInAuthentication gAuth = await gUser.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.credential(
@@ -27,11 +29,11 @@ class AuthService {
       if (user == null || !(user.email?.endsWith('@vegait.rs') ?? false)) {
         await _firebaseAuth.signOut();
         await _googleSignIn.signOut();
-        return false;
+        throw AuthExceptionMessage("invalid_email_domain");
       }
       return true;
     } catch (e) {
-      return false;
+      throw AuthExceptionMessage(e.toString());
     }
   }
 
