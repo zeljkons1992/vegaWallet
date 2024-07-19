@@ -9,7 +9,13 @@ class AuthInitial extends AuthState {}
 
 class AuthLoginWithGoogleSuccess extends AuthState {}
 
-class AuthLoginWithGoogleError extends AuthState {}
+class AuthLoginWithGoogleError extends AuthState {
+  final String message;
+
+  AuthLoginWithGoogleError(this.message);
+  @override
+  List<Object?> get props => [message];
+}
 
 class AuthLogoutSuccess extends AuthState {}
 

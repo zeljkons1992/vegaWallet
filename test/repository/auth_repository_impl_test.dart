@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:vegawallet/core/constants/text_const.dart';
 import 'package:vegawallet/core/data_state/data_state.dart';
 import 'package:vegawallet/core/services/auth_services.dart';
 import 'package:vegawallet/features/auth/data/repository/auth_repository_impl.dart';
@@ -33,7 +34,7 @@ void main() {
       final result = await repository.loginUserWithGoogle();
 
       expect(result.status, equals(DataStateStatus.error));
-      expect(result.message, equals("Error"));
+      expect(result.message, equals(TextConst.userCloseDialog));
     });
 
     test('should return error when logoutUser fails', () async {

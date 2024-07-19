@@ -1,5 +1,8 @@
+
 import 'package:injectable/injectable.dart';
+import 'package:vegawallet/core/constants/text_const.dart';
 import 'package:vegawallet/core/data_state/data_state.dart';
+import 'package:vegawallet/core/domain/exceptions/auth_exception_message.dart';
 import 'package:vegawallet/features/auth/domain/repository/auth_repository.dart';
 
 import '../../../../core/services/auth_services.dart';
@@ -12,11 +15,17 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<DataState> loginUserWithGoogle() async {
-    bool isLoggedIn = await _authServices.signInWithGoogle();
-    if (isLoggedIn) {
-      return DataState.success();
-    } else {
-      return DataState.error("Error");
+    try {
+      bool result = await _authServices.signInWithGoogle();
+      if(result){
+        return DataState.success();
+      }else{
+        return DataState.error(TextConst.userCloseDialog);
+      }
+    } on AuthExceptionMessage catch (e) {
+      return DataState.error(e.cause);
+    }catch(e){
+      return DataState.error("user canceled");
     }
   }
 
@@ -39,4 +48,3 @@ class AuthRepositoryImpl implements AuthRepository {
       return DataState.error("Korisnicko ime nije Vega");
   }
 }
-
