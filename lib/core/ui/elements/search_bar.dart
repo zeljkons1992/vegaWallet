@@ -117,6 +117,7 @@ class StoreSearchBarState extends State<StoreSearchBar> {
             setState(() {
               _searchStreamController.add([]);
               _controller.closeView(_controller.text);
+              _controller.clear();
             });
             FocusScopeNode currentFocus = FocusScope.of(context);
             if (!currentFocus.hasPrimaryFocus &&
