@@ -1,4 +1,5 @@
 
+import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegawallet/core/constants/text_const.dart';
 import 'package:vegawallet/core/data_state/data_state.dart';
@@ -17,15 +18,21 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<DataState> loginUserWithGoogle() async {
     try {
       bool result = await _authServices.signInWithGoogle();
-      if(result){
+      if (result) {
         return DataState.success();
-      }else{
+      } else {
         return DataState.error(TextConst.userCloseDialog);
       }
     } on AuthExceptionMessage catch (e) {
       return DataState.error(e.cause);
-    }catch(e){
-      return DataState.error("user canceled");
+    } on PlatformException catch (e) {
+      if (e.code == 'network_error') {
+        return DataState.error("no_network");
+      } else {
+        return DataState.error(e.toString());
+      }
+    } catch (e) {
+      return DataState.error("User canceled $e");
     }
   }
 
