@@ -31,13 +31,13 @@ class _SignInScreenState extends State<SignInScreen> {
     _startListeningToAuthStream();
 
   }
-  
+
   _startListeningToAuthStream() {
     navigationStream = authBloc.streamNavigationSuccess.listen((event) {
       context.go('/');
     });
   }
-  
+
   @override
   void dispose() {
     navigationStream.cancel();
