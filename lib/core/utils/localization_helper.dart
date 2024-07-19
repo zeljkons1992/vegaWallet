@@ -6,6 +6,8 @@ String translate(String key, AppLocalizations localization) {
       return localization.invalidEmailDomain;
     case "unknown_error":
       return localization.unknownError;
+    case "no_network":
+      return localization.noNetwork;
     default:
       return key;
   }

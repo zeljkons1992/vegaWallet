@@ -36,7 +36,9 @@
     "noNumber": "Nema broja",
     "loginWithGoogle": "Prijavite se putem Google-a",
     "invalidEmailDomain": "Email domen nije važeći. Mora se završiti sa @vegait.rs.",
-    "unknownError": "Došlo je do nepoznate greške."
+    "unknownError": "Došlo je do nepoznate greške.",
+    "defaultConditionsText": "Uslovi nisu navedeni",
+    "noNetwork": "Nema konekcije sa internetom"
 }
 
 
