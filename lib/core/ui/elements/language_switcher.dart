@@ -9,6 +9,7 @@ class LanguageSwitcher extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<Locale>(
+      color: Theme.of(context).colorScheme.surface,
       icon: SvgPicture.asset(
         _getFlagIcon(Localizations.localeOf(context)),
         fit: BoxFit.cover,
