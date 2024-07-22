@@ -28,7 +28,6 @@ class PrimaryDropdownButtonState extends State<PrimaryDropdownButton> {
     _items = List.from(widget.items);
     _selectedItem = widget.selectedItem ?? _items[0];
 
-
     List<AddressCity> newItems = [];
     for (var item in _items) {
       if (item.address.contains('\n')) {
@@ -133,7 +132,7 @@ class PrimaryDropdownButtonState extends State<PrimaryDropdownButton> {
 
     return Expanded(
       child: InkWell(
-        onTap: () => _showDropdownMenu(context),
+        onTap: _items.length > 1 ? () => _showDropdownMenu(context) : null,
         child: Container(
           height: 50,
           decoration: BoxDecoration(
@@ -162,7 +161,8 @@ class PrimaryDropdownButtonState extends State<PrimaryDropdownButton> {
                   ],
                 ),
               ),
-              const Icon(Icons.arrow_drop_down, color: Colors.white),
+              if (_items.length > 1)
+                const Icon(Icons.arrow_drop_down, color: Colors.white),
             ],
           ),
         ),
