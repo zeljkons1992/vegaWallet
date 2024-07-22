@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../../../core/constants/size_const.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/ui/elements/primary_back_button.dart';
@@ -12,6 +13,8 @@ import '../components/details_screen/item_details_info.dart';
 import '../components/details_screen/maps/map_location_error.dart';
 import '../components/details_screen/maps/map_location_initail.dart';
 import '../components/details_screen/maps/map_location_loaded.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class StoreDetailsScreen extends StatefulWidget {
   final Store store;
@@ -49,6 +52,8 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     String? addressCity;
     if (selectedDropdownItem != null) {
@@ -74,9 +79,9 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                         IntentUtils.launchMaps(
                             state.position.latitude, state.position.longitude);
                       } else if (state is OpenNavigationToAddressUnsuccessful) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Nije dobro')),
-                        );
+                        Fluttertoast.showToast(msg: localization.noFindAddress,
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,);
                       }
                     },
                     builder: (context, state) {
