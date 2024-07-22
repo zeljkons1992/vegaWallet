@@ -35,7 +35,7 @@
     "enableLocation":"Enable Location",
     "noNumber": "No Number",
     "loginWithGoogle": "Login with Google",
-    "invalidEmailDomain": "Email domain is not valid. Must end with @vegait.rs.",
+    "invalidEmailDomain": "The application is only for Vega it employees.",
     "unknownError": "An unknown error occurred.",
     "defaultConditionsText": "No conditions specified",
     "noNetwork": "No Internet Connection",

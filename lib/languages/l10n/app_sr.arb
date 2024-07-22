@@ -35,7 +35,7 @@
     "enableLocation":"Dozvoli Lokaciju",
     "noNumber": "Nema broja",
     "loginWithGoogle": "Prijavite se putem Google-a",
-    "invalidEmailDomain": "Email domen nije važeći. Mora se završiti sa @vegait.rs.",
+    "invalidEmailDomain": "Aplikacija je samo za zaposlene Vege It.",
     "unknownError": "Došlo je do nepoznate greške.",
     "defaultConditionsText": "Uslovi nisu navedeni",
     "noNetwork": "Nema konekcije sa internetom",
