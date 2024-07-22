@@ -16,7 +16,7 @@ Widget itemDetailsInfo(Store store, BuildContext context) {
         _buildSectionText(store.name, AppTextStyles(context).titleBold.copyWith(fontSize: 18.0)),
         _buildDivider(context),
         _buildSectionText(localization.discountsTitle, AppTextStyles(context).titleBold.copyWith(fontSize: 14)),
-        _buildSectionText(_formatList(store.discounts), AppTextStyles(context).headline2.copyWith(fontSize: 14.0)),
+        _buildSectionText("${store.parsedDiscount?.toInt().toString()}%", AppTextStyles(context).headline2.copyWith(fontSize: 14.0)),
         _buildDivider(context),
         _buildSectionText(localization.discountCalculatorConditionsTitle, AppTextStyles(context).titleBold.copyWith(fontSize: 14)),
         _buildSectionText(_formatList(store.conditions), AppTextStyles(context).headline2.copyWith(fontSize: 14.0)),

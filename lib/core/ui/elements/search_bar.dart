@@ -106,7 +106,7 @@ class StoreSearchBarState extends State<StoreSearchBar> {
 
   Future<List<Widget>> _buildSuggestions() async {
     final completer = Completer<List<Widget>>();
-    _searchStreamController.stream.first.then((stores) {
+    _searchStreamController.stream.firstWhere((stores) => stores.isNotEmpty, orElse: () => []).then((stores) {
       final suggestions = stores
           .map(
             (store) => ListTile(
