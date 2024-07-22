@@ -34,5 +34,12 @@
     "pushNotifications": "Push notifications",
     "enableLocation":"Enable Location",
     "noNumber": "No Number",
-    "defaultConditionsText": "No conditions specified"
+    "loginWithGoogle": "Login with Google",
+    "invalidEmailDomain": "The application is only for Vega it employees.",
+    "unknownError": "An unknown error occurred.",
+    "defaultConditionsText": "No conditions specified",
+    "noNetwork": "No Internet Connection",
+    "techProb": "Technical problems occurred, please try again later"
+
 }
+

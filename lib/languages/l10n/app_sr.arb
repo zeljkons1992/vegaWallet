@@ -34,5 +34,13 @@
     "pushNotifications": "Slanje Obaveštenja",
     "enableLocation":"Dozvoli Lokaciju",
     "noNumber": "Nema broja",
-    "defaultConditionsText": "Uslovi nisu navedeni"
+    "loginWithGoogle": "Prijavite se putem Google-a",
+    "invalidEmailDomain": "Aplikacija je samo za zaposlene Vege It.",
+    "unknownError": "Došlo je do nepoznate greške.",
+    "defaultConditionsText": "Uslovi nisu navedeni",
+    "noNetwork": "Nema konekcije sa internetom",
+    "techProb": "Došlo je do tehničkih problema. Probajte ponovo kasnije"
+
 }
+
+
