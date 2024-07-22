@@ -49,7 +49,7 @@ class AppTextStyles {
   TextStyle get cardLabelTitle => GoogleFonts.inter(
     fontSize: 12,
     fontWeight: FontWeight.w500,
-    color: Theme.of(context).colorScheme.onSurface,
+    color: Colors.white,
   );
 
   TextStyle get cardLabelDigital => GoogleFonts.robotoMono(
