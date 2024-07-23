@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:vegawallet/core/data_state/data_state.dart';
 import '../../../../core/constants/size_const.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/ui/elements/primary_back_button.dart';
@@ -18,14 +21,17 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StoreDetailsScreen extends StatefulWidget {
   final Store store;
+  final LocationBloc _locationBloc = getIt<LocationBloc>();
 
-  const StoreDetailsScreen({super.key, required this.store});
+  StoreDetailsScreen({super.key, required this.store});
 
   @override
   StoreDetailsScreenState createState() => StoreDetailsScreenState();
 }
 
 class StoreDetailsScreenState extends State<StoreDetailsScreen> {
+  late StreamSubscription<DataState> _navigationStream;
+
   AddressCity? selectedDropdownItem;
   bool isStore = false;
   bool isMapExpanded = false;
@@ -35,11 +41,21 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
   @override
   void initState() {
     super.initState();
-
+    _startListeningToMapStream();
     if (widget.store.addressCities.isNotEmpty) {
       selectedDropdownItem = widget.store.addressCities.first;
     }
 
+  }
+  void _startListeningToMapStream() {
+    _navigationStream = widget._locationBloc.navigationStream.listen((event) {
+        IntentUtils.launchMaps(event.data!.latitude, event.data!.longitude);
+    });
+  }
+  @override
+  void dispose() {
+    _navigationStream.cancel();
+    super.dispose();
   }
 
   void _expandMapAndShowLocations() {
@@ -61,7 +77,7 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
     }
 
     return BlocProvider(
-      create: (context) => getIt<LocationBloc>()..add(UpdateStoreLocation(addressCity ?? '')),
+      create: (context) => widget._locationBloc..add(UpdateStoreLocation(addressCity ?? '')),
       child: Scaffold(
         body: Column(
           children: [
@@ -75,10 +91,7 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                 children: [
                   BlocConsumer<LocationBloc, LocationState>(
                     listener: (context, state) {
-                      if (state is OpenNavigationToAddressSuccessful) {
-                        IntentUtils.launchMaps(
-                            state.position.latitude, state.position.longitude);
-                      } else if (state is OpenNavigationToAddressUnsuccessful) {
+                       if (state is OpenNavigationToAddressUnsuccessful) {
                         Fluttertoast.showToast(msg: localization.noFindAddress,
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.CENTER,);

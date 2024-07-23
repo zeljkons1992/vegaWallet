@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
@@ -16,6 +18,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   final GetCurrentLocationUseCase _getCurrentLocationUseCase;
   final GetPickedStoreUseCase _getPickedStoreUseCase;
   final OpenNativeNavigationUseCase _openNativeNavigationUseCase;
+  final _navigationStreamController = StreamController<DataState<PositionSimple>>();
 
   LocationBloc(
       this._getCurrentLocationUseCase,
@@ -29,6 +32,9 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     on<OpenNavigationToAddress>(_onOpenNativeNavigation);
   }
 
+  StreamSink<void> get successNavigationSink => _navigationStreamController.sink;
+  Stream<DataState<PositionSimple>> get navigationStream => _navigationStreamController.stream.asBroadcastStream();
+
   Future<void> _onGetLocation(GetLocation event, Emitter<LocationState> emit) async {
     final result = await _getCurrentLocationUseCase();
     if (result.status == DataStateStatus.success) {
@@ -37,6 +43,8 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       emit(LocationError(result.message ?? 'An unknown error occurred'));
     }
   }
+
+
 
 
   Future<void> _onRequestLocationPermission(RequestLocationPermission event, Emitter<LocationState> emit) async {
@@ -64,10 +72,16 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
   Future<void> _onOpenNativeNavigation(OpenNavigationToAddress event, Emitter<LocationState> emit) async {
     final result = await _openNativeNavigationUseCase(params: event.address);
-    if (result.status == DataStateStatus.success) {
-      emit(OpenNavigationToAddressSuccessful(result.data));
-    } else {
+    if(result.status==DataStateStatus.success){
+      _navigationStreamController.sink.add(result);
+    }else{
       emit(OpenNavigationToAddressUnsuccessful());
     }
+  }
+
+  @override
+  Future<void> close() {
+    _navigationStreamController.close();
+    return super.close();
   }
 }
