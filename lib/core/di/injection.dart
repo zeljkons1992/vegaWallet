@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -47,4 +48,7 @@ abstract class InjectableModule {
   SpreadsheetDownloader provideApiClient(Dio dio) {
     return SpreadsheetDownloader(dio);
   }
+
+  @Singleton()
+  FirebaseDatabase get firebaseDatabase => FirebaseDatabase.instance;
 }

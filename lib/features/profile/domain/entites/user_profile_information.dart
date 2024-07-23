@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:vegawallet/features/stores/domain/entities/position.dart';
 
 class UserProfileInformation extends Equatable {
   final String uid;
@@ -7,7 +8,7 @@ class UserProfileInformation extends Equatable {
   final String? phoneNumber;
   final String profileImage;
   final String dateTime;
-  final bool isEpsilon;
+  final PositionSimple? position;
 
   const UserProfileInformation({
     required this.uid,
@@ -16,9 +17,9 @@ class UserProfileInformation extends Equatable {
     this.phoneNumber,
     required this.profileImage,
     required this.dateTime,
-    required this.isEpsilon
+    this.position
   });
 
   @override
-  List<Object?> get props => [uid,nameAndSurname, email, phoneNumber, profileImage, dateTime,isEpsilon];
+  List<Object?> get props => [uid,nameAndSurname, email, phoneNumber, profileImage, dateTime,  position];
 }

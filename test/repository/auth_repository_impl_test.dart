@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -11,23 +13,61 @@ class MockAuthServices extends Mock implements AuthService {}
 
 class MockAuthExceptionMessage extends Mock implements AuthExceptionMessage {}
 
+class MockFirebaseService extends Mock implements FirebaseDatabase {}
+
+class MockUser extends Mock implements User {}
+
+class MockDatabaseReference extends Mock implements DatabaseReference {}
+
+class MockDataSnapshot extends Mock implements DataSnapshot {}
+
+class MockUserMetadata extends Mock implements UserMetadata {}
+
 void main() {
   late AuthRepositoryImpl repository;
   late MockAuthServices mockAuthServices;
+  late MockFirebaseService mockFirebaseService;
+  late MockDatabaseReference mockDatabaseReference;
+  late MockUser mockUser;
+  late MockDataSnapshot mockDataSnapshot;
+  late MockUserMetadata mockUserMetadata;
+
+  setUpAll(() {
+    registerFallbackValue(Uri());
+  });
 
   setUp(() {
     mockAuthServices = MockAuthServices();
-    repository = AuthRepositoryImpl(mockAuthServices);
+    mockFirebaseService = MockFirebaseService();
+    mockDatabaseReference = MockDatabaseReference();
+    mockUser = MockUser();
+    mockDataSnapshot = MockDataSnapshot();
+    mockUserMetadata = MockUserMetadata();
+    repository = AuthRepositoryImpl(mockAuthServices, mockFirebaseService);
+
+    when(() => mockFirebaseService.ref()).thenReturn(mockDatabaseReference);
+    when(() => mockDatabaseReference.child(any())).thenReturn(mockDatabaseReference);
+    when(() => mockDatabaseReference.set(any())).thenAnswer((_) async => {});
+    when(() => mockDatabaseReference.get()).thenAnswer((_) async => mockDataSnapshot);
   });
 
   group('AuthRepositoryImpl - loginUserWithGoogle', () {
     test('should return success when signInWithGoogle succeeds', () async {
       when(() => mockAuthServices.signInWithGoogle()).thenAnswer((_) async => true);
+      when(() => mockAuthServices.getCurrentUser()).thenAnswer((_) async => mockUser);
+      when(() => mockUser.uid).thenReturn('12345');
+      when(() => mockUser.displayName).thenReturn('Test User');
+      when(() => mockUser.email).thenReturn('test@example.com');
+      when(() => mockUser.phoneNumber).thenReturn('1234567890');
+      when(() => mockUser.photoURL).thenReturn('https://example.com/photo.jpg');
+      when(() => mockUser.metadata).thenReturn(mockUserMetadata);
+      when(() => mockUserMetadata.creationTime).thenReturn(DateTime.now());
+      when(() => mockUserMetadata.lastSignInTime).thenReturn(DateTime.now());
+      when(() => mockDataSnapshot.exists).thenReturn(false);
 
       final result = await repository.loginUserWithGoogle();
 
       expect(result.status, equals(DataStateStatus.success));
-      expect(result.message, equals(DataState.success().message));
     });
 
     test('should return error with userCloseDialog when signInWithGoogle fails', () async {

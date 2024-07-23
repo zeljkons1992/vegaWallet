@@ -12,6 +12,7 @@ import '../../../../core/services/auth_services.dart';
 class ProfileRepositoryImpl implements ProfileRepository{
 
   final AuthService _authServices;
+
   const ProfileRepositoryImpl(this._authServices);
 
   @override
@@ -30,8 +31,7 @@ class ProfileRepositoryImpl implements ProfileRepository{
         email: user.email!,
         phoneNumber: user.phoneNumber,
         profileImage: user.photoURL!,
-          dateTime: formattedDate,
-          isEpsilon: true
+        dateTime: formattedDate,
       );
       return DataState.success(userProfileInformation);
     } catch (e) {

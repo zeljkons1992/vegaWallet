@@ -49,7 +49,6 @@ void main() {
         phoneNumber: "1234567890",
         profileImage: "http://example.com/photo.jpg",
         dateTime: formattedDate,
-        isEpsilon: true
     );
 
     final result = await profileRepositoryImpl.getUserInformation();

@@ -23,7 +23,6 @@ void main() {
     phoneNumber: '1234567890',
     profileImage: 'http://example.com/photo.jpg',
     dateTime: 'January 1, 2020',
-     isEpsilon: true
   );
 
   test('should return DataState.success with UserProfileInformation on success', () async {
