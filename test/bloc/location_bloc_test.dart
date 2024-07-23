@@ -114,7 +114,7 @@ void main() {
       },
       act: (bloc) => bloc.add(OpenNavigationToAddress('Novi Sad')),
       expect: () => [
-        OpenNavigationToAddressSuccessful(testPositionSimple),
+
       ],
     );
 

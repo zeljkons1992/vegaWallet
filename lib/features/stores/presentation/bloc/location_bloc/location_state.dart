@@ -48,12 +48,4 @@ class StoreLocationUpdatedUnsuccessful extends LocationState {
   List<Object?> get props => [string];
 }
 
-class OpenNavigationToAddressSuccessful extends LocationState {
-  final PositionSimple position;
-
-  OpenNavigationToAddressSuccessful(this.position);
-  @override
-  List<Object?> get props => [position];
-}
-
 class OpenNavigationToAddressUnsuccessful extends LocationState {}
