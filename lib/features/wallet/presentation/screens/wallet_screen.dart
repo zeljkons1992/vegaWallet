@@ -51,7 +51,8 @@ class _WalletScreenState extends State<WalletScreen> {
         resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: PADDING_VALUE_SMALL),
+            padding:
+                const EdgeInsets.symmetric(horizontal: PADDING_VALUE_SMALL),
             child: BlocBuilder<WalletBloc, WalletState>(
               builder: (context, state) {
                 switch (state) {
@@ -61,7 +62,7 @@ class _WalletScreenState extends State<WalletScreen> {
                     return _buildContent(
                         context, (state).walletCardInformation);
                   case WalletStateError _:
-                    return  Center(
+                    return Center(
                         child: Text(localization.cardInformationLoadFailed));
                   default:
                     return const SizedBox();
@@ -82,11 +83,15 @@ class _WalletScreenState extends State<WalletScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: PADDING_VALUE_SMALL, vertical: PADDING_VALUE_LARGE),
+            padding: const EdgeInsets.symmetric(
+                horizontal: PADDING_VALUE_SMALL, vertical: PADDING_VALUE_LARGE),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(localization.walletTitle, style: AppTextStyles(context).headline1,),
+                Text(
+                  localization.walletTitle,
+                  style: AppTextStyles(context).headline1,
+                ),
                 const LanguageSwitcher(),
               ],
             ),
@@ -101,7 +106,8 @@ class _WalletScreenState extends State<WalletScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: PADDING_VALUE_LARGE, left: PADDING_VALUE_SMALL),
+            padding: const EdgeInsets.only(
+                top: PADDING_VALUE_LARGE, left: PADDING_VALUE_SMALL),
             child: Text(
               localization.discountsTitle,
               style: AppTextStyles(context).headline1,
@@ -119,9 +125,25 @@ class _WalletScreenState extends State<WalletScreen> {
           ),
           if (_selectedStore != null) ...[
             Padding(
-              padding: const EdgeInsets.only(top: PADDING_VALUE_LARGE, bottom: PADDING_VALUE_LARGE),
-              child: SelectedStoreDisplay(
-                store: _selectedStore!,
+              padding: const EdgeInsets.only(
+                  top: PADDING_VALUE_LARGE, bottom: PADDING_VALUE_LARGE),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: SelectedStoreDisplay(
+                      store: _selectedStore!,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _selectedStore = null;
+                      });
+                    },
+                    icon: const Icon(Icons.close),
+                    color: Theme.of(context).colorScheme.onSurface,
+                  )
+                ],
               ),
             ),
             _selectedStore!.parsedDiscount != null
