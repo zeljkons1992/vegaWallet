@@ -33,7 +33,7 @@ class ProfileRepositoryImpl implements ProfileRepository{
         phoneNumber: user.phoneNumber,
         profileImage: updateImageSize(user.photoURL!,400),
         dateTime: formattedDate,
-]      );
+      );
       return DataState.success(userProfileInformation);
     } catch (e) {
       return DataState.error(e.toString());
