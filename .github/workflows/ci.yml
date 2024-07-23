@@ -143,6 +143,39 @@ jobs:
           </dict>
           </plist>' > ios/Runner/GoogleService-Info.plist
 
+      - name: Create firebase.json
+        run: |
+          echo '{
+            "flutter": {
+              "platforms": {
+                "android": {
+                  "default": {
+                    "projectId": "vega-wallet",
+                    "appId": "dummy-id",
+                    "fileOutput": "android/app/google-services.json"
+                  }
+                },
+                "ios": {
+                  "default": {
+                    "projectId": "vega-wallet",
+                    "appId": "dummy-id",
+                    "uploadDebugSymbols": false,
+                    "fileOutput": "ios/Runner/GoogleService-Info.plist"
+                  }
+                },
+                "dart": {
+                  "lib/firebase_options.dart": {
+                    "projectId": "vega-wallet",
+                    "configurations": {
+                      "android": "dummy-id",
+                      "ios": "dummy-id"
+                    }
+                  }
+                }
+              }
+            }
+          }' > firebase.json
+
       - name: Install dependencies
         run: flutter pub get
 
@@ -154,6 +187,7 @@ jobs:
 
       - name: Install flutterfire CLI
         run: dart pub global activate flutterfire_cli
+
       - name: Ensure flutterfire is in PATH
         run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
 
