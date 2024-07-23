@@ -152,6 +152,11 @@ jobs:
       - name: Analyze code
         run: flutter analyze
 
+      - name: Install flutterfire CLI
+        run: dart pub global activate flutterfire_cli
+      - name: Ensure flutterfire is in PATH
+        run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+
       - name: Build iOS project
         run: flutter build ios --no-codesign
 
