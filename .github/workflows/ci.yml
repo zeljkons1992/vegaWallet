@@ -14,81 +14,89 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.2'
 
-      - name: Set up Java 11
+      - name: Set up Java 17
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
 
       - name: Create .env file
         run: |
-          echo "EXCEL_BASE_URL=https://example.com" >> .env
-          echo "EXCEL_URL=/spreadsheet.xlsx" >> .env
-          echo "EXCEL_FORMAT=xlsx" >> .env
-          echo "FIREBASE_API_KEY_ANDROID=dummy" >> .env
-          echo "FIREBASE_APP_ID_ANDROID=dummy" >> .env
-          echo "FIREBASE_MESSAGING_SENDER_ID=123" >> .env
-          echo "FIREBASE_PROJECT_ID=dummy" >> .env
-          echo "FIREBASE_STORAGE_BUCKET=dummy" >> .env
-          echo "FIREBASE_API_KEY_IOS=dummy" >> .env
-          echo "FIREBASE_APP_ID_IOS=dummy" >> .env
-          echo "FIREBASE_IOS_BUNDLE_ID=dummy" >> .env
+          echo "EXCEL_BASE_URL=${{ secrets.EXCEL_BASE_URL }}" >> .env
+          echo "EXCEL_URL=${{ secrets.EXCEL_URL }}" >> .env
+          echo "EXCEL_FORMAT=${{ secrets.EXCEL_FORMAT }}" >> .env
+          echo "FIREBASE_API_KEY_ANDROID=${{ secrets.FIREBASE_API_KEY_ANDROID }}" >> .env
+          echo "FIREBASE_APP_ID_ANDROID=${{ secrets.FIREBASE_APP_ID_ANDROID }}" >> .env
+          echo "FIREBASE_MESSAGING_SENDER_ID=${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}" >> .env
+          echo "FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}" >> .env
+          echo "FIREBASE_STORAGE_BUCKET=${{ secrets.FIREBASE_STORAGE_BUCKET }}" >> .env
+          echo "FIREBASE_API_KEY_IOS=${{ secrets.FIREBASE_API_KEY_IOS }}" >> .env
+          echo "FIREBASE_APP_ID_IOS=${{ secrets.FIREBASE_APP_ID_IOS }}" >> .env
+          echo "FIREBASE_IOS_BUNDLE_ID=${{ secrets.FIREBASE_IOS_BUNDLE_ID }}" >> .env
 
       - name: Create google-services.json
         run: |
           mkdir -p android/app
           echo '{
             "project_info": {
-              "project_number": "1234",
-              "project_id": "vega-wallet",
-              "storage_bucket": "vega-wallet.appspot.com"
+              "project_number": "${{ secrets.PROJECT_NUMBER }}",
+              "project_id": "${{ secrets.PROJECT_ID }}",
+              "storage_bucket": "${{ secrets.STORAGE_BUCKET }}"
             },
             "client": [
               {
                 "client_info": {
-                  "mobilesdk_app_id": "1111",
+                  "mobilesdk_app_id": "${{ secrets.MOBILESDK_APP_ID }}",
                   "android_client_info": {
                     "package_name": "com.example.vegawallet"
                   }
                 },
                 "oauth_client": [
                   {
-                    "client_id": "1111",
+                    "client_id": "${{ secrets.OAUTH_CLIENT_ID_1 }}",
                     "client_type": 1,
                     "android_info": {
                       "package_name": "com.example.vegawallet",
-                      "certificate_hash": "1111"
+                      "certificate_hash": "${{ secrets.CERTIFICATE_HASH_1 }}"
                     }
                   },
                   {
-                    "client_id": "1111",
+                    "client_id": "${{ secrets.OAUTH_CLIENT_ID_2 }}",
+                    "client_type": 1,
+                    "android_info": {
+                      "package_name": "com.example.vegawallet",
+                      "certificate_hash": "${{ secrets.CERTIFICATE_HASH_2 }}"
+                    }
+                  },
+                  {
+                    "client_id": "${{ secrets.OAUTH_CLIENT_ID_3 }}",
                     "client_type": 3
                   }
                 ],
                 "api_key": [
                   {
-                    "current_key": "123"
+                    "current_key": "${{ secrets.API_KEY }}"
                   }
                 ],
                 "services": {
                   "appinvite_service": {
                     "other_platform_oauth_client": [
                       {
-                        "client_id": "1111",
+                        "client_id": "${{ secrets.OAUTH_CLIENT_ID_3 }}",
                         "client_type": 3
                       },
                       {
-                        "client_id": "1111",
+                        "client_id": "${{ secrets.OAUTH_CLIENT_ID_4 }}",
                         "client_type": 2,
                         "ios_info": {
-                          "bundle_id": "com.example.vegawallet"
+                          "bundle_id": "vegawallet"
                         }
                       }
                     ]
@@ -98,6 +106,7 @@ jobs:
             ],
             "configuration_version": "1"
           }' > android/app/google-services.json
+      
 
       - name: Create GoogleService-Info.plist
         run: |
@@ -107,23 +116,23 @@ jobs:
           <plist version="1.0">
           <dict>
             <key>CLIENT_ID</key>
-            <string>dummy-client-id.apps.googleusercontent.com</string>
+            <string>${{ secrets.IOS_CLIENT_ID }}</string>
             <key>REVERSED_CLIENT_ID</key>
-            <string>com.googleusercontent.apps.dummy-client-id</string>
+            <string>${{ secrets.IOS_REVERSED_CLIENT_ID }}</string>
             <key>ANDROID_CLIENT_ID</key>
-            <string>dummy-android-client-id.apps.googleusercontent.com</string>
+            <string>${{ secrets.IOS_ANDROID_CLIENT_ID }}</string>
             <key>API_KEY</key>
-            <string>dummy-api-key</string>
+            <string>${{ secrets.IOS_API_KEY }}</string>
             <key>GCM_SENDER_ID</key>
-            <string>123456789012</string>
+            <string>${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}</string>
             <key>PLIST_VERSION</key>
             <string>1</string>
             <key>BUNDLE_ID</key>
             <string>com.example.vegawallet</string>
             <key>PROJECT_ID</key>
-            <string>vega-wallet</string>
+            <string>${{ secrets.FIREBASE_PROJECT_ID }}</string>
             <key>STORAGE_BUCKET</key>
-            <string>vega-wallet.appspot.com</string>
+            <string>${{ secrets.FIREBASE_STORAGE_BUCKET }}</string>
             <key>IS_ADS_ENABLED</key>
             <false/>
             <key>IS_ANALYTICS_ENABLED</key>
@@ -135,9 +144,52 @@ jobs:
             <key>IS_SIGNIN_ENABLED</key>
             <true/>
             <key>GOOGLE_APP_ID</key>
-            <string>1:1098052959751:ios:dummy-app-id</string>
+            <string>${{ secrets.FIREBASE_IOS_BUNDLE_ID }}</string>
           </dict>
           </plist>' > ios/Runner/GoogleService-Info.plist
+
+      - name: Create firebase.json
+        run: |
+          echo '{
+            "flutter": {
+              "platforms": {
+                "android": {
+                  "default": {
+                    "projectId": "${{ secrets.FIREBASE_PROJECT_ID }}",
+                    "appId": "${{ secrets.FIREBASE_APP_ID_ANDROID }}",
+                    "fileOutput": "android/app/google-services.json"
+                  }
+                },
+                "ios": {
+                  "default": {
+                    "projectId": "${{ secrets.FIREBASE_PROJECT_ID }}",
+                    "appId": "${{ secrets.FIREBASE_APP_ID_IOS }}",
+                    "uploadDebugSymbols": false,
+                    "fileOutput": "ios/Runner/GoogleService-Info.plist"
+                  }
+                },
+                "dart": {
+                  "lib/firebase_options.dart": {
+                    "projectId": "${{ secrets.FIREBASE_PROJECT_ID }}",
+                    "configurations": {
+                      "android": "${{ secrets.FIREBASE_APP_ID_ANDROID }}",
+                      "ios": "${{ secrets.FIREBASE_APP_ID_IOS }}"
+                    }
+                  }
+                }
+              }
+            }
+          }' > firebase.json
+
+      - name: Decode Keystore
+        run: |
+          echo "${{secrets.RELEASE_KEYSTORE}}" > release.keystore.asc
+          gpg --quiet --batch --yes  -d --passphrase "${{secrets.KEY_PASSWORD}}" release.keystore.asc > android/key.jks
+
+#      - name: Decode Keystore
+#        run: |
+#          echo "${{ secrets.RELEASE_KEYSTORE }}" > release.keystore.asc
+#          gpg --quiet --batch --yes --decrypt --passphrase="${{ secrets.KEY_PASSWORD }}" --output android/app/key.jks release.keystore.asc
 
       - name: Install dependencies
         run: flutter pub get
@@ -148,14 +200,35 @@ jobs:
       - name: Analyze code
         run: flutter analyze
 
+      - name: Create key.properties
+        run: |
+          touch android/key.properties
+          echo "storePassword=${{ secrets.KEY_PASSWORD }}
+          keyPassword=${{ secrets.KEY_PASSWORD }}
+          keyAlias=${{ secrets.ALIAS }}
+          storeFile=../key.jks"  > ./android/key.properties
+
+      - name: Build Android project
+        env:
+          KEY_JKS: ${{ secrets.RELEASE_KEYSTORE }}
+          SIGNING_KEY_ALIAS: ${{ secrets.ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: flutter build apk --release
+
       - name: Build iOS project
         run: flutter build ios --no-codesign
 
-      - name: Build Android project
-        run: flutter build apk --debug
-
       - name: Run tests
         run: flutter test --coverage
+
+      - name: Upload Android build to Firebase App Distribution
+        uses: nickwph/firebase-app-distribution-action@v1
+        with:
+          app: ${{ secrets.APP_ID }}
+          credentials: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          file: build/app/outputs/flutter-apk/app-release.apk
+          groups: "testers"
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
