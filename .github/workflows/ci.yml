@@ -40,6 +40,7 @@ jobs:
           echo "FIREBASE_API_KEY_IOS=dummy" >> .env
           echo "FIREBASE_APP_ID_IOS=dummy" >> .env
           echo "FIREBASE_IOS_BUNDLE_ID=dummy" >> .env
+          echo "FIREBASE_DATABASE_URL=dummy" >> .env
 
       - name: Create google-services.json
         run: |
@@ -47,6 +48,7 @@ jobs:
           echo '{
             "project_info": {
               "project_number": "1234",
+              "firebase_url": "dummyurl",
               "project_id": "vega-wallet",
               "storage_bucket": "vega-wallet.appspot.com"
             },
@@ -136,8 +138,43 @@ jobs:
             <true/>
             <key>GOOGLE_APP_ID</key>
             <string>1:1098052959751:ios:dummy-app-id</string>
+            <key>DATABASE_URL</key>
+            <string>dummyurl</string>
           </dict>
           </plist>' > ios/Runner/GoogleService-Info.plist
+
+      - name: Create firebase.json
+        run: |
+          echo '{
+            "flutter": {
+              "platforms": {
+                "android": {
+                  "default": {
+                    "projectId": "vega-wallet",
+                    "appId": "dummy-id",
+                    "fileOutput": "android/app/google-services.json"
+                  }
+                },
+                "ios": {
+                  "default": {
+                    "projectId": "vega-wallet",
+                    "appId": "dummy-id",
+                    "uploadDebugSymbols": false,
+                    "fileOutput": "ios/Runner/GoogleService-Info.plist"
+                  }
+                },
+                "dart": {
+                  "lib/firebase_options.dart": {
+                    "projectId": "vega-wallet",
+                    "configurations": {
+                      "android": "dummy-id",
+                      "ios": "dummy-id"
+                    }
+                  }
+                }
+              }
+            }
+          }' > firebase.json
 
       - name: Install dependencies
         run: flutter pub get
@@ -147,6 +184,12 @@ jobs:
 
       - name: Analyze code
         run: flutter analyze
+
+      - name: Install flutterfire CLI
+        run: dart pub global activate flutterfire_cli
+
+      - name: Ensure flutterfire is in PATH
+        run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
 
       - name: Build iOS project
         run: flutter build ios --no-codesign

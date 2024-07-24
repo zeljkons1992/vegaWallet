@@ -28,7 +28,6 @@ void main() {
     phoneNumber: "e",
     profileImage: "e",
     dateTime: "e",
-    isEpsilon: true
   );
 
   blocTest<ProfileBloc, ProfileState>(
