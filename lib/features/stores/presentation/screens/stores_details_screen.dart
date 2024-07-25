@@ -121,9 +121,7 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                             zoomLevel: zoomLevel,
                           );
                         case FetchStoreLocationUnsuccessfullyState _:
-                          return MapsUnsuccessfully(errorMessage: "",onRefresh:  () =>
-                            _locationBloc..add(UpdateStoreLocation(addressCity ?? ''))
-                      );
+                          return const MapsUnsuccessfully();
                       case LocationLoading _:
                           return const Center(
                               child: CircularProgressIndicator());
