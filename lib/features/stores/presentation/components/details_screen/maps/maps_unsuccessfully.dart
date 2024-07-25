@@ -1,66 +1,55 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class MapsUnsuccessfully extends StatelessWidget {
-  final String errorMessage;
-  final VoidCallback onRefresh;
 
   const MapsUnsuccessfully({
-    super.key,
-    required this.errorMessage,
-    required this.onRefresh,
-  });
+    super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: Colors.red.shade100,
-              borderRadius: BorderRadius.circular(12.0),
+    Widget build(BuildContext context) {
+      return Scaffold(
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+              'assets/img/map_error_img.png',
+              fit: BoxFit.cover,
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.error_outline,
-                  color: Colors.red,
-                  size: 32.0,
-                ),
-                const SizedBox(width: 12.0),
-                Expanded(
-                  child: Text(
-                    errorMessage,
-                    style: const TextStyle(
+            BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: Container(
+                color: Colors.black.withOpacity(0.3),
+              ),
+            ),
+            const Center(
+              child: Padding(
+                padding:  EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.location_off_outlined,
                       color: Colors.red,
-                      fontSize: 16.0,
+                      size: 36,
                     ),
-                  ),
+                    SizedBox(height: 20),
+                    Text(
+                      'No Address founded',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20.0),
-          GestureDetector(
-            onTap: onRefresh,
-            child: Container(
-              width: 50.0,
-              height: 50.0,
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.1),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.refresh,
-                color: Colors.black,
               ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
   }
 }
