@@ -29,3 +29,12 @@ class OpenNavigationToAddress extends LocationEvent {
   @override
   List<Object?> get props => [address];
 }
+
+class ConnectivityLost extends LocationEvent {
+  ConnectivityLost();
+}
+class ConnectivityChanged extends LocationEvent {
+  ConnectivityChanged();
+
+}
+
