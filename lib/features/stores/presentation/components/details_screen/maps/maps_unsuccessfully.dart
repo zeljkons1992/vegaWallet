@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class MapsUnsuccessfully extends StatelessWidget {
 
@@ -9,7 +11,9 @@ class MapsUnsuccessfully extends StatelessWidget {
 
   @override
     Widget build(BuildContext context) {
-      return Scaffold(
+    final localization = AppLocalizations.of(context)!;
+
+    return Scaffold(
         body: Stack(
           fit: StackFit.expand,
           children: [
@@ -23,21 +27,21 @@ class MapsUnsuccessfully extends StatelessWidget {
                 color: Colors.black.withOpacity(0.3),
               ),
             ),
-            const Center(
+             Center(
               child: Padding(
-                padding:  EdgeInsets.all(16.0),
+                padding:  const EdgeInsets.all(16.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.location_off_outlined,
                       color: Colors.red,
                       size: 36,
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Text(
-                      'No Address founded',
-                      style: TextStyle(
+                      localization.noAddressFound,
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
