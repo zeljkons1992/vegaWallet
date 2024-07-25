@@ -30,22 +30,24 @@ class LocationError extends LocationState {
   List<Object?> get props => [message];
 }
 
-class StoreLocationUpdatedSuccess extends LocationState {
+class FetchStoreLocationSuccessState extends LocationState {
   final PositionSimple position;
 
-  StoreLocationUpdatedSuccess(this.position);
+  FetchStoreLocationSuccessState(this.position);
 
   @override
   List<Object?> get props => [position];
 }
 
-class StoreLocationUpdatedUnsuccessful extends LocationState {
-  final String string;
+class FetchStoreLocationUnsuccessfullyState extends LocationState {
 
-  StoreLocationUpdatedUnsuccessful(this.string);
-
-  @override
-  List<Object?> get props => [string];
+  FetchStoreLocationUnsuccessfullyState();
 }
+
+
+
+class NoInternetConnectionState extends LocationState {}
+
+
 
 class OpenNavigationToAddressUnsuccessful extends LocationState {}

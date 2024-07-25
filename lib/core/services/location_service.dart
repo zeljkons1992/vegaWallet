@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:injectable/injectable.dart';
 import 'package:geocoding/geocoding.dart';
@@ -13,8 +14,10 @@ class LocationService {
   Future<List<Location>> getLocationFromAddress(String address) async {
     try {
       return await locationFromAddress(address);
-    } catch (e) {
-      throw Exception('Failed to get location from address: $e');
+    } on PlatformException {
+        return await locationFromAddress(address);
+    }catch(e){
+      throw Exception("Get location from address $e");
     }
   }
 
