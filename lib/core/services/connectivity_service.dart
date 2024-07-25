@@ -31,10 +31,8 @@ class ConnectivityService {
     await for (var results in _connectivity.onConnectivityChanged) {
       if (results.contains(ConnectivityResult.none))  {
         yield false;
-      } else if (results.contains(ConnectivityResult.wifi) ) {
-        yield true;
       }
-      else if (results.contains(ConnectivityResult.mobile)) {
+      else{
         yield true;
       }
     }
