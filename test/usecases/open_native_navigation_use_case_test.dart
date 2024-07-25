@@ -17,7 +17,7 @@ void main() {
   });
 
   group('OpenNativeNavigationUseCase', () {
-    final simplePosition = PositionSimple(
+    PositionSimple simplePosition = const PositionSimple(
       latitude: 45.2671,
       longitude: 19.8335,
     );

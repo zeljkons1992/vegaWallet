@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegawallet/core/data_state/data_state.dart';
 import 'package:vegawallet/features/stores/domain/entities/position.dart';
@@ -31,11 +30,10 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     on<ConnectivityChanged>(_onConnectivityChanged);
     _initConnectivitySubscription();
   }
-  //Stream for Navigation(Google maps or Apple maps)
+
   StreamSink<void> get successNavigationSink => _navigationStreamController.sink;
   Stream<DataState<PositionSimple>> get navigationStream => _navigationStreamController.stream.asBroadcastStream();
 
-  //Fetch Location and add pin for Stores
   Future<void> _onUpdateStoreLocation(UpdateStoreLocation event, Emitter<LocationState> emit) async {
     _lastCity = event.city;
     if (await _connectivityService.checkConnectivity()) {
@@ -43,14 +41,13 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       if (result.status == DataStateStatus.success) {
         emit(FetchStoreLocationSuccessState(result.data));
       } else {
-        emit(FetchStoreLocationUnsuccessfullyState());
+        emit(const FetchStoreLocationUnsuccessfullyState());
       }
-    }else{
+    } else {
       emit(NoInternetConnectionState());
     }
   }
 
-  //Open native navigation for Android and Ios
   Future<void> _onOpenNativeNavigation(OpenNavigationToAddress event, Emitter<LocationState> emit) async {
     final result = await _openNativeNavigationUseCase(params: event.address);
     if (result.status == DataStateStatus.success) {
@@ -60,14 +57,14 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     }
   }
 
-  Future<void> _onConnectivityChanged(ConnectivityChanged event, Emitter<LocationState> emit)async{
+  Future<void> _onConnectivityChanged(ConnectivityChanged event, Emitter<LocationState> emit) async {
     emit(NoInternetConnectionState());
   }
 
   void _initConnectivitySubscription() {
     final connectivityStream = _connectivityService.listenToConnectivity();
     _connectivitySubscription = connectivityStream.listen((hasInternet) async {
-      if (hasInternet) {
+      if (hasInternet && _lastCity != null) {
         add(UpdateStoreLocation(_lastCity!));
       } else {
         add(ConnectivityChanged());
