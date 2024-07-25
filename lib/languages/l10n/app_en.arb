@@ -40,7 +40,8 @@
     "defaultConditionsText": "No conditions specified",
     "noNetwork": "No Internet Connection",
     "techProb": "Technical problems occurred, please try again later",
-    "noFindAddress": "Unfortunately, the address was not found \uD83D\uDE1E"
+    "noFindAddress": "Unfortunately, the address was not found \uD83D\uDE1E",
+    "noAddressFound":"No Address Found"
 
 }
 
