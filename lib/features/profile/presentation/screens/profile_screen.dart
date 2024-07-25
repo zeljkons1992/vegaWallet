@@ -79,8 +79,8 @@ class ProfileScreen extends StatelessWidget {
                                       backgroundColor: colorScheme.primary,
                                     ),
                                     child: Text(localization.logout,
-                                        style: TextStyle(
-                                            fontSize: 18, color: colorScheme.onSurface)),
+                                        style: const TextStyle(
+                                            fontSize: 18, color: Colors.white)),
                                   );
                                 }),
                               ),

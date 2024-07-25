@@ -6,6 +6,7 @@ import 'package:vegawallet/features/profile/domain/entites/user_profile_informat
 import 'package:vegawallet/features/profile/domain/repository/profile_repository.dart';
 
 import '../../../../core/services/auth_services.dart';
+import '../../../../core/utils/change_profile_image_resolution.dart';
 
 
 @Injectable(as: ProfileRepository)
@@ -23,13 +24,12 @@ class ProfileRepositoryImpl implements ProfileRepository{
       }
       final DateFormat formatter = DateFormat('MMMM d, yyyy');
       final String formattedDate = formatter.format(user.metadata.creationTime!);
-
       UserProfileInformation userProfileInformation = UserProfileInformation(
         uid: user.uid,
         nameAndSurname: user.displayName!,
         email: user.email!,
         phoneNumber: user.phoneNumber,
-        profileImage: user.photoURL!,
+        profileImage: updateImageSize(user.photoURL!,400),
           dateTime: formattedDate,
           isEpsilon: true
       );

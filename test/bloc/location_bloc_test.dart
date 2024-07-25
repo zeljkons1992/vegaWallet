@@ -1,134 +1,89 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:vegawallet/core/services/i_geo_locator_wrapper.dart';
+import 'dart:async';
 import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+import 'package:mockito/annotations.dart';
 import 'package:vegawallet/core/data_state/data_state.dart';
+import 'package:vegawallet/core/services/connectivity_service.dart';
 import 'package:vegawallet/features/stores/domain/entities/position.dart';
-import 'package:vegawallet/features/stores/domain/usecases/get_current_location_use_case.dart';
 import 'package:vegawallet/features/stores/domain/usecases/get_picked_store_use_case.dart';
 import 'package:vegawallet/features/stores/domain/usecases/open_native_navigation_use_case.dart';
 import 'package:vegawallet/features/stores/presentation/bloc/location_bloc/location_bloc.dart';
 
-class MockGeolocatorWrapper extends Mock implements IGeolocatorWrapper {}
-class MockGetCurrentLocationUseCase extends Mock implements GetCurrentLocationUseCase {}
-class MockOpenNativeNavigationUseCase extends Mock implements OpenNativeNavigationUseCase {}
-class MockGetPickedStoreUseCase extends Mock implements GetPickedStoreUseCase {}
+@GenerateMocks([GetPickedStoreUseCase, OpenNativeNavigationUseCase, ConnectivityService])
+import 'location_bloc_test.mocks.dart';
 
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
   late LocationBloc locationBloc;
-  late MockGetCurrentLocationUseCase mockGetCurrentLocationUseCase;
-  late MockOpenNativeNavigationUseCase mockOpenNativeNavigationUseCase;
   late MockGetPickedStoreUseCase mockGetPickedStoreUseCase;
+  late MockOpenNativeNavigationUseCase mockOpenNativeNavigationUseCase;
+  late MockConnectivityService mockConnectivityService;
 
   setUp(() {
-    mockGetCurrentLocationUseCase = MockGetCurrentLocationUseCase();
-    mockOpenNativeNavigationUseCase = MockOpenNativeNavigationUseCase();
     mockGetPickedStoreUseCase = MockGetPickedStoreUseCase();
+    mockOpenNativeNavigationUseCase = MockOpenNativeNavigationUseCase();
+    mockConnectivityService = MockConnectivityService();
+
+    when(mockConnectivityService.listenToConnectivity())
+        .thenAnswer((_) => Stream.value(true));
+
     locationBloc = LocationBloc(
-      mockGetCurrentLocationUseCase,
       mockGetPickedStoreUseCase,
       mockOpenNativeNavigationUseCase,
+      mockConnectivityService,
     );
   });
 
-  group('LocationBloc', () {
-    final testPosition = Position(
-      latitude: 37.42796133580664,
-      longitude: -122.085749655962,
-      timestamp: DateTime.now(),
-      accuracy: 1.0,
-      altitude: 1.0,
-      altitudeAccuracy: 1.0,
-      heading: 1.0,
-      headingAccuracy: 1.0,
-      speed: 1.0,
-      speedAccuracy: 1.0,
-    );
+  tearDown(() {
+    locationBloc.close();
+  });
 
-    final testPositionSimple = PositionSimple(latitude: 0.0, longitude: 0.0);
-
-    test('initial state is LocationInitial', () {
-      expect(locationBloc.state, equals(LocationInitial()));
-    });
-
+  group('LocationBloc Tests', () {
     blocTest<LocationBloc, LocationState>(
-      'emits [LocationLoaded] when GetLocation is added and data is fetched successfully',
+      'emits [FetchStoreLocationSuccessState] when UpdateStoreLocation is added and there is connectivity',
       build: () {
-        when(() => mockGetCurrentLocationUseCase())
-            .thenAnswer((_) async => DataState.success(testPosition));
+        when(mockConnectivityService.checkConnectivity())
+            .thenAnswer((_) async => true);
+        when(mockGetPickedStoreUseCase(params: anyNamed('params')))
+            .thenAnswer((_) async => DataState.success(const PositionSimple(latitude: 0.0, longitude: 0.0)));
+
         return locationBloc;
       },
-      act: (bloc) => bloc.add(GetLocation()),
+      act: (bloc) => bloc.add(UpdateStoreLocation('New York')),
       expect: () => [
-        LocationLoaded(testPosition),
+        const FetchStoreLocationSuccessState(PositionSimple(latitude: 0.0, longitude: 0.0)),
       ],
     );
 
     blocTest<LocationBloc, LocationState>(
-      'emits [LocationError] when GetLocation is added and data fetch fails',
+      'emits [FetchStoreLocationUnsuccessfullyState] when UpdateStoreLocation is added and use case fails',
       build: () {
-        when(() => mockGetCurrentLocationUseCase())
-            .thenAnswer((_) async => DataState.error('Failed to fetch location'));
+        when(mockConnectivityService.checkConnectivity())
+            .thenAnswer((_) async => true);
+        when(mockGetPickedStoreUseCase(params: anyNamed('params')))
+            .thenAnswer((_) async => DataState.error('Error'));
+
         return locationBloc;
       },
-      act: (bloc) => bloc.add(GetLocation()),
+      act: (bloc) => bloc.add(UpdateStoreLocation('New York')),
       expect: () => [
-        LocationError('Failed to fetch location'),
+        const FetchStoreLocationUnsuccessfullyState(),
       ],
     );
 
     blocTest<LocationBloc, LocationState>(
-      'emits [StoreLocationUpdatedSuccess] when UpdateStoreLocation is added and data is fetched successfully',
+      'emits [OpenNavigationToAddressUnsuccessful] when OpenNavigationToAddress is added and use case fails',
       build: () {
-        when(() => mockGetPickedStoreUseCase(params: 'city'))
-            .thenAnswer((_) async => DataState.success(testPositionSimple));
+        when(mockOpenNativeNavigationUseCase(params: anyNamed('params')))
+            .thenAnswer((_) async => DataState.error('Error'));
+
         return locationBloc;
       },
-      act: (bloc) => bloc.add(UpdateStoreLocation('city')),
-      expect: () => [
-        StoreLocationUpdatedSuccess(testPositionSimple),
-      ],
-    );
-
-    blocTest<LocationBloc, LocationState>(
-      'emits [StoreLocationUpdatedUnsuccessful] when UpdateStoreLocation is added and data fetch fails',
-      build: () {
-        when(() => mockGetPickedStoreUseCase(params: 'city'))
-            .thenAnswer((_) async => DataState.error('Failed to update store location'));
-        return locationBloc;
-      },
-      act: (bloc) => bloc.add(UpdateStoreLocation('city')),
-      expect: () => [
-        StoreLocationUpdatedUnsuccessful('Failed to update store location'),
-      ],
-    );
-
-    blocTest<LocationBloc, LocationState>(
-      'emits [OpenNavigationToAddressSuccessful] when OpenNavigationToAddress is added and data is fetched successfully',
-      build: () {
-        when(() => mockOpenNativeNavigationUseCase(params: 'Novi Sad'))
-            .thenAnswer((_) async => DataState.success(testPositionSimple));
-        return locationBloc;
-      },
-      act: (bloc) => bloc.add(OpenNavigationToAddress('Novi Sad')),
-      expect: () => [
-
-      ],
-    );
-
-    blocTest<LocationBloc, LocationState>(
-      'emits [OpenNavigationToAddressUnsuccessful] when OpenNavigationToAddress is added and data fetch fails',
-      build: () {
-        when(() => mockOpenNativeNavigationUseCase(params: 'Novi Sad'))
-            .thenAnswer((_) async => DataState.error('Failed to open native navigation'));
-        return locationBloc;
-      },
-      act: (bloc) => bloc.add(OpenNavigationToAddress('Novi Sad')),
+      act: (bloc) => bloc.add(OpenNavigationToAddress('123 Main St')),
       expect: () => [
         OpenNavigationToAddressUnsuccessful(),
       ],
     );
+
   });
 }

@@ -1,6 +1,7 @@
 part of 'location_bloc.dart';
 
 
+
 abstract class LocationEvent extends Equatable {
   @override
   List<Object?> get props => [];
@@ -29,3 +30,12 @@ class OpenNavigationToAddress extends LocationEvent {
   @override
   List<Object?> get props => [address];
 }
+
+class ConnectivityLost extends LocationEvent {
+  ConnectivityLost();
+}
+class ConnectivityChanged extends LocationEvent {
+  ConnectivityChanged();
+
+}
+
