@@ -59,7 +59,7 @@ class AuthRepositoryImpl implements AuthRepository {
         'profileImage': user.photoURL ?? '',
         'dateTime': formattedDate,
         'position': null,
-        'isLocationOn': null,
+        'isLocationOn': true,
       });
   }
 

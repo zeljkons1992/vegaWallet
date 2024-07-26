@@ -8,6 +8,7 @@ import 'package:vegawallet/features/profile/domain/repository/profile_repository
 
 import '../../../../core/services/auth_services.dart';
 import '../../../../core/utils/change_profile_image_resolution.dart';
+import '../../../stores/domain/entities/position.dart';
 
 
 @Injectable(as: ProfileRepository)
@@ -18,7 +19,7 @@ class ProfileRepositoryImpl implements ProfileRepository{
   const ProfileRepositoryImpl(this._authServices, this._firebaseDatabase);
 
   @override
-  Future<DataState<UserProfileInformation>> getUserInformation()async {
+  Future<DataState<UserProfileInformation>> getUserInformation() async {
     try {
       final User? user = await _authServices.getCurrentUser();
       if (user == null) {
@@ -51,6 +52,39 @@ class ProfileRepositoryImpl implements ProfileRepository{
       },
         'isLocationOn': user.isLocationOn, });
       return DataState.success(null);
+    } catch (e) {
+      return DataState.error(e.toString());
+    }
+  }
+
+  @override
+  Future<DataState<UserProfileInformation>> getRemoteUserInformation(String uid) async {
+    try {
+      final userRef = _firebaseDatabase.ref().child('users').child(uid);
+      final snapshot = await userRef.get();
+
+      if (snapshot.exists) {
+        final data = snapshot.value as Map<dynamic, dynamic>;
+        final userProfileInformation = UserProfileInformation(
+          uid: uid,
+          nameAndSurname: data['nameAndSurname'] as String,
+          email: data['email'] as String,
+          phoneNumber: data['phoneNumber'] as String?,
+          profileImage: data['profileImage'] as String,
+          dateTime: data['dateTime'] as String,
+          position: data['position'] != null
+              ? PositionSimple(
+            latitude: data['position']['latitude'] as double,
+            longitude: data['position']['longitude'] as double,
+          )
+              : null,
+          isLocationOn: data['isLocationOn'] as bool?,
+        );
+
+        return DataState.success(userProfileInformation);
+      } else {
+        return DataState.error('User not found');
+      }
     } catch (e) {
       return DataState.error(e.toString());
     }

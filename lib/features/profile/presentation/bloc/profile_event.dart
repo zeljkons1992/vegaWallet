@@ -13,3 +13,6 @@ class UpdateUserLocation extends ProfileEvent {
   UpdateUserLocation(this.user);
 }
 
+class GetRemoteUserInformation extends ProfileEvent {}
+
+

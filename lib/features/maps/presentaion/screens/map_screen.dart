@@ -33,30 +33,26 @@ class _MapScreenState extends State<MapScreen> {
   late UserProfileInformation _user;
   double? _previousLongitude;
   double? _previousLatitude;
+  static const double _threshold = 0.0001;
 
   @override
   void initState() {
     super.initState();
     _mapController = MapController();
-    _locationSubscription = const LocationMarkerDataStreamFactory()
-        .defaultPositionStreamSource()
-        .listen((position) {
-      if (position != null && (position.longitude != _previousLongitude || position.latitude != _previousLatitude)) _updateUserLocation(position);
-    });
   }
 
-  _updateUserLocation(Position position) {
+  _updateUserLocation(double? longitude, double? latitude) {
      final user = UserProfileInformation(
         uid: _user.uid,
         nameAndSurname: _user.nameAndSurname,
         email: _user.email,
         profileImage: _user.profileImage,
         dateTime: _user.dateTime,
-        position: PositionSimple(latitude: position.latitude, longitude: position.longitude),
+        position: (latitude != null && longitude != null) ? PositionSimple(latitude: latitude, longitude: longitude) : null,
         isLocationOn: _user.isLocationOn,
     );
-     _previousLatitude = position.latitude;
-     _previousLongitude = position.longitude;
+     _previousLatitude = latitude;
+     _previousLongitude = longitude;
      _profileBloc.add(UpdateUserLocation(user));
     print("PROMIJENIO LOKACIJU");
   }
@@ -75,7 +71,7 @@ class _MapScreenState extends State<MapScreen> {
           create: (context) => _mapBloc,
         ),
         BlocProvider(
-          create: (context) => _profileBloc..add(GetUserInformation()),
+          create: (context) => _profileBloc..add(GetRemoteUserInformation()),
         ),
       ],
       child: Scaffold(
@@ -88,6 +84,22 @@ class _MapScreenState extends State<MapScreen> {
                   builder: (context, profileState) {
                 if (profileState is ProfileInformationSuccess) {
                   _user = profileState.userProfileInformation;
+                  _locationSubscription = const LocationMarkerDataStreamFactory()
+                      .defaultPositionStreamSource()
+                      .listen((position) {
+                    if (position != null) {
+                      final bool shouldUpdate = _user.isLocationOn != null && _user.isLocationOn! &&
+                          ((position.latitude - (_previousLatitude ?? 0)).abs() > _threshold ||
+                              (position.longitude - (_previousLongitude ?? 0)).abs() > _threshold);
+
+                      if (shouldUpdate) {
+                        _updateUserLocation(position.longitude, position.latitude);
+                      } else if (_user.isLocationOn != null && !_user.isLocationOn!) {
+                        _updateUserLocation(null, null);
+                      }
+                    }
+
+                  });
                   return FlutterMap(
                     mapController: _mapController,
                     children: [

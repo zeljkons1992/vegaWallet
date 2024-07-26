@@ -5,5 +5,5 @@ import '../../../../core/data_state/data_state.dart';
 abstract class ProfileRepository {
   Future<DataState<UserProfileInformation>> getUserInformation();
   Future<DataState> updateUserLocation(UserProfileInformation user);
-
+  Future<DataState<UserProfileInformation>> getRemoteUserInformation(String uid);
 }

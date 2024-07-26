@@ -5,15 +5,15 @@ import '../../../../core/data_state/data_state.dart';
 import '../../../../core/usecase/use_case.dart';
 
 @Injectable()
-class GetUserInformationUseCase extends UseCase<DataState, void>{
+class GetRemoteUserInformationUseCase extends UseCase<DataState, String>{
 
   final ProfileRepository _profileRepository;
 
-  GetUserInformationUseCase(this._profileRepository);
+  GetRemoteUserInformationUseCase(this._profileRepository);
 
   @override
-  Future<DataState> call({void params}) async{
-    return await _profileRepository.getUserInformation();
+  Future<DataState> call({ String? params}) async{
+    return await _profileRepository.getRemoteUserInformation(params!);
   }
 
 }
