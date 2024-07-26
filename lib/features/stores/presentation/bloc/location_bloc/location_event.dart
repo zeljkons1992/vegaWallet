@@ -14,7 +14,7 @@ class RequestLocationPermission extends LocationEvent {}
 class OpenLocationSettings extends LocationEvent {}
 
 class UpdateStoreLocation extends LocationEvent {
-  final String city;
+  final String? city;
 
   UpdateStoreLocation(this.city);
 

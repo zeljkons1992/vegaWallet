@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
 import 'package:vegawallet/core/data_state/data_state.dart';
@@ -11,10 +12,10 @@ import '../../../../core/utils/change_profile_image_resolution.dart';
 
 @Injectable(as: ProfileRepository)
 class ProfileRepositoryImpl implements ProfileRepository{
-
   final AuthService _authServices;
+  final FirebaseDatabase _firebaseDatabase;
 
-  const ProfileRepositoryImpl(this._authServices);
+  const ProfileRepositoryImpl(this._authServices, this._firebaseDatabase);
 
   @override
   Future<DataState<UserProfileInformation>> getUserInformation()async {
@@ -35,6 +36,21 @@ class ProfileRepositoryImpl implements ProfileRepository{
         dateTime: formattedDate,
       );
       return DataState.success(userProfileInformation);
+    } catch (e) {
+      return DataState.error(e.toString());
+    }
+  }
+
+  @override
+  Future<DataState> updateUserLocation(UserProfileInformation user) async {
+    try {
+      final userRef = _firebaseDatabase.ref().child('users').child(user.uid);
+      await userRef.update({'position': {
+        'latitude': user.position?.latitude,
+        'longitude': user.position?.longitude,
+      },
+        'isLocationOn': user.isLocationOn, });
+      return DataState.success(null);
     } catch (e) {
       return DataState.error(e.toString());
     }

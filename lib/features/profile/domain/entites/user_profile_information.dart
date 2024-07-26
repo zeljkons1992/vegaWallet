@@ -9,6 +9,7 @@ class UserProfileInformation extends Equatable {
   final String profileImage;
   final String dateTime;
   final PositionSimple? position;
+  final bool? isLocationOn;
 
   const UserProfileInformation({
     required this.uid,
@@ -17,9 +18,10 @@ class UserProfileInformation extends Equatable {
     this.phoneNumber,
     required this.profileImage,
     required this.dateTime,
-    this.position
+    this.position,
+    this.isLocationOn,
   });
 
   @override
-  List<Object?> get props => [uid,nameAndSurname, email, phoneNumber, profileImage, dateTime,  position];
+  List<Object?> get props => [uid,nameAndSurname, email, phoneNumber, profileImage, dateTime,  position, isLocationOn];
 }

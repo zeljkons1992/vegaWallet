@@ -109,7 +109,8 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                         return false;
                       }
                       return true;
-                    },                    builder: (context, state) {
+                    },
+                    builder: (context, state) {
                       switch (state) {
                         case LocationInitial _:
                           return mapLocationInitial(context);
@@ -122,7 +123,7 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                           );
                         case FetchStoreLocationUnsuccessfullyState _:
                           return const MapsUnsuccessfully();
-                      case LocationLoading _:
+                        case LocationLoading _:
                           return const Center(
                               child: CircularProgressIndicator());
                         case NoInternetConnectionState _:
