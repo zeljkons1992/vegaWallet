@@ -5,16 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:go_router/go_router.dart';
-import 'package:latlong2/latlong.dart';
+
 import 'package:vegawallet/core/di/injection.dart';
 import 'package:vegawallet/features/profile/domain/entites/user_profile_information.dart';
 import 'package:vegawallet/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:vegawallet/features/stores/domain/entities/position.dart';
 
-import '../../../auth/presentaion/bloc/auth/auth_bloc.dart';
-import '../../../stores/presentation/bloc/location_bloc/location_bloc.dart';
-import '../../../stores/presentation/components/details_screen/maps/current_location_layer.dart';
 import '../../../stores/presentation/components/details_screen/maps/map_location_error.dart';
 import '../bloc/map_bloc.dart';
 
@@ -54,7 +50,6 @@ class _MapScreenState extends State<MapScreen> {
      _previousLatitude = latitude;
      _previousLongitude = longitude;
      _profileBloc.add(UpdateUserLocation(user));
-    print("PROMIJENIO LOKACIJU");
   }
 
   @override

@@ -23,7 +23,6 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   }
 
   FutureOr<void> _onSaveMyLocation(SaveMyLocation event, Emitter<MapState> emit) {
-    print("do something");
   }
 
   void _initConnectivitySubscription() {
