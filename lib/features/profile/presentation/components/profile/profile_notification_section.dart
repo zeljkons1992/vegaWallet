@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:vegawallet/features/profile/presentation/bloc/profile_bloc.dart';
 
 
 class ProfileNotificationSection extends StatefulWidget {
@@ -17,7 +19,8 @@ class ProfileNotificationSectionState extends State<ProfileNotificationSection> 
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
-
+    final profileBloc = BlocProvider.of<ProfileBloc>(context);
+    
     return Padding(
       padding: const EdgeInsets.all(12),
       child: Container(
@@ -67,6 +70,11 @@ class ProfileNotificationSectionState extends State<ProfileNotificationSection> 
                     onChanged: (bool value) {
                       setState(() {
                         isLocationEnabled = value;
+                        if (isLocationEnabled) {
+                          profileBloc.add(StartLocationTracking());
+                        } else {
+                          profileBloc.add(StopLocationTracking());
+                        }
                       });
                     },
                   ),

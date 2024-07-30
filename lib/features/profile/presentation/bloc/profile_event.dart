@@ -15,4 +15,7 @@ class UpdateUserLocation extends ProfileEvent {
 
 class GetRemoteUserInformation extends ProfileEvent {}
 
+class StartLocationTracking extends ProfileEvent {}
+
+class StopLocationTracking extends ProfileEvent {}
 

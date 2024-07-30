@@ -22,6 +22,28 @@ class UserProfileInformation extends Equatable {
     this.isLocationOn,
   });
 
+  UserProfileInformation copyWith({
+    String? uid,
+    String? nameAndSurname,
+    String? email,
+    String? phoneNumber,
+    String? profileImage,
+    String? dateTime,
+    PositionSimple? position,
+    bool? isLocationOn,
+  }) {
+    return UserProfileInformation(
+      uid: uid ?? this.uid,
+      nameAndSurname: nameAndSurname ?? this.nameAndSurname,
+      email: email ?? this.email,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      profileImage: profileImage ?? this.profileImage,
+      dateTime: dateTime ?? this.dateTime,
+      position: position ?? this.position,
+      isLocationOn: isLocationOn ?? this.isLocationOn,
+    );
+  }
+
   @override
   List<Object?> get props => [uid,nameAndSurname, email, phoneNumber, profileImage, dateTime,  position, isLocationOn];
 }
