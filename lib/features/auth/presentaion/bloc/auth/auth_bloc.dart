@@ -31,15 +31,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _onUserLogin(LoginWithGoogle event, Emitter<AuthState> emit) async {
       emit(AuthVegaStartAuthorization());
-      final result = await _loginUserUseCase();
-      final result2 = await _cardInformationUseCase();
-      if (result.status == DataStateStatus.success && result2.status == DataStateStatus.success) {
+      final isUserLoginSuccess = await _loginUserUseCase();
+      final isCardInfoValidData = await _cardInformationUseCase();
+      if (isUserLoginSuccess.status == DataStateStatus.success && isCardInfoValidData.status == DataStateStatus.success) {
           _navigationStreamController.sink.add(true);
       }
-      else if (result.message==TextConst.userCloseDialog){
+      else if (isUserLoginSuccess.message==TextConst.userCloseDialog){
         emit(AuthInitial());
       } else {
-        emit(AuthLoginWithGoogleError(result.message ?? ""));
+        emit(AuthLoginWithGoogleError(isUserLoginSuccess.message ?? ""));
       }
   }
 

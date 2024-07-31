@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vegawallet/core/constants/text_const.dart';
 import 'package:vegawallet/core/data_state/data_state.dart';
 import 'package:vegawallet/features/wallet/data/models/wallet_card_information.dart';
 import 'package:vegawallet/features/wallet/domain/repository/wallet_repository.dart';
@@ -39,16 +40,13 @@ class WalletRepositoryImpl implements WalletRepository {
         final bytes = Uint8List.fromList(response.data);
 
         List<String> nameParts = user.split(' ');
-        if (nameParts.length < 2) {
-          return DataState.error("Invalid user name format");
-        }
 
         cardNumber = _parser.getCardNumber(bytes, nameParts[0], nameParts[1]);
         if (cardNumber == null) {
           return DataState.error("No matching card number found");
         }
 
-        expireDate = "12/25";
+        expireDate = TextConst.expireDate;
 
         prefs.setString('user_name', user);
         prefs.setString('card_number', cardNumber);
