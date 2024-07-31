@@ -82,6 +82,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   Future<FutureOr<void>> _onStopLocationTracking(
       StopLocationTracking event, Emitter<ProfileState> emit) async {
-    await _stopLocationTrackingUseCase();
+    final userData = await _getUserInformationUseCase();
+
+    if (userData.status == DataStateStatus.success && userData.data != null) {
+      final user = userData.data!;
+      await _stopLocationTrackingUseCase(params: user.uid);
+    }
   }
 }

@@ -4,9 +4,13 @@ import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:vegawallet/features/profile/presentation/bloc/profile_bloc.dart';
 
+import '../../../domain/entites/user_profile_information.dart';
+
 
 class ProfileNotificationSection extends StatefulWidget {
-  const ProfileNotificationSection({super.key});
+  final UserProfileInformation user;
+
+  const ProfileNotificationSection({super.key, required this.user});
 
   @override
   ProfileNotificationSectionState createState() => ProfileNotificationSectionState();
@@ -14,13 +18,19 @@ class ProfileNotificationSection extends StatefulWidget {
 
 class ProfileNotificationSectionState extends State<ProfileNotificationSection> {
   bool isPushNotificationEnabled = false;
-  bool isLocationEnabled = false;
+  late bool isLocationEnabled;
+
+  @override
+  void initState() {
+    super.initState();
+    isLocationEnabled = widget.user.isLocationOn!;
+  }
 
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
-    final profileBloc = BlocProvider.of<ProfileBloc>(context);
-    
+    final profileBloc = BlocProvider.of<ProfileBloc>(context)..add(GetRemoteUserInformation());
+
     return Padding(
       padding: const EdgeInsets.all(12),
       child: Container(

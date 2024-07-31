@@ -21,7 +21,7 @@ class ProfileScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => getIt<ProfileBloc>()..add(GetUserInformation()),
+          create: (context) => getIt<ProfileBloc>()..add(GetRemoteUserInformation()),
         ),
         BlocProvider(
           create: (context) => getIt<AuthBloc>(),
@@ -63,7 +63,7 @@ class ProfileScreen extends StatelessWidget {
                                 style: AppTextStyles(context).bodyText1),
                             profileGeneralSection(
                                 state.userProfileInformation, context),
-                            const ProfileNotificationSection(),
+                            ProfileNotificationSection(user: state.userProfileInformation,),
                             Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: SizedBox(

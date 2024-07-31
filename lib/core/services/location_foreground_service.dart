@@ -1,10 +1,10 @@
 import 'dart:async';
-
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:location/location.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegawallet/features/profile/domain/repository/profile_repository.dart';
 
+import '../../features/profile/domain/entites/user_profile_information.dart';
 import '../../features/stores/domain/entities/position.dart';
 import '../data_state/data_state.dart';
 
@@ -13,47 +13,23 @@ class LocationForegroundService {
   final ProfileRepository _profileRepository;
   final Location _location = Location();
   late StreamSubscription<LocationData> locationSubscription;
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   LocationForegroundService(this._profileRepository) {
     _initializeNotifications();
   }
 
   Future<void> _initializeNotifications() async {
-    flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();
-    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
-    const InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings, onDidReceiveNotificationResponse: _onDidReceiveNotificationResponse);
-  }
-
-  void _onDidReceiveNotificationResponse(NotificationResponse notificationResponse) {
-    if (notificationResponse.payload == 'stop_sharing') {
-      stopLocationTracking();
-    }
-  }
-
-  Future<void> _showNotification() async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'location_channel',
-      'Location Tracking',
-      importance: Importance.high,
-      priority: Priority.high,
-      ongoing: true,
-      actions: <AndroidNotificationAction>[
-        AndroidNotificationAction('stop_sharing', 'Stop Sharing'),
-      ],
-    );
-
-    const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
-
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      'Location Tracking',
-      'Your location is being tracked',
-      platformChannelSpecifics,
-      payload: 'stop_sharing',
-    );
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('vega_splash');
+    const InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestNotificationsPermission();
   }
 
   Future<void> startLocationTracking(String uid) async {
@@ -76,6 +52,13 @@ class LocationForegroundService {
       }
     }
 
+    await _location.changeNotificationOptions(
+      title: "Location tracking",
+      subtitle: 'Your location is being tracked',
+      iconName: 'vega_splash',
+      onTapBringToFront: true,
+    );
+
     await _location.changeSettings(
       accuracy: LocationAccuracy.high,
       interval: 5000,
@@ -83,14 +66,17 @@ class LocationForegroundService {
     );
 
     await _location.enableBackgroundMode(enable: true);
-    await _showNotification();
 
-    locationSubscription = _location.onLocationChanged.listen((LocationData currentLocation) async {
-      if (currentLocation.latitude != null && currentLocation.longitude != null) {
-        final userResult = await _profileRepository.getRemoteUserInformation(uid);
+    locationSubscription = _location.onLocationChanged
+        .listen((LocationData currentLocation) async {
+      if (currentLocation.latitude != null &&
+          currentLocation.longitude != null) {
+        final userResult =
+            await _profileRepository.getRemoteUserInformation(uid);
         if (userResult.status == DataStateStatus.success) {
           final userProfile = userResult.data;
           final updatedUser = userProfile?.copyWith(
+            isLocationOn: true,
             position: PositionSimple(
               latitude: currentLocation.latitude!,
               longitude: currentLocation.longitude!,
@@ -102,8 +88,23 @@ class LocationForegroundService {
     });
   }
 
-  Future<void> stopLocationTracking() async {
-    await flutterLocalNotificationsPlugin.cancel(0);
-    locationSubscription.cancel();
+  Future<void> stopLocationTracking(String uid) async {
+    final userResult = await _profileRepository.getRemoteUserInformation(uid);
+    if (userResult.status == DataStateStatus.success) {
+      final userProfile = userResult.data;
+      final updatedUser = UserProfileInformation(
+        uid: userProfile!.uid,
+        nameAndSurname: userProfile.nameAndSurname,
+        email: userProfile.email,
+        phoneNumber: userProfile.phoneNumber,
+        profileImage: userProfile.profileImage,
+        dateTime: userProfile.dateTime,
+        position: null,
+        isLocationOn: false,
+      );
+      await _profileRepository.updateUserLocation(updatedUser);
+      _location.enableBackgroundMode(enable: false);
+      locationSubscription.cancel();
+    }
   }
 }

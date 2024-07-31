@@ -10,9 +10,8 @@ import '../../../../core/services/auth_services.dart';
 import '../../../../core/utils/change_profile_image_resolution.dart';
 import '../../../stores/domain/entities/position.dart';
 
-
 @Injectable(as: ProfileRepository)
-class ProfileRepositoryImpl implements ProfileRepository{
+class ProfileRepositoryImpl implements ProfileRepository {
   final AuthService _authServices;
   final FirebaseDatabase _firebaseDatabase;
 
@@ -26,14 +25,15 @@ class ProfileRepositoryImpl implements ProfileRepository{
         return DataState.error('User not logged in');
       }
       final DateFormat formatter = DateFormat('MMMM d, yyyy');
-      final String formattedDate = formatter.format(user.metadata.creationTime!);
+      final String formattedDate =
+          formatter.format(user.metadata.creationTime!);
 
       UserProfileInformation userProfileInformation = UserProfileInformation(
         uid: user.uid,
         nameAndSurname: user.displayName!,
         email: user.email!,
         phoneNumber: user.phoneNumber,
-        profileImage: updateImageSize(user.photoURL!,400),
+        profileImage: updateImageSize(user.photoURL!, 400),
         dateTime: formattedDate,
       );
       return DataState.success(userProfileInformation);
@@ -46,11 +46,16 @@ class ProfileRepositoryImpl implements ProfileRepository{
   Future<DataState> updateUserLocation(UserProfileInformation user) async {
     try {
       final userRef = _firebaseDatabase.ref().child('users').child(user.uid);
-      await userRef.update({'position': {
-        'latitude': user.position?.latitude,
-        'longitude': user.position?.longitude,
-      },
-        'isLocationOn': user.isLocationOn, });
+
+      await userRef.update({
+        'position': user.position != null
+            ? {
+                'latitude': user.position?.latitude,
+                'longitude': user.position?.longitude,
+              }
+            : null,
+        'isLocationOn': user.isLocationOn,
+      });
       return DataState.success(null);
     } catch (e) {
       return DataState.error(e.toString());
@@ -58,7 +63,8 @@ class ProfileRepositoryImpl implements ProfileRepository{
   }
 
   @override
-  Future<DataState<UserProfileInformation>> getRemoteUserInformation(String uid) async {
+  Future<DataState<UserProfileInformation>> getRemoteUserInformation(
+      String uid) async {
     try {
       final userRef = _firebaseDatabase.ref().child('users').child(uid);
       final snapshot = await userRef.get();
@@ -74,9 +80,9 @@ class ProfileRepositoryImpl implements ProfileRepository{
           dateTime: data['dateTime'] as String,
           position: data['position'] != null
               ? PositionSimple(
-            latitude: data['position']['latitude'] as double,
-            longitude: data['position']['longitude'] as double,
-          )
+                  latitude: data['position']['latitude'] as double,
+                  longitude: data['position']['longitude'] as double,
+                )
               : null,
           isLocationOn: data['isLocationOn'] as bool?,
         );
