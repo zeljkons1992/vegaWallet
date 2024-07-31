@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/auth/presentaion/bloc/auth/auth_bloc.dart';
+import 'package:vegawallet/features/wallet/presentation/bloc/wallet_bloc.dart';
 
 import '../../../../core/constants/assets_const.dart';
 import '../../../../core/di/injection.dart';
@@ -17,7 +18,7 @@ import '../../../stores/presentation/bloc/store_bloc/store_bloc.dart';
 class SignInScreen extends StatefulWidget {
   final StoreBloc _storeBloc = getIt<StoreBloc>();
   final AuthBloc _authBloc = getIt<AuthBloc>();
-
+  final WalletBloc _walletBloc = getIt<WalletBloc>();
   SignInScreen({super.key});
 
   @override
@@ -26,16 +27,19 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   late StreamSubscription<bool> _navigationStream;
+  late WalletBloc walletBloc;
 
   @override
   void initState() {
     super.initState();
+    walletBloc = getIt<WalletBloc>();
     _startListeningToAuthStream();
   }
 
   void _startListeningToAuthStream() {
     _navigationStream = widget._authBloc.streamNavigationSuccess.listen((event) {
         widget._storeBloc.add(LoadStores());
+        widget._walletBloc.add(FetchCardInfo());
         context.go('/');
     });
   }
@@ -59,6 +63,8 @@ class _SignInScreenState extends State<SignInScreen> {
         BlocProvider.value(
           value: widget._storeBloc,
         ),
+        BlocProvider.value(
+            value: widget._walletBloc),
       ],
       child: MultiBlocListener(
         listeners: [

@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegawallet/core/constants/text_const.dart';
 import 'package:vegawallet/core/data_state/data_state.dart';
+import 'package:vegawallet/features/wallet/domain/usecases/get_user_card_information_use_case.dart';
 import '../../../domain/usecases/login_user_use_case.dart';
 import '../../../domain/usecases/logout_user_use_case.dart';
 
@@ -15,9 +16,10 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoginUserUseCase _loginUserUseCase;
   final LogoutUserUseCase _logoutUserUseCase;
+  final GetUserCardInformationUseCase _cardInformationUseCase;
   final _navigationStreamController = StreamController<bool>();
 
-  AuthBloc(this._loginUserUseCase, this._logoutUserUseCase) : super(AuthInitial()) {
+  AuthBloc(this._loginUserUseCase, this._logoutUserUseCase, this._cardInformationUseCase) : super(AuthInitial()) {
     on<LoginWithGoogle>(_onUserLogin);
     on<LogoutUser>(_onUserLogout);
   }
@@ -30,8 +32,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _onUserLogin(LoginWithGoogle event, Emitter<AuthState> emit) async {
       emit(AuthVegaStartAuthorization());
       final result = await _loginUserUseCase();
-      if (result.status == DataStateStatus.success) {
-        _navigationStreamController.sink.add(true);
+      final result2 = await _cardInformationUseCase();
+      if (result.status == DataStateStatus.success && result2.status == DataStateStatus.success) {
+          _navigationStreamController.sink.add(true);
       }
       else if (result.message==TextConst.userCloseDialog){
         emit(AuthInitial());

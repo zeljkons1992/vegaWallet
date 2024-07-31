@@ -7,30 +7,23 @@ import 'package:vegawallet/features/wallet/domain/usecases/get_user_card_informa
 import 'package:vegawallet/features/wallet/presentation/bloc/wallet_bloc.dart';
 import 'package:vegawallet/features/wallet/data/models/wallet_card_information.dart';
 
-import '../widgets/widget_wallet_test.dart';
-
 class MockWalletRepository extends Mock implements WalletRepository {}
+class MockWalletBloc extends MockBloc<WalletEvent, WalletState> implements WalletBloc {}
 
 void main() {
   group('WalletBloc', () {
-    late MockWalletBloc mockWalletBloc;
+    late MockWalletRepository mockWalletRepository;
     late GetUserCardInformationUseCase getUserCardInformationUseCase;
-    late WalletRepository mockWalletRepository;
+    late WalletBloc walletBloc;
 
     setUp(() {
-      mockWalletBloc = MockWalletBloc();
       mockWalletRepository = MockWalletRepository();
-      getUserCardInformationUseCase =
-          GetUserCardInformationUseCase(mockWalletRepository);
+      getUserCardInformationUseCase = GetUserCardInformationUseCase(mockWalletRepository);
+      walletBloc = WalletBloc(getUserCardInformationUseCase);
     });
 
     test('emits initial state', () {
-      whenListen(
-        mockWalletBloc,
-        Stream<WalletState>.fromIterable([WalletStateInitial()]),
-        initialState: WalletStateInitial(),
-      );
-      expect(mockWalletBloc.state, WalletStateInitial());
+      expect(walletBloc.state, equals(WalletStateInitial()));
     });
 
     group('WalletBloc', () {
@@ -40,7 +33,6 @@ void main() {
         expect: () => <WalletState>[],
       );
 
-
       blocTest<WalletBloc, WalletState>(
         'emits loaded state when data is fetched successfully',
         build: () {
@@ -48,22 +40,23 @@ void main() {
           when(() => mockWalletRepository.getWalletCardInformation())
               .thenAnswer((_) async => DataState.success(
               const WalletCardInformation(
-                  name: 'Nikola')));
+                  name: 'Nikola', expireDate: '12/25', cardNo: '111 111')));
           return WalletBloc(getUserCardInformationUseCase);
         },
         act: (bloc) => bloc.add(FetchCardInfo()),
         expect: () => [
           WalletStateLoading(),
           const WalletStateLoaded(WalletCardInformation(
-              name: 'Nikola')),
+              name: 'Nikola', expireDate: '12/25', cardNo: '111 111')),
         ],
       );
+
       blocTest<WalletBloc, WalletState>(
         'emits failed state when data is fetched unsuccessfully',
         build: () {
           when(() => mockWalletRepository.getWalletCardInformation())
               .thenAnswer((_) async => DataState.error(
-           "Error"));
+              "Error"));
           return WalletBloc(getUserCardInformationUseCase);
         },
         act: (bloc) => bloc.add(FetchCardInfo()),

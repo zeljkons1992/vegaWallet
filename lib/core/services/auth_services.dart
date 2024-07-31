@@ -69,6 +69,14 @@ class AuthService {
     return user!.displayName;
   }
 
+  Future<String?> getUserToken() async {
+    final user = _firebaseAuth.currentUser;
+    if (user != null) {
+      return await user.getIdToken();
+    }
+    return null;
+  }
+
   Future<User?> getCurrentUser() async{
     final user = _firebaseAuth.currentUser;
     return user;
