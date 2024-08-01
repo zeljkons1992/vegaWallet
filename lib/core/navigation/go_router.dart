@@ -10,10 +10,11 @@ import '../../features/auth/presentaion/screens/sign_in_screen.dart';
 import '../../features/stores/domain/entities/store.dart';
 import '../../features/stores/presentation/screens/stores_details_screen.dart';
 import '../../main.dart';
+import '../di/injection.dart';
 import '../services/auth_services.dart';
 import 'custom_transition_page_builder.dart';
 
-final AuthService _authService = AuthService();
+final AuthService _authService = getIt<AuthService>();
 
 
 final GoRouter router = GoRouter(

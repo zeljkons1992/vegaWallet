@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
@@ -46,5 +48,17 @@ abstract class InjectableModule {
   @LazySingleton()
   SpreadsheetDownloader provideApiClient(Dio dio) {
     return SpreadsheetDownloader(dio);
+  }
+
+  // Register FirebaseAuth
+  @LazySingleton()
+  FirebaseAuth provideFirebaseAuth() {
+    return FirebaseAuth.instance;
+  }
+
+  // Register GoogleSignIn
+  @LazySingleton()
+  GoogleSignIn provideGoogleSignIn() {
+    return GoogleSignIn();
   }
 }
