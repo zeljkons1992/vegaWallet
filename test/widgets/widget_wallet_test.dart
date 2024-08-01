@@ -60,8 +60,8 @@ void main() {
   }
 
   testWidgets('shows loaded card information when state is WalletStateLoaded', (WidgetTester tester) async {
-    const mockCardInfo = WalletCardInformation(name: 'John Doe');
-    whenListen(mockWalletBloc, Stream.fromIterable([const WalletStateLoaded(mockCardInfo)]), initialState: WalletStateInitial());
+    const  mockCardInfo = WalletCardInformation(name: "John Doe", expireDate: "12/25", cardNo: "111 111");
+    whenListen(mockWalletBloc, Stream.fromIterable([const  WalletStateLoaded(mockCardInfo)]), initialState: WalletStateInitial());
     whenListen(mockStoreBloc, Stream.fromIterable([const StoreLoaded(stores: [])]), initialState: StoreLoading());
 
     await tester.pumpWidget(createWidgetUnderTest());
@@ -71,7 +71,7 @@ void main() {
   });
 
   testWidgets('clears selected store when clear button is pressed', (WidgetTester tester) async {
-    const mockCardInfo = WalletCardInformation(name: 'John Doe');
+    const  mockCardInfo =  WalletCardInformation(name: 'John Doe',expireDate: "12/25",cardNo: "111 111");
     final store = Store.withData(name: 'Store 1', category: 'Kafići i Restorani', addressCities: [], discounts: [], conditions: [], parsedDiscount: 10.0);
 
     whenListen(mockWalletBloc, Stream.fromIterable([const WalletStateLoaded(mockCardInfo)]), initialState: WalletStateInitial());

@@ -6,8 +6,16 @@ import '../domain/exceptions/auth_exception_message.dart';
 
 @LazySingleton()
 class AuthService {
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn;
+  final FirebaseAuth _firebaseAuth;
+
+  AuthService({
+    required GoogleSignIn googleSignIn,
+    required FirebaseAuth firebaseAuth,
+  })  : _googleSignIn = googleSignIn,
+        _firebaseAuth = firebaseAuth;
+
+
 
 
   Future<bool> signInWithGoogle() async {
@@ -60,7 +68,6 @@ class AuthService {
       await user.delete();
       return false;
     }
-
     return true;
   }
 

@@ -24,11 +24,12 @@ class ProfileRepositoryImpl implements ProfileRepository{
       }
       final DateFormat formatter = DateFormat('MMMM d, yyyy');
       final String formattedDate = formatter.format(user.metadata.creationTime!);
+      final String? userPhoneNumber = (user.phoneNumber?.isEmpty ?? true) ? null : user.phoneNumber;
       UserProfileInformation userProfileInformation = UserProfileInformation(
         uid: user.uid,
         nameAndSurname: user.displayName!,
         email: user.email!,
-        phoneNumber: user.phoneNumber,
+        phoneNumber: userPhoneNumber,
         profileImage: updateImageSize(user.photoURL!,400),
           dateTime: formattedDate,
           isEpsilon: true
