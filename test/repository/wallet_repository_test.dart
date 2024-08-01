@@ -112,5 +112,14 @@ EXCEL_URL2=https://example.com/file.xlsx''');
 
       expect(result, isA<DataState<WalletCardInformation>>());
     });
+
+    test('getWalletCardInformation returns error when user is null', () async {
+      SharedPreferences.setMockInitialValues({});
+      when(() => mockAuthService.getUserName()).thenAnswer((_) async => null);
+
+      final result = await walletRepository.getWalletCardInformation();
+
+      expect(result, isA<DataState<WalletCardInformation>>());
+    });
   });
 }

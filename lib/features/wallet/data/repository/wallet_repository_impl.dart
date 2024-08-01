@@ -29,9 +29,6 @@ class WalletRepositoryImpl implements WalletRepository {
 
       if (user == null || cardNumber == null || expireDate == null) {
         user = await _authServices.getUserName();
-        if (user == null) {
-          return DataState.error("User not found");
-        }
 
         final response = await _spreadsheetDownloader.downloadExcelFile(
           dotenv.env['EXCEL_FORMAT']!,
@@ -39,7 +36,7 @@ class WalletRepositoryImpl implements WalletRepository {
         );
         final bytes = Uint8List.fromList(response.data);
 
-        List<String> nameParts = user.split(' ');
+        List<String> nameParts = user!.split(' ');
 
         cardNumber = _parser.getCardNumber(bytes, nameParts[0], nameParts[1]);
         if (cardNumber == null) {
