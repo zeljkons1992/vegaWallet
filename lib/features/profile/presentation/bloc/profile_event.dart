@@ -19,3 +19,5 @@ class StartLocationTracking extends ProfileEvent {}
 
 class StopLocationTracking extends ProfileEvent {}
 
+class ResetLocationTracking extends ProfileEvent {}
+

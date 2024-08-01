@@ -56,6 +56,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
             : null,
         'isLocationOn': user.isLocationOn,
       });
+      print("UPDATEOVAOPPPOOPOPOPOPOPOPOPOPOPOP");
       return DataState.success(null);
     } catch (e) {
       return DataState.error(e.toString());

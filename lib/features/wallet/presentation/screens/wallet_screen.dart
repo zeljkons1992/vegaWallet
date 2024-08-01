@@ -45,10 +45,12 @@ class _WalletScreenState extends State<WalletScreen> {
     final localization = AppLocalizations.of(context)!;
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => walletBloc..add(FetchCardInfo())),
-        BlocProvider(create: (context) => storeBloc),
         BlocProvider(
-            create: (context) => profileBloc..add(GetRemoteUserInformation())),
+          create: (context) => walletBloc..add(FetchCardInfo()),
+        ),
+        BlocProvider(
+          create: (context) => storeBloc,
+        ),
       ],
       child: Scaffold(
         backgroundColor: colorScheme.surface,
@@ -83,86 +85,79 @@ class _WalletScreenState extends State<WalletScreen> {
     final localization = AppLocalizations.of(context)!;
     return Align(
       alignment: Alignment.topCenter,
-      child: BlocListener<ProfileBloc, ProfileState>(
-        listener: (context, state) {
-          if (state is ProfileInformationSuccess && state.userProfileInformation.isLocationOn != null && state.userProfileInformation.isLocationOn!) {
-            profileBloc.add(StartLocationTracking());
-          }
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: PADDING_VALUE_SMALL,
+                vertical: PADDING_VALUE_LARGE),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  localization.walletTitle,
+                  style: AppTextStyles(context).headline1,
+                ),
+                const LanguageSwitcher(),
+              ],
+            ),
+          ),
+          GestureDetector(
+            onTap: () => _flipCardController.flipcard(),
+            child: FlipCard(
+              controller: _flipCardController,
+              rotateSide: RotateSide.bottom,
+              frontWidget: _buildFrontCard(context, cardInfo),
+              backWidget: _buildBackCard(context),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+                top: PADDING_VALUE_LARGE, left: PADDING_VALUE_SMALL),
+            child: Text(
+              localization.discountsTitle,
+              style: AppTextStyles(context).headline1,
+            ),
+          ),
+          StoreSearchBar(
+            onStoreSelected: (store) {
+              setState(() {
+                _selectedStore = store;
+              });
+            },
+          ),
+          const SizedBox(
+            height: SIZED_BOX_SMALL,
+          ),
+          if (_selectedStore != null) ...[
             Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: PADDING_VALUE_SMALL,
-                  vertical: PADDING_VALUE_LARGE),
+              padding: const EdgeInsets.only(
+                  top: PADDING_VALUE_LARGE, bottom: PADDING_VALUE_LARGE),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    localization.walletTitle,
-                    style: AppTextStyles(context).headline1,
+                  Expanded(
+                    child: SelectedStoreDisplay(
+                      store: _selectedStore!,
+                    ),
                   ),
-                  const LanguageSwitcher(),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _selectedStore = null;
+                      });
+                    },
+                    icon: const Icon(Icons.close),
+                    color: Theme.of(context).colorScheme.onSurface,
+                  )
                 ],
               ),
             ),
-            GestureDetector(
-              onTap: () => _flipCardController.flipcard(),
-              child: FlipCard(
-                controller: _flipCardController,
-                rotateSide: RotateSide.bottom,
-                frontWidget: _buildFrontCard(context, cardInfo),
-                backWidget: _buildBackCard(context),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: PADDING_VALUE_LARGE, left: PADDING_VALUE_SMALL),
-              child: Text(
-                localization.discountsTitle,
-                style: AppTextStyles(context).headline1,
-              ),
-            ),
-            StoreSearchBar(
-              onStoreSelected: (store) {
-                setState(() {
-                  _selectedStore = store;
-                });
-              },
-            ),
-            const SizedBox(
-              height: SIZED_BOX_SMALL,
-            ),
-            if (_selectedStore != null) ...[
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: PADDING_VALUE_LARGE, bottom: PADDING_VALUE_LARGE),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: SelectedStoreDisplay(
-                        store: _selectedStore!,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _selectedStore = null;
-                        });
-                      },
-                      icon: const Icon(Icons.close),
-                      color: Theme.of(context).colorScheme.onSurface,
-                    )
-                  ],
-                ),
-              ),
-              _selectedStore!.parsedDiscount != null
-                  ? DiscountCalculator(store: _selectedStore!)
-                  : DiscountInfo(store: _selectedStore!),
-            ],
+            _selectedStore!.parsedDiscount != null
+                ? DiscountCalculator(store: _selectedStore!)
+                : DiscountInfo(store: _selectedStore!),
           ],
-        ),
+        ],
       ),
     );
   }

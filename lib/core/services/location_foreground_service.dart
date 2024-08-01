@@ -67,6 +67,8 @@ class LocationForegroundService {
 
     await _location.enableBackgroundMode(enable: true);
 
+
+
     locationSubscription = _location.onLocationChanged
         .listen((LocationData currentLocation) async {
       if (currentLocation.latitude != null &&

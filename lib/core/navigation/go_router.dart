@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:vegawallet/features/auth/presentaion/components/verification_screen/verification_start.dart';
 import 'package:vegawallet/features/auth/presentaion/screens/error_auth_screen.dart';
 import 'package:vegawallet/features/maps/presentaion/screens/map_screen.dart';
+import 'package:vegawallet/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:vegawallet/features/profile/presentation/screens/profile_screen.dart';
 import 'package:vegawallet/features/stores/presentation/screens/store_screen.dart';
 import 'package:vegawallet/features/wallet/presentation/screens/wallet_screen.dart';
@@ -15,17 +16,18 @@ import 'custom_transition_page_builder.dart';
 
 final AuthService _authService = AuthService();
 
-
 final GoRouter router = GoRouter(
   initialLocation: '/',
   redirect: (context, state) {
     final isLoggedIn = _authService.isUserLoggedIn();
     if (!isLoggedIn && state.name != '/login') {
+
       return '/login';
     }
     if (isLoggedIn && state.name == '/login') {
       return '/';
     }
+
     return null;
   },
   routes: [
