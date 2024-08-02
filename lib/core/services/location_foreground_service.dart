@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:location/location.dart';
 import 'package:injectable/injectable.dart';
@@ -46,10 +47,15 @@ class LocationForegroundService {
 
     permissionGranted = await _location.hasPermission();
     if (permissionGranted == PermissionStatus.denied) {
+
       permissionGranted = await _location.requestPermission();
       if (permissionGranted != PermissionStatus.granted) {
+        print("AHA, NIJE SKROZ DATA PERMISIJA");
         return;
       }
+      // if (permissionGranted == PermissionStatus.grantedLimited || permissionGranted == PermissionStatus.denied || permissionGranted == PermissionStatus.deniedForever) {
+      //
+      // }
     }
 
     await _location.changeNotificationOptions(
@@ -66,8 +72,6 @@ class LocationForegroundService {
     );
 
     await _location.enableBackgroundMode(enable: true);
-
-
 
     locationSubscription = _location.onLocationChanged
         .listen((LocationData currentLocation) async {

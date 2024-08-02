@@ -4,6 +4,7 @@ import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:vegawallet/features/profile/presentation/bloc/profile_bloc.dart';
 
+import '../../../../../core/ui/elements/information_dialog.dart';
 import '../../../domain/entites/user_profile_information.dart';
 
 
@@ -81,6 +82,17 @@ class ProfileNotificationSectionState extends State<ProfileNotificationSection> 
                       setState(() {
                         isLocationEnabled = value;
                         if (isLocationEnabled) {
+                          showDialog(
+
+                            context: context,
+                            builder: (context) => const InformationDialog(
+
+                              title: 'Dozvoljeno pracenje u pozadini',
+                              description: 'Tvoja lokacija ce biti pracena u pozadini sve dok se aplikacija ne ugasi.',
+                              icon: Icons.warning_rounded,
+                              buttonText: 'OK',
+                            ),
+                          );
                           profileBloc.add(StartLocationTracking());
                         } else {
                           profileBloc.add(StopLocationTracking());
