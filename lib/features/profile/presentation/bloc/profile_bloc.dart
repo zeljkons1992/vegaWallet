@@ -8,6 +8,7 @@ import 'package:vegawallet/features/profile/domain/entites/user_profile_informat
 import 'package:vegawallet/features/profile/domain/usecases/get_remote_user_information_use_case.dart';
 
 import '../../../maps/domain/usecase/update_user_location_use_case.dart';
+import '../../domain/enums/location_permission_response.dart';
 import '../../domain/usecases/get_user_information_use_case.dart';
 import '../../domain/usecases/start_location_tracking_use_case.dart';
 import '../../domain/usecases/stop_location_tracking_use_case.dart';
@@ -23,6 +24,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final GetRemoteUserInformationUseCase _getRemoteUserInformationUseCase;
   final StartLocationTrackingUseCase _startLocationTrackingUseCase;
   final StopLocationTrackingUseCase _stopLocationTrackingUseCase;
+
+  final StreamController<LocationPermissionResponse> _locationPermissionController = StreamController<LocationPermissionResponse>.broadcast();
+  Stream<LocationPermissionResponse> get locationPermissionStream => _locationPermissionController.stream;
 
   ProfileBloc(this._getUserInformationUseCase,
       this._updateUserLocationUseCase,
@@ -76,7 +80,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     if (userData.status == DataStateStatus.success && userData.data != null) {
       final user = userData.data!;
-      await _startLocationTrackingUseCase(params: user.uid);
+      LocationPermissionResponse permissionResponse = await _startLocationTrackingUseCase(params: user.uid);
+      _locationPermissionController.add(permissionResponse);
     }
   }
 

@@ -1,8 +1,9 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:location/location.dart';
 import 'package:injectable/injectable.dart';
+import 'package:permission_handler/permission_handler.dart' as permission_handler;
+import 'package:vegawallet/features/profile/domain/enums/location_permission_response.dart';
 import 'package:vegawallet/features/profile/domain/repository/profile_repository.dart';
 
 import '../../features/profile/domain/entites/user_profile_information.dart';
@@ -13,9 +14,9 @@ import '../data_state/data_state.dart';
 class LocationForegroundService {
   final ProfileRepository _profileRepository;
   final Location _location = Location();
-  late StreamSubscription<LocationData> locationSubscription;
+  StreamSubscription<LocationData>? locationSubscription;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin();
 
   LocationForegroundService(this._profileRepository) {
     _initializeNotifications();
@@ -23,75 +24,96 @@ class LocationForegroundService {
 
   Future<void> _initializeNotifications() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('vega_splash');
+    AndroidInitializationSettings('vega_splash');
+    const DarwinInitializationSettings initializationSettingsIOS =
+    DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+    );
+
     const InitializationSettings initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
+    InitializationSettings(android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+        AndroidFlutterLocalNotificationsPlugin>()
         ?.requestNotificationsPermission();
   }
 
-  Future<void> startLocationTracking(String uid) async {
+  Future<LocationPermissionResponse> startLocationTracking(String uid) async {
     bool serviceEnabled;
-    PermissionStatus permissionGranted;
 
-    serviceEnabled = await _location.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await _location.requestService();
-      if (!serviceEnabled) {
-        return;
-      }
-    }
+    // Request foreground location permission first
+    final permission_handler.PermissionStatus foregroundPermissionStatus =
+    await permission_handler.Permission.location.request();
 
-    permissionGranted = await _location.hasPermission();
-    if (permissionGranted == PermissionStatus.denied) {
+    if (foregroundPermissionStatus.isGranted) {
+      print("Location granted while using the app");
+      // Request background location permission
+      final permission_handler.PermissionStatus backgroundPermissionStatus =
+      await permission_handler.Permission.locationAlways.request();
 
-      permissionGranted = await _location.requestPermission();
-      if (permissionGranted != PermissionStatus.granted) {
-        print("AHA, NIJE SKROZ DATA PERMISIJA");
-        return;
-      }
-      // if (permissionGranted == PermissionStatus.grantedLimited || permissionGranted == PermissionStatus.denied || permissionGranted == PermissionStatus.deniedForever) {
-      //
-      // }
-    }
+      if (backgroundPermissionStatus.isGranted) {
 
-    await _location.changeNotificationOptions(
-      title: "Location tracking",
-      subtitle: 'Your location is being tracked',
-      iconName: 'vega_splash',
-      onTapBringToFront: true,
-    );
-
-    await _location.changeSettings(
-      accuracy: LocationAccuracy.high,
-      interval: 5000,
-      distanceFilter: 20,
-    );
-
-    await _location.enableBackgroundMode(enable: true);
-
-    locationSubscription = _location.onLocationChanged
-        .listen((LocationData currentLocation) async {
-      if (currentLocation.latitude != null &&
-          currentLocation.longitude != null) {
-        final userResult =
-            await _profileRepository.getRemoteUserInformation(uid);
-        if (userResult.status == DataStateStatus.success) {
-          final userProfile = userResult.data;
-          final updatedUser = userProfile?.copyWith(
-            isLocationOn: true,
-            position: PositionSimple(
-              latitude: currentLocation.latitude!,
-              longitude: currentLocation.longitude!,
-            ),
-          );
-          await _profileRepository.updateUserLocation(updatedUser!);
+        serviceEnabled = await _location.serviceEnabled();
+        if (!serviceEnabled) {
+          serviceEnabled = await _location.requestService();
+          if (!serviceEnabled) {
+            return LocationPermissionResponse.serviceDisabled;
+          }
         }
+
+        print("Location granted always");
+        await _location.changeNotificationOptions(
+          title: "Location tracking",
+          subtitle: 'Your location is being tracked',
+          iconName: 'vega_splash',
+          onTapBringToFront: true,
+        );
+
+        await _location.changeSettings(
+          accuracy: LocationAccuracy.high,
+          interval: 5000,
+          distanceFilter: 20,
+        );
+
+        await _location.enableBackgroundMode(enable: true);
+
+        locationSubscription = _location.onLocationChanged
+            .listen((LocationData currentLocation) async {
+          if (currentLocation.latitude != null &&
+              currentLocation.longitude != null) {
+            final userResult =
+            await _profileRepository.getRemoteUserInformation(uid);
+            if (userResult.status == DataStateStatus.success) {
+              final userProfile = userResult.data;
+              final updatedUser = userProfile?.copyWith(
+                isLocationOn: true,
+                position: PositionSimple(
+                  latitude: currentLocation.latitude!,
+                  longitude: currentLocation.longitude!,
+                ),
+              );
+              await _profileRepository.updateUserLocation(updatedUser!);
+            }
+          }
+        });
+
+        return LocationPermissionResponse.granted;
+      } else {
+        print("Location allowed when using the app, but not always");
+        // Emit the event to ProfileBloc to notify about the permission status
+        // profileBloc.add(LocationPermissionNotAlwaysAllowed());
+        return LocationPermissionResponse.notGranted;
       }
-    });
+    } else {
+      print("Location not allowed at all");
+      // Handle case where foreground permission is not granted
+      // Emit the event to ProfileBloc to notify about the permission status
+      // profileBloc.add(LocationPermissionNotAlwaysAllowed());
+      return LocationPermissionResponse.notGranted;
+    }
   }
 
   Future<void> stopLocationTracking(String uid) async {
@@ -110,7 +132,7 @@ class LocationForegroundService {
       );
       await _profileRepository.updateUserLocation(updatedUser);
       _location.enableBackgroundMode(enable: false);
-      locationSubscription.cancel();
+      if (locationSubscription != null) locationSubscription!.cancel();
     }
   }
 }

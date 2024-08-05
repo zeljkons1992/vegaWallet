@@ -41,7 +41,12 @@
     "noNetwork": "No Internet Connection",
     "techProb": "Technical problems occurred, please try again later",
     "noFindAddress": "Unfortunately, the address was not found \uD83D\uDE1E",
-    "noAddressFound":"No Address Found"
+    "noAddressFound":"No Address Found",
+    "locationTrackingEnabledTitle": "Background location tracking enabled",
+    "locationTrackingEnabledDescription": "Your location will be tracked in the background until you turn off the app.",
+    "locationTrackingEnabledDisclaimer": "Turn on \"Allow Always\" in permission settings so this functionality can work properly.",
+    "locationTrackingFailedTitle": "Location tracking failed",
+    "locationTrackingFailedDescription": "In order to display your location you must turn on \"Allow Always\" in permission settings."
 
 }
 
