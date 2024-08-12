@@ -9,6 +9,7 @@ class UserProfileInformation extends Equatable {
   final String profileImage;
   final String dateTime;
   final PositionSimple? position;
+  final bool? isLocationOn;
 
   const UserProfileInformation({
     required this.uid,
@@ -17,9 +18,32 @@ class UserProfileInformation extends Equatable {
     this.phoneNumber,
     required this.profileImage,
     required this.dateTime,
-    this.position
+    this.position,
+    this.isLocationOn,
   });
 
+  UserProfileInformation copyWith({
+    String? uid,
+    String? nameAndSurname,
+    String? email,
+    String? phoneNumber,
+    String? profileImage,
+    String? dateTime,
+    PositionSimple? position,
+    bool? isLocationOn,
+  }) {
+    return UserProfileInformation(
+      uid: uid ?? this.uid,
+      nameAndSurname: nameAndSurname ?? this.nameAndSurname,
+      email: email ?? this.email,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      profileImage: profileImage ?? this.profileImage,
+      dateTime: dateTime ?? this.dateTime,
+      position: position ?? this.position,
+      isLocationOn: isLocationOn ?? this.isLocationOn,
+    );
+  }
+
   @override
-  List<Object?> get props => [uid,nameAndSurname, email, phoneNumber, profileImage, dateTime,  position];
+  List<Object?> get props => [uid,nameAndSurname, email, phoneNumber, profileImage, dateTime,  position, isLocationOn];
 }

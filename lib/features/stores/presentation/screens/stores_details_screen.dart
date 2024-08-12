@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -18,12 +17,12 @@ import '../components/details_screen/maps/map_location_initail.dart';
 import '../components/details_screen/maps/map_location_loaded.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../components/details_screen/maps/maps_unsuccessfully.dart';
 
 class StoreDetailsScreen extends StatefulWidget {
   final Store store;
-  final LocationBloc _locationBloc = getIt<LocationBloc>();
 
-  StoreDetailsScreen({super.key, required this.store});
+  const StoreDetailsScreen({super.key, required this.store});
 
   @override
   StoreDetailsScreenState createState() => StoreDetailsScreenState();
@@ -31,27 +30,31 @@ class StoreDetailsScreen extends StatefulWidget {
 
 class StoreDetailsScreenState extends State<StoreDetailsScreen> {
   late StreamSubscription<DataState> _navigationStream;
+  late LocationBloc _locationBloc;
 
   AddressCity? selectedDropdownItem;
   bool isStore = false;
   bool isMapExpanded = false;
   bool isMyCurrentLocationActive = false;
   double zoomLevel = 18.0;
+  String? addressCity;
 
   @override
   void initState() {
     super.initState();
-    _startListeningToMapStream();
+    _locationBloc = getIt<LocationBloc>();
     if (widget.store.addressCities.isNotEmpty) {
       selectedDropdownItem = widget.store.addressCities.first;
     }
-
+    _startListeningToMapStream();
   }
+
   void _startListeningToMapStream() {
-    _navigationStream = widget._locationBloc.navigationStream.listen((event) {
-        IntentUtils.launchMaps(event.data!.latitude, event.data!.longitude);
+    _navigationStream = _locationBloc.navigationStream.listen((event) {
+      IntentUtils.launchMaps(event.data!.latitude, event.data!.longitude);
     });
   }
+
   @override
   void dispose() {
     _navigationStream.cancel();
@@ -69,15 +72,14 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
-
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    String? addressCity;
     if (selectedDropdownItem != null) {
-      addressCity = "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}";
+      addressCity =
+          "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}";
     }
-
     return BlocProvider(
-      create: (context) => widget._locationBloc..add(UpdateStoreLocation(addressCity ?? '')),
+      create: (context) =>
+          _locationBloc..add(UpdateStoreLocation(addressCity ?? '')),
       child: Scaffold(
         body: Column(
           children: [
@@ -85,45 +87,50 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
               duration: const Duration(milliseconds: 500),
               curve: Curves.easeInOut,
               height: isMapExpanded
-                  ? MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - SIZE_OF_BOTTOM_NAVIGATION_BAR
+                  ? MediaQuery.of(context).size.height -
+                      MediaQuery.of(context).padding.top -
+                      SIZE_OF_BOTTOM_NAVIGATION_BAR
                   : MediaQuery.of(context).size.height / 3,
               child: Stack(
                 children: [
                   BlocConsumer<LocationBloc, LocationState>(
                     listener: (context, state) {
-                       if (state is OpenNavigationToAddressUnsuccessful) {
-                        Fluttertoast.showToast(msg: localization.noFindAddress,
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,);
+                      switch (state) {
+                        case OpenNavigationToAddressUnsuccessful _:
+                          Fluttertoast.showToast(
+                            msg: localization.noFindAddress,
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                          );
                       }
                     },
+                    buildWhen: (previousState, currentState) {
+                      if (currentState is OpenNavigationToAddressUnsuccessful) {
+                        return false;
+                      }
+                      return true;
+                    },
                     builder: (context, state) {
-                      return BlocBuilder<LocationBloc, LocationState>(
-                        builder: (context, state) {
-                          if (state is LocationInitial) {
-                            return mapLocationInitial(context);
-                          } else if (state is LocationLoaded) {
-                            return MapLocationLoadedWidget(
-                              shouldCenter: isMyCurrentLocationActive,
-                              latitude: state.position.latitude,
-                              longitude: state.position.longitude,
-                              zoomLevel: zoomLevel,
-                            );
-                          } else if (state is LocationLoading) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (state is StoreLocationUpdatedSuccess) {
-                            return MapLocationLoadedWidget(
-                              shouldCenter: isMyCurrentLocationActive,
-                              latitude: state.position.latitude,
-                              longitude: state.position.longitude,
-                              zoomLevel: zoomLevel,
-                            );
-                          } else {
-                            return const MapLocationError();
-                          }
-                        },
-                      );
+                      switch (state) {
+                        case LocationInitial _:
+                          return mapLocationInitial(context);
+                        case FetchStoreLocationSuccessState _:
+                          return MapLocationLoadedWidget(
+                            shouldCenter: isMyCurrentLocationActive,
+                            latitude: state.position.latitude,
+                            longitude: state.position.longitude,
+                            zoomLevel: zoomLevel,
+                          );
+                        case FetchStoreLocationUnsuccessfullyState _:
+                          return const MapsUnsuccessfully();
+                        case LocationLoading _:
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        case NoInternetConnectionState _:
+                          return const MapLocationError();
+                        default:
+                          return const SizedBox();
+                      }
                     },
                   ),
                   const PrimaryBackButton(),
@@ -157,7 +164,7 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                     children: [
                       Container(
                         height: 70,
-                        color: colorScheme.surfaceBright,
+                        color: colorScheme.surface,
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Row(
                           children: [
@@ -175,7 +182,8 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                                       String addressCity =
                                           "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}";
                                       BlocProvider.of<LocationBloc>(context)
-                                          .add(UpdateStoreLocation(addressCity));
+                                          .add(
+                                              UpdateStoreLocation(addressCity));
                                     }
                                   },
                                 );
@@ -193,8 +201,9 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                                 return IconButton(
                                   onPressed: () {
                                     BlocProvider.of<LocationBloc>(context).add(
-                                        OpenNavigationToAddress(
-                                            "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}"));
+                                      OpenNavigationToAddress(
+                                          "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}"),
+                                    );
                                   },
                                   icon: const Icon(
                                     Icons.directions,

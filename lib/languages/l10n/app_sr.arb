@@ -27,7 +27,7 @@
     "profileTitle": "Profil",
     "joined": "Pridužio se",
     "logout": "Odjavi se",
-    "failedToLoadProfileInfo":"Ne uspešno učitani korisnički podaci",
+    "failedToLoadProfileInfo":"Neuspešno učitani korisnički podaci",
     "notification": "Obaveštenja",
     "general": "Opšte",
     "feedback": "Povratne informacije",
@@ -40,7 +40,14 @@
     "defaultConditionsText": "Uslovi nisu navedeni",
     "noNetwork": "Nema konekcije sa internetom",
     "techProb": "Došlo je do tehničkih problema. Probajte ponovo kasnije",
-    "noFindAddress": "Nažalost, adresa nije pronadjena \uD83D\uDE1E"
+    "noFindAddress": "Nažalost, adresa nije pronadjena \uD83D\uDE1E",
+    "noAddressFound":"Nije pronadjena Adresa",
+    "locationTrackingEnabledTitle": "Dozvoljeno praćenje lokacije u pozadini",
+    "locationTrackingEnabledDescription": "Tvoja lokacija će biti praćena u pozadini sve dok se aplikacija ne ugasi.",
+    "locationTrackingEnabledDisclaimer": "U podešavanjima dozvola uključite \"Dozvoli uvek\" kako bi ova funkcionalnost ispravno radila.",
+    "locationTrackingFailedTitle": "Praćenje lokacije neuspešno",
+    "locationTrackingFailedDescription": "Kako bi prikazali vašu lokaciju potrebno je da u podešavanjima dozvola omogućite deljenje lokacije uvek."
+
 }
 
 

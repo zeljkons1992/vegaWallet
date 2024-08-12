@@ -12,6 +12,7 @@ import '../../../../core/di/injection.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../core/utils/localization_helper.dart';
+import '../../../profile/presentation/bloc/profile_bloc.dart';
 import '../../../stores/presentation/bloc/store_bloc/store_bloc.dart';
 
 class SignInScreen extends StatefulWidget {

@@ -6,6 +6,7 @@ import 'package:vegawallet/core/constants/assets_const.dart';
 import 'package:vegawallet/core/constants/size_const.dart';
 import 'package:vegawallet/core/ui/elements/language_switcher.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
+import 'package:vegawallet/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:vegawallet/features/wallet/presentation/bloc/wallet_bloc.dart';
 import 'package:vegawallet/core/di/injection.dart';
 import '../../../../core/ui/elements/search_bar.dart';
@@ -28,6 +29,7 @@ class _WalletScreenState extends State<WalletScreen> {
   final FlipCardController _flipCardController = FlipCardController();
   final WalletBloc walletBloc = getIt<WalletBloc>();
   final StoreBloc storeBloc = getIt<StoreBloc>();
+  final ProfileBloc profileBloc = getIt<ProfileBloc>();
 
   Store? _selectedStore;
 
@@ -43,8 +45,12 @@ class _WalletScreenState extends State<WalletScreen> {
     final localization = AppLocalizations.of(context)!;
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => walletBloc..add(FetchCardInfo())),
-        BlocProvider(create: (context) => storeBloc),
+        BlocProvider(
+          create: (context) => walletBloc..add(FetchCardInfo()),
+        ),
+        BlocProvider(
+          create: (context) => storeBloc,
+        ),
       ],
       child: Scaffold(
         backgroundColor: colorScheme.surface,
@@ -84,7 +90,8 @@ class _WalletScreenState extends State<WalletScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(
-                horizontal: PADDING_VALUE_SMALL, vertical: PADDING_VALUE_LARGE),
+                horizontal: PADDING_VALUE_SMALL,
+                vertical: PADDING_VALUE_LARGE),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

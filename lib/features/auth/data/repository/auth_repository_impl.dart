@@ -58,6 +58,8 @@ class AuthRepositoryImpl implements AuthRepository {
         'phoneNumber': user.phoneNumber ?? 'Unknown',
         'profileImage': user.photoURL ?? '',
         'dateTime': formattedDate,
+        'position': null,
+        'isLocationOn': true,
       });
   }
 

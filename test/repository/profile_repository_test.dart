@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,6 +9,7 @@ import 'package:vegawallet/features/profile/data/repository/profile_repository_i
 import 'package:vegawallet/features/profile/domain/entites/user_profile_information.dart';
 
 class MockAuthServices extends Mock implements AuthService {}
+class MockFirebaseDatabase extends Mock implements FirebaseDatabase {}
 
 class MockUser extends Mock implements User {
   @override
@@ -23,10 +25,12 @@ void main() {
   late ProfileRepositoryImpl profileRepositoryImpl;
   late MockAuthServices mockAuthServices;
   late MockUser mockUser;
+  late MockFirebaseDatabase mockFirebaseDatabase;
 
   setUp(() {
     mockAuthServices = MockAuthServices();
-    profileRepositoryImpl = ProfileRepositoryImpl(mockAuthServices);
+    mockFirebaseDatabase = MockFirebaseDatabase();
+    profileRepositoryImpl = ProfileRepositoryImpl(mockAuthServices, mockFirebaseDatabase);
     mockUser = MockUser();
     when(() => mockUser.uid).thenReturn("123");
     when(() => mockUser.displayName).thenReturn("Nikla");
