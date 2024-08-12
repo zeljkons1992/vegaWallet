@@ -164,7 +164,7 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                     children: [
                       Container(
                         height: 70,
-                        color: colorScheme.surfaceBright,
+                        color: colorScheme.surface,
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Row(
                           children: [
