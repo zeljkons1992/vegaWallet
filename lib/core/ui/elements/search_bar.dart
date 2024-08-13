@@ -105,31 +105,36 @@ class StoreSearchBarState extends State<StoreSearchBar> {
   }
 
   Future<List<Widget>> _buildSuggestions() async {
-    final completer = Completer<List<Widget>>();
-    _searchStreamController.stream.firstWhere((stores) => stores.isNotEmpty, orElse: () => []).then((stores) {
-      final suggestions = stores
-          .map(
-            (store) => ListTile(
-          leading: Icon(categoryIcons[store.category] ?? Icons.category),
-          title: Text(store.name, style: AppTextStyles(context).searchBarText,),
-          onTap: () {
-            widget.onStoreSelected(store);
-            setState(() {
-              _searchStreamController.add([]);
-              _controller.closeView(_controller.text);
-              _controller.clear();
-            });
-            FocusScopeNode currentFocus = FocusScope.of(context);
-            if (!currentFocus.hasPrimaryFocus &&
-                currentFocus.focusedChild != null) {
-              currentFocus.focusedChild?.unfocus();
-            }
-          },
+    final stores = await _searchStreamController.stream.first;
+
+    if (stores.isEmpty) {
+      return [];
+    }
+
+    return stores
+        .map(
+          (store) => ListTile(
+        leading: Icon(categoryIcons[store.category] ?? Icons.category),
+        title: Text(
+          store.name,
+          style: AppTextStyles(context).searchBarText,
         ),
-      )
-          .toList();
-      completer.complete(suggestions);
-    });
-    return completer.future;
+        onTap: () {
+          widget.onStoreSelected(store);
+          setState(() {
+            _searchStreamController.add([]);
+            _controller.closeView(_controller.text);
+            _controller.clear();
+          });
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus &&
+              currentFocus.focusedChild != null) {
+            currentFocus.focusedChild?.unfocus();
+          }
+        },
+      ),
+    )
+        .toList();
   }
+
 }

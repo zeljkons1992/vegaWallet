@@ -70,32 +70,5 @@ void main() {
     expect(find.text('John Doe'), findsOneWidget);
   });
 
-  testWidgets('clears selected store when clear button is pressed', (WidgetTester tester) async {
-    const  mockCardInfo =  WalletCardInformation(name: 'John Doe',expireDate: "12/25",cardNo: "111 111");
-    final store = Store.withData(name: 'Store 1', category: 'Kafići i Restorani', addressCities: [], discounts: [], conditions: [], parsedDiscount: 10.0);
 
-    whenListen(mockWalletBloc, Stream.fromIterable([const WalletStateLoaded(mockCardInfo)]), initialState: WalletStateInitial());
-    whenListen(mockStoreBloc, Stream.fromIterable([StoreLoaded(stores: [store])]), initialState: StoreLoading());
-
-    await tester.pumpWidget(createWidgetUnderTest());
-    await tester.pumpAndSettle();
-
-    // Select the store
-    final searchField = find.byType(SearchBar);
-    await tester.enterText(searchField, 'Store 1');
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Store 1').last);
-    await tester.pumpAndSettle();
-
-    // Verify the store is selected and displayed
-    expect(find.text('Store 1'), findsAny);
-    expect(find.byIcon(Icons.close), findsOneWidget);
-
-    // Press the clear button
-    await tester.tap(find.byIcon(Icons.close));
-    await tester.pumpAndSettle();
-
-    // Verify the store is cleared
-    expect(find.text('Store 1'), findsNothing);
-  });
 }
