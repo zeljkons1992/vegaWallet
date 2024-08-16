@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
 import '../../../../../core/constants/icon_const.dart';
 import '../../../domain/entities/store.dart';
 import 'store_list_tile.dart';
@@ -23,6 +24,7 @@ class CategoryExpansionTile extends StatelessWidget {
     final localization = AppLocalizations.of(context)!;
 
     switch (category) {
+      case "Favorites": return localization.categoryFavorites;
       case "Kafići i Restorani": return localization.categoryCoffeeShopsAndRestaurants;
       case "Putovanja": return localization.categoryTravel;
       case "Zabava": return localization.categoryEntertainment;
@@ -50,12 +52,11 @@ class CategoryExpansionTile extends StatelessWidget {
           highlightColor: Colors.transparent,
         ),
         child: ExpansionTile(
-
           leading: Icon(
-            categoryIcons[category] ?? Icons.category,
+            categoryIcons[category] ?? Icons.star_outlined,
             color: colorScheme.onSurface,
           ),
-
+          trailing: stores.isEmpty ? const SizedBox() : null,
           title: Text(
             _mapCategoryToLocalizationString(category, context),
             style:  TextStyle(

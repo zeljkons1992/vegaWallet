@@ -49,11 +49,11 @@ class StoresScreen extends StatelessWidget {
                   buildWhen: (previous, current) => current is! StoreSearchDone,
                   builder: (context, state) {
                     switch (state) {
-                      case StoreLoading _:
+                      case StoreLoading():
                         return const Center(child: CircularProgressIndicator());
-                      case StoreLoaded _:
+                      case StoreLoaded():
                         return StoresList(stores: state.stores);
-                      case StoreError _:
+                      case StoreError():
                         return Center(child: Text(state.message));
                       default:
                         return const SizedBox();

@@ -13,27 +13,57 @@ class StoresList extends StatefulWidget {
 
 class StoresListState extends State<StoresList> {
   Map<String, bool> groupExpanded = {};
+  late List<Store> stores;
+
+  @override
+  void initState() {
+    super.initState();
+    stores = widget.stores;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final favoriteStores = stores.where((store) => store.isFavorite).toList();
+    final otherCategories = stores
+        .where((store) => !store.isFavorite)
+        .map((store) => store.category)
+        .toSet()
+        .toList();
+
+    if (favoriteStores.isEmpty) {
+      setState(() {
+        groupExpanded['Favorites'] = false;
+      });
+    }
+
     return ListView(
       padding: const EdgeInsets.all(8.0),
-      children: widget.stores
-          .map((store) => store.category)
-          .toSet()
-          .toList()
-          .map((category) {
-        return CategoryExpansionTile(
-          category: category,
-          stores: widget.stores.where((store) => store.category == category).toList(),
-          isExpanded: groupExpanded[category] ?? false,
-          onExpansionChanged: (expanded) {
-            setState(() {
-              groupExpanded[category] = expanded;
-            });
-          },
-        );
-      }).toList(),
+      children: [
+          CategoryExpansionTile(
+            category: 'Favorites',
+            stores: favoriteStores,
+            onExpansionChanged: (expanded) {
+              setState(() {
+                groupExpanded['Favorites'] = expanded;
+              });
+            },
+            isExpanded: favoriteStores.isEmpty && groupExpanded['Favorites'] == true,
+          ),
+        ...otherCategories.map((category) {
+          return CategoryExpansionTile(
+            category: category,
+            stores: stores
+                .where((store) => store.category == category)
+                .toList(),
+            isExpanded: groupExpanded[category] ?? false,
+            onExpansionChanged: (expanded) {
+              setState(() {
+                groupExpanded[category] = expanded;
+              });
+            },
+          );
+        }),
+      ],
     );
   }
 }

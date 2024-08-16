@@ -1,15 +1,17 @@
 import 'package:injectable/injectable.dart';
 import 'package:vegawallet/core/data_state/data_state.dart';
+import 'package:vegawallet/core/usecase/use_case.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
 import 'package:vegawallet/features/stores/domain/repository/store_repository.dart';
 
 @LazySingleton()
-class SearchStoresUseCase {
+class AddStoreToFavoritesUseCase extends UseCase<DataState, Store>{
   final StoreRepository repository;
 
-  SearchStoresUseCase(this.repository);
+  AddStoreToFavoritesUseCase(this.repository);
 
-  Future<DataState<List<Store>>> call({required String params}) async {
-    return await repository.searchStores(params);
+  @override
+  Future<DataState> call({Store? params}) async {
+    return await repository.addStoreToFavorites(params!);
   }
 }

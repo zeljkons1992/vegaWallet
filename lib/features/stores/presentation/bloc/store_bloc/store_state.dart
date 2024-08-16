@@ -16,6 +16,14 @@ class StoreLoaded extends StoreState {
 
   const StoreLoaded({required this.stores});
 
+  StoreLoaded copyWith({
+    List<Store>? stores,
+  }) {
+    return StoreLoaded(
+      stores: stores ?? this.stores,
+    );
+  }
+
   @override
   List<Object> get props => [stores];
 }
