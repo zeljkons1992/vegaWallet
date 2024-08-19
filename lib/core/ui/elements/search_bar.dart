@@ -115,6 +115,16 @@ class StoreSearchBarState extends State<StoreSearchBar> {
         .map(
           (store) => ListTile(
         leading: Icon(categoryIcons[store.category] ?? Icons.category),
+        trailing: IconButton(
+          onPressed: () {
+            store.isFavorite ? BlocProvider.of<StoreBloc>(context).add(RemoveStoreFromFavorites(store)) : BlocProvider.of<StoreBloc>(context)
+                .add(AddStoreToFavorites(store));
+          },
+          icon: store.isFavorite
+              ? const Icon(Icons.star_outlined)
+              : const Icon(Icons.star_border_outlined),
+          splashColor: Colors.transparent,
+        ),
         title: Text(
           store.name,
           style: AppTextStyles(context).searchBarText,

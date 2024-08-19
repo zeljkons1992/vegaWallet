@@ -28,6 +28,27 @@ class Store {
     this.isFavorite = false,
   });
 
+  Store copyWith({
+    Id? id,
+    String? name,
+    List<AddressCity>? addressCities,
+    List<String>? discounts,
+    List<String>? conditions,
+    String? category,
+    double? parsedDiscount,
+    bool? isFavorite,
+  }) {
+    return Store.withData(
+      name: name ?? this.name,
+      addressCities: addressCities ?? this.addressCities,
+      discounts: discounts ?? this.discounts,
+      conditions: conditions ?? this.conditions,
+      category: category ?? this.category,
+      parsedDiscount: parsedDiscount ?? this.parsedDiscount,
+      isFavorite: isFavorite ?? this.isFavorite,
+    )..id = id ?? this.id;
+  }
+
   factory Store.fromMap(String name, List<List<dynamic>> rows,
       String category, double parsedDiscount) {
     return Store.withData(

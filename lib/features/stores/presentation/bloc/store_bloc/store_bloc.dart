@@ -51,6 +51,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   }
 
   Future<FutureOr<void>> _onAddStoreToFavorites(AddStoreToFavorites event, Emitter<StoreState> emit) async {
+    print("POZVAO ADD ZA STORE ${event.store.name}");
     DataState dataState = await _addStoreToFavoritesUseCase(params: event.store);
     if (dataState.status == DataStateStatus.success) {
       if (state is StoreLoaded) {
@@ -80,6 +81,8 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   }
 
   Future<FutureOr<void>> _onRemoveStoreFromFavorites(RemoveStoreFromFavorites event, Emitter<StoreState> emit) async {
+    print("POZVAO REMOVE ZA STORE ${event.store.name}");
+
     DataState dataState = await _removeStoreFromFavoritesUseCase(params: event.store);
     if (dataState.status == DataStateStatus.success) {
       if (state is StoreLoaded) {
