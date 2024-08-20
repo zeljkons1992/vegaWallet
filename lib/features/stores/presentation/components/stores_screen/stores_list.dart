@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
+import 'package:vegawallet/features/stores/presentation/bloc/favorites_bloc/favorites_bloc.dart';
 import '../../../domain/entities/store.dart';
 import 'cetegory_expansion_tile.dart';
 
@@ -14,61 +16,67 @@ class StoresList extends StatefulWidget {
 
 class StoresListState extends State<StoresList> {
   Map<String, bool> groupExpanded = {};
-  late List<Store> stores;
-
-  @override
-  void initState() {
-    super.initState();
-    stores = widget.stores;
-  }
 
   @override
   Widget build(BuildContext context) {
-    final favoriteStores = stores.where((store) => store.isFavorite).toList();
+    print("POZVAO SE REBUILD LISTE");
+    return ListView(
+      padding: const EdgeInsets.all(8.0),
+      children: [
+        BlocBuilder<FavoritesBloc, FavoritesState>(
+          builder: (context, favoritesState) {
+            final favoriteStores = favoritesState is FavoritesLoaded
+                ? favoritesState.favorites
+                : widget.stores.where((store) => store.isFavorite).toList();
+
+            final isFavoriteGroupExpanded =
+                groupExpanded['Favorites'] ?? false;
+
+            return CategoryExpansionTile(
+              category: 'Favorites',
+              stores: favoriteStores,
+              onExpansionChanged: (expanded) {
+                setState(() {
+                  groupExpanded['Favorites'] = expanded;
+                });
+              },
+              isExpanded: isFavoriteGroupExpanded,
+            );
+          },
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            "Categories",
+            style: AppTextStyles(context).headline1,
+          ),
+        ),
+        ..._buildCategoryTiles(widget.stores),
+      ],
+    );
+  }
+
+  List<Widget> _buildCategoryTiles(List<Store> stores) {
     final otherCategories = stores
         .where((store) => !store.isFavorite)
         .map((store) => store.category)
         .toSet()
         .toList();
 
-    if (favoriteStores.isEmpty) {
-      setState(() {
-        groupExpanded['Favorites'] = false;
-      });
-    }
+    return otherCategories.map((category) {
+      final categoryStores =
+      stores.where((store) => store.category == category).toList();
 
-    return ListView(
-      padding: const EdgeInsets.all(8.0),
-      children: [
-        CategoryExpansionTile(
-          category: 'Favorites',
-          stores: favoriteStores,
-          onExpansionChanged: (expanded) {
-            setState(() {
-              groupExpanded['Favorites'] = expanded;
-            });
-          },
-          isExpanded:
-              favoriteStores.isEmpty && groupExpanded['Favorites'] == true,
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text("Categories", style: AppTextStyles(context).headline1),
-        ),
-        ...otherCategories.map((category) {
-          return CategoryExpansionTile(
-            category: category,
-            stores:
-                stores.where((store) => store.category == category).toList(),
-            isExpanded: groupExpanded[category] ?? false,
-            onExpansionChanged: (expanded) {
-              setState(() {
-                groupExpanded[category] = expanded;
-              });
-            },
-          );
-        }),
-      ],
-    );
+      return CategoryExpansionTile(
+        category: category,
+        stores: categoryStores,
+        isExpanded: groupExpanded[category] ?? false,
+        onExpansionChanged: (expanded) {
+          setState(() {
+            groupExpanded[category] = expanded;
+          });
+        },
+      );
+    }).toList();
   }
 }

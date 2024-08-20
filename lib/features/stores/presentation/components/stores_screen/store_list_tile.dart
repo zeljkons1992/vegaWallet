@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vegawallet/core/ui/theme/theme.dart';
 import '../../../domain/entities/store.dart';
+import '../../bloc/favorites_bloc/favorites_bloc.dart';
 import '../../bloc/store_bloc/store_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StoreListTile extends StatefulWidget {
   final Store store;
 
-  const StoreListTile({Key? key, required this.store}) : super(key: key);
+  const StoreListTile({super.key, required this.store});
 
   @override
   State<StoreListTile> createState() => _StoreListTileState();
@@ -17,6 +18,7 @@ class StoreListTile extends StatefulWidget {
 class _StoreListTileState extends State<StoreListTile> {
   @override
   Widget build(BuildContext context) {
+    if(widget.store.name == "Pupin Lounge") print("POZVAO SE REBUILD PUPIN LOUNGA");
     ColorScheme colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.only(bottom: 4.0),
@@ -25,10 +27,12 @@ class _StoreListTileState extends State<StoreListTile> {
         child: InkWell(
           onTap: () async {
             final updatedStore = await context.push<Store>('/stores/store_details', extra: widget.store);
-            if (updatedStore != null) {
-              setState(() {
-                widget.store.isFavorite = updatedStore.isFavorite;
-              });
+            if (updatedStore != null && context.mounted) {
+              print("OVO SE POZVALO");
+              print("UPDATES STORE KOJI SAM DOBIO NAKON POPA");
+              print(updatedStore.toString());
+              BlocProvider.of<StoreBloc>(context).add(UpdateStore(updatedStore));
+              BlocProvider.of<FavoritesBloc>(context).add(GetFavorites());
             }
           },
           splashColor: MaterialTheme.lightScheme().primaryContainer,
@@ -54,22 +58,43 @@ class _StoreListTileState extends State<StoreListTile> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        widget.store.name,
-                      ),
+                      Text(widget.store.name),
                     ],
                   ),
                 ),
-                IconButton(
-                  onPressed: () {
-                    widget.store.isFavorite
-                        ? BlocProvider.of<StoreBloc>(context).add(RemoveStoreFromFavorites(widget.store))
-                        : BlocProvider.of<StoreBloc>(context).add(AddStoreToFavorites(widget.store));
+                BlocBuilder<FavoritesBloc, FavoritesState>(
+                  builder: (context, state) {
+                    bool isFavorite = widget.store.isFavorite;
+
+                    bool shouldShowStar = widget.store.isFavorite;
+
+                    if (state is FavoritesLoaded) {
+                      //ToDo Bug
+                        //isFavorite = state.favorites.any((favStore) => favStore.id == widget.store.id);
+                      final updatedStore = state.favorites.firstWhere(
+                            (s) => s.id == widget.store.id,
+                        orElse: () => widget.store,
+                      );
+
+                      isFavorite = updatedStore.isFavorite;
+                    }
+
+                    return IconButton(
+                      onPressed: () {
+                        print("IS FAVORITE JE $isFavorite");
+                        if (isFavorite) {
+                          BlocProvider.of<FavoritesBloc>(context).add(RemoveStoreFromFavorites(widget.store));
+                        } else {
+                          BlocProvider.of<FavoritesBloc>(context).add(AddStoreToFavorites(widget.store));
+                        }
+                        BlocProvider.of<StoreBloc>(context).add(UpdateStore(widget.store.copyWith(isFavorite: !isFavorite)));
+                      },
+                      icon: Icon(
+                        shouldShowStar ? Icons.star_outlined : Icons.star_border_outlined,
+                      ),
+                      splashColor: Colors.transparent,
+                    );
                   },
-                  icon: widget.store.isFavorite
-                      ? const Icon(Icons.star_outlined)
-                      : const Icon(Icons.star_border_outlined),
-                  splashColor: Colors.transparent,
                 ),
               ],
             ),

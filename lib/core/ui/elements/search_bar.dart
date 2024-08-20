@@ -117,8 +117,8 @@ class StoreSearchBarState extends State<StoreSearchBar> {
         leading: Icon(categoryIcons[store.category] ?? Icons.category),
         trailing: IconButton(
           onPressed: () {
-            store.isFavorite ? BlocProvider.of<StoreBloc>(context).add(RemoveStoreFromFavorites(store)) : BlocProvider.of<StoreBloc>(context)
-                .add(AddStoreToFavorites(store));
+            // store.isFavorite ? BlocProvider.of<StoreBloc>(context).add(RemoveStoreFromFavorites(store)) : BlocProvider.of<StoreBloc>(context)
+            //     .add(AddStoreToFavorites(store));
           },
           icon: store.isFavorite
               ? const Icon(Icons.star_outlined)

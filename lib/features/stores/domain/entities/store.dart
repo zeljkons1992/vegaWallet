@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:equatable/equatable.dart';
 import 'package:isar/isar.dart';
 import 'address_city.dart';
 import 'address_location.dart';
@@ -131,4 +132,5 @@ class Store {
       category.hashCode ^
       parsedDiscount.hashCode ^
       isFavorite.hashCode;
+
 }

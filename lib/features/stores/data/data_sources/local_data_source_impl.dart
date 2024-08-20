@@ -63,8 +63,7 @@ class LocalDataSourceImpl implements LocalDataSource {
             await isar.stores.filter().nameEqualTo(store.name).findFirst();
 
         if (storeToUpdate != null) {
-          storeToUpdate.isFavorite = true;
-          await isar.stores.put(storeToUpdate);
+          await isar.stores.put(storeToUpdate.copyWith(isFavorite: true));
         }
       }
     });
@@ -77,24 +76,36 @@ class LocalDataSourceImpl implements LocalDataSource {
 
   @override
   Future<void> removeFromFavorites(Store store) async {
+    print("POKUSAVAM DA BRISEM SAD ${store}");
     await isar.writeTxn(() async {
       final favoriteToDelete = await isar.favorites
           .filter()
           .storeNameEqualTo(store.name)
           .findFirst();
 
+      print("FAV TO DELETE : ${favoriteToDelete?.storeName}");
+
       if (favoriteToDelete != null) {
+        print("NADJOH GA, SAD GA BRISEM");
         await isar.favorites.delete(favoriteToDelete.id);
 
         final storeToUpdate =
             await isar.stores.filter().nameEqualTo(store.name).findFirst();
 
         if (storeToUpdate != null) {
-          storeToUpdate.isFavorite = false;
-          await isar.stores.put(storeToUpdate);
+          await isar.stores.put(storeToUpdate.copyWith(isFavorite: false));
         }
+
+        final testingStore = await isar.stores.filter().nameEqualTo(store.name).findFirst();
+
+        print(testingStore!.isFavorite);
       }
-      ;
     });
   }
+
+  @override
+  Future<List<Store>> getFavoriteStores() async {
+    return await isar.stores.filter().isFavoriteEqualTo(true).findAll();
+  }
+
 }

@@ -79,6 +79,7 @@ class _CategoryExpansionTileState extends State<CategoryExpansionTile> {
               color: colorScheme.onSurface
             ),
           ),
+          maintainState: true,
           initiallyExpanded: widget.isExpanded,
           onExpansionChanged: widget.onExpansionChanged,
           children: widget.stores.map((store) => StoreListTile(store: store)).toList(),

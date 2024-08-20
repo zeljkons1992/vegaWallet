@@ -44,7 +44,7 @@ class _WalletScreenState extends State<WalletScreen> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => walletBloc..add(FetchCardInfo())),
-        BlocProvider(create: (context) => storeBloc),
+
       ],
       child: Scaffold(
         backgroundColor: colorScheme.surface,

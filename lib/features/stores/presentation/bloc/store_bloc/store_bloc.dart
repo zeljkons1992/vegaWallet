@@ -25,17 +25,21 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   StoreBloc(this._fetchStoresUseCase, this._searchStoresUseCase, this._addStoreToFavoritesUseCase, this._removeStoreFromFavoritesUseCase) : super(StoreInitial()) {
     on<LoadStores>(_onLoadStores);
     on<SearchStores>(_onSearchStores);
-    on<AddStoreToFavorites>(_onAddStoreToFavorites);
-    on<RemoveStoreFromFavorites>(_onRemoveStoreFromFavorites);
+    on<UpdateStore>(_onUpdateStore);
+    // on<AddStoreToFavorites>(_onAddStoreToFavorites);
+    // on<RemoveStoreFromFavorites>(_onRemoveStoreFromFavorites);
   }
 
   Future<void> _onLoadStores(LoadStores event, Emitter<StoreState> emit) async {
     emit(StoreLoading());
     final cachePolicy =
-        CachePolicy(type: CacheType.EXPIRES, expires: const Duration(days: 7));
+    CachePolicy(type: CacheType.EXPIRES, expires: const Duration(days: 7));
     final dataState = await _fetchStoresUseCase(params: cachePolicy);
     if (dataState.status == DataStateStatus.success) {
-      emit(StoreLoaded(stores: dataState.data!));
+      final updatedStores = List<Store>.from(dataState.data!);
+      print("LOADOVAO STORES U BLOCU");
+
+      emit(StoreLoaded(updatedStores));
     } else {
       emit(StoreError(message: dataState.message.toString()));
     }
@@ -44,72 +48,81 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   Future<void> _onSearchStores(SearchStores event, Emitter<StoreState> emit) async {
     final dataState = await _searchStoresUseCase(params: event.query);
     if (dataState.status == DataStateStatus.success) {
-      emit(StoreSearchDone(dataState.data!));
+      final updatedStores = List<Store>.from(dataState.data!);
+      emit(StoreSearchDone(updatedStores));
     } else {
       emit(StoreError(message: dataState.message.toString()));
     }
   }
 
-  Future<FutureOr<void>> _onAddStoreToFavorites(AddStoreToFavorites event, Emitter<StoreState> emit) async {
-    print("POZVAO ADD ZA STORE ${event.store.name}");
-    DataState dataState = await _addStoreToFavoritesUseCase(params: event.store);
-    if (dataState.status == DataStateStatus.success) {
-      if (state is StoreLoaded) {
-        final updatedStores = (state as StoreLoaded).stores.map((store) {
-          if (store.id == event.store.id) {
-            return store..isFavorite = true;
-          }
-          return store;
-        }).toList();
-        emit(StoreLoading());
-        emit(StoreLoaded(stores: updatedStores));
-      } else if (state is StoreSearchDone) {
-        final updatedStores = (state as StoreSearchDone).stores.map((store) {
-          if (store.id == event.store.id) {
-            return store..isFavorite = true;
-          }
-          return store;
-        }).toList();
-        emit(StoreLoading());
-        emit(StoreSearchDone(updatedStores));
-      } else {
-        emit(const StoreError(message: "Unexpected state when adding to favorites."));
-      }
-    } else {
-      emit(StoreError(message: dataState.message.toString()));
+  void _onUpdateStore(UpdateStore event, Emitter<StoreState> emit) {
+    if (state is StoreLoaded) {
+      final updatedStores = List<Store>.from((state as StoreLoaded).stores).map((store) {
+        return store.id == event.store.id ? event.store : store;
+      }).toList();
+      emit(StoreLoaded(updatedStores));
     }
   }
 
-  Future<FutureOr<void>> _onRemoveStoreFromFavorites(RemoveStoreFromFavorites event, Emitter<StoreState> emit) async {
-    print("POZVAO REMOVE ZA STORE ${event.store.name}");
-
-    DataState dataState = await _removeStoreFromFavoritesUseCase(params: event.store);
-    if (dataState.status == DataStateStatus.success) {
-      if (state is StoreLoaded) {
-        final updatedStores = (state as StoreLoaded).stores.map((store) {
-          if (store.id == event.store.id) {
-            return store..isFavorite = false;
-          }
-          return store;
-        }).toList();
-        emit(StoreLoading());
-        emit(StoreLoaded(stores: updatedStores));
-        emit(StoreLoaded(stores: updatedStores));
-      } else if (state is StoreSearchDone) {
-        final updatedStores = (state as StoreSearchDone).stores.map((store) {
-          if (store.id == event.store.id) {
-            return store..isFavorite = false;
-          }
-          return store;
-        }).toList();
-        emit(StoreLoading());
-        emit(StoreSearchDone(updatedStores));
-        emit(StoreLoaded(stores: updatedStores));
-      } else {
-        emit(const StoreError(message: "Unexpected state when removing from favorites."));
-      }
-    } else {
-      emit(StoreError(message: dataState.message.toString()));
-    }
-  }
+  // Future<FutureOr<void>> _onAddStoreToFavorites(AddStoreToFavorites event, Emitter<StoreState> emit) async {
+  //   print("POZVAO ADD ZA STORE ${event.store.name}");
+  //   DataState dataState = await _addStoreToFavoritesUseCase(params: event.store);
+  //   if (dataState.status == DataStateStatus.success) {
+  //     if (state is StoreLoaded) {
+  //       final updatedStores = (state as StoreLoaded).stores.map((store) {
+  //         if (store.id == event.store.id) {
+  //           return store..isFavorite = true;
+  //         }
+  //         return store;
+  //       }).toList();
+  //       emit(StoreLoading());
+  //       emit(StoreLoaded(stores: List.from(updatedStores)));
+  //     } else if (state is StoreSearchDone) {
+  //       final updatedStores = (state as StoreSearchDone).stores.map((store) {
+  //         if (store.id == event.store.id) {
+  //           return store..isFavorite = true;
+  //         }
+  //         return store;
+  //       }).toList();
+  //       emit(StoreLoading());
+  //       emit(StoreSearchDone(List.from(updatedStores)));
+  //     } else {
+  //       emit(const StoreError(message: "Unexpected state when adding to favorites."));
+  //     }
+  //   } else {
+  //     emit(StoreError(message: dataState.message.toString()));
+  //   }
+  // }
+  //
+  // Future<FutureOr<void>> _onRemoveStoreFromFavorites(RemoveStoreFromFavorites event, Emitter<StoreState> emit) async {
+  //   print("POZVAO REMOVE ZA STORE ${event.store.name}");
+  //
+  //   DataState dataState = await _removeStoreFromFavoritesUseCase(params: event.store);
+  //   if (dataState.status == DataStateStatus.success) {
+  //     if (state is StoreLoaded) {
+  //       final updatedStores = (state as StoreLoaded).stores.map((store) {
+  //         if (store.id == event.store.id) {
+  //           return store..isFavorite = false;
+  //         }
+  //         return store;
+  //       }).toList();
+  //       emit(StoreLoading());
+  //       emit(StoreLoaded(stores: List.from(updatedStores)));
+  //     } else if (state is StoreSearchDone) {
+  //       final updatedStores = (state as StoreSearchDone).stores.map((store) {
+  //         if (store.id == event.store.id) {
+  //           return store..isFavorite = false;
+  //         }
+  //         return store;
+  //       }).toList();
+  //       emit(StoreLoading());
+  //       emit(StoreSearchDone(List.from(updatedStores)));
+  //       emit(StoreLoaded(stores: List.from(updatedStores)));
+  //     } else {
+  //       emit(const StoreError(message: "Unexpected state when removing from favorites."));
+  //     }
+  //   } else {
+  //     emit(StoreError(message: dataState.message.toString()));
+  //   }
+  // }
 }

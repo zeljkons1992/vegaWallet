@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vegawallet/core/data_state/data_state.dart';
+import 'package:vegawallet/features/stores/presentation/bloc/favorites_bloc/favorites_bloc.dart';
 import '../../../../core/constants/size_const.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/ui/elements/primary_back_button.dart';
@@ -12,6 +13,7 @@ import '../../../../core/utils/intent_utils.dart';
 import '../../domain/entities/address_city.dart';
 import '../../domain/entities/store.dart';
 import '../bloc/location_bloc/location_bloc.dart';
+import '../bloc/store_bloc/store_bloc.dart';
 import '../components/details_screen/item_details_info.dart';
 import '../components/details_screen/maps/map_location_error.dart';
 import '../components/details_screen/maps/map_location_initail.dart';
@@ -32,6 +34,8 @@ class StoreDetailsScreen extends StatefulWidget {
 class StoreDetailsScreenState extends State<StoreDetailsScreen> {
   late StreamSubscription<DataState> _navigationStream;
   late LocationBloc _locationBloc;
+  late StoreBloc _storeBloc;
+  late FavoritesBloc _favoritesBloc;
 
   AddressCity? selectedDropdownItem;
   bool isStore = false;
@@ -46,6 +50,8 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
   void initState() {
     super.initState();
     _locationBloc = getIt<LocationBloc>();
+    //_storeBloc = getIt<StoreBloc>();
+    _favoritesBloc = getIt<FavoritesBloc>();
     updatedStore = widget.store;
     if (widget.store.addressCities.isNotEmpty) {
       selectedDropdownItem = widget.store.addressCities.first;
@@ -86,13 +92,23 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
       onPopInvoked: (didPop) {
         if (!didPop) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
+            print("UPDATEOVAN STORE KOJI VRACAN POSLIJE POPA");
+            print("${updatedStore.toString()}");
             context.pop(updatedStore);
-          });
+         });
         }
       },
-      child: BlocProvider(
-        create: (context) =>
-            _locationBloc..add(UpdateStoreLocation(addressCity ?? '')),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) =>
+                _locationBloc..add(UpdateStoreLocation(addressCity ?? '')),
+          ),
+
+          BlocProvider(
+            create: (context) => _favoritesBloc..add(GetFavorites()),
+          )
+        ],
         child: Scaffold(
           body: Column(
             children: [
@@ -149,6 +165,7 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                     ),
                     PrimaryBackButton(
                       onBackPressed: () {
+                        //context.push("/stores", extra: updatedStore);
                         context.pop(updatedStore);
                       },
                     ),

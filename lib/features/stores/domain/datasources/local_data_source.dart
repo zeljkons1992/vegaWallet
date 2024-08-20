@@ -10,4 +10,5 @@ abstract class LocalDataSource {
   Future<List<Favorite>> getFavorites();
   Future<void> addToFavorites(Store favorite);
   Future<void> removeFromFavorites(Store favorite);
+  Future<List<Store>> getFavoriteStores();
 }

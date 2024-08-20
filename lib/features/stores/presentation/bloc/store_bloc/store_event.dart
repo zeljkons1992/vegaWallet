@@ -7,9 +7,9 @@ abstract class StoreEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadStores extends StoreEvent {}
+final class LoadStores extends StoreEvent {}
 
-class SearchStores extends StoreEvent {
+final class SearchStores extends StoreEvent {
   final String query;
 
   const SearchStores(this.query);
@@ -18,21 +18,23 @@ class SearchStores extends StoreEvent {
   List<Object> get props => [query];
 }
 
-class AddStoreToFavorites extends StoreEvent {
+final class UpdateStore extends StoreEvent {
   final Store store;
 
-  const AddStoreToFavorites(this.store);
+  const UpdateStore(this.store);
 
   @override
   List<Object> get props => [store];
 }
 
-class RemoveStoreFromFavorites extends StoreEvent {
-  final Store store;
 
-  const RemoveStoreFromFavorites(this.store);
-
-  @override
-  List<Object> get props => [store];
-}
+// class ToggleCategoryExpansion extends StoreEvent {
+//   final String category;
+//   final bool isExpanded;
+//
+//   const ToggleCategoryExpansion(this.category, this.isExpanded);
+//
+//   @override
+//   List<Object> get props => [category, isExpanded];
+// }
 
