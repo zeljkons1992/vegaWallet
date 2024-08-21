@@ -61,7 +61,6 @@ class _ItemDetailsInfoState extends State<ItemDetailsInfo> {
                     onPressed: () {
                       shouldShowStar =! shouldShowStar;
                       if (isFavorite) {
-                        print("PRIJE BRISANJA: ${widget.store}");
                         BlocProvider.of<FavoritesBloc>(context)
                             .add(RemoveStoreFromFavorites(widget.store.copyWith(isFavorite: true)));
                        // BlocProvider.of<StoreBloc>(context).add(UpdateStore(widget.store.copyWith(isFavorite: false)));
@@ -72,7 +71,6 @@ class _ItemDetailsInfoState extends State<ItemDetailsInfo> {
                       } else {
                         BlocProvider.of<FavoritesBloc>(context)
                             .add(AddStoreToFavorites(widget.store));
-                       // BlocProvider.of<StoreBloc>(context).add(UpdateStore(widget.store.copyWith(isFavorite: true)));
                         widget.onUpdate(widget.store.copyWith(isFavorite: true));
                         setState(() {
                           isFavorite = !isFavorite;

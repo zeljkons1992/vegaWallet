@@ -18,7 +18,6 @@ class StoreListTile extends StatefulWidget {
 class _StoreListTileState extends State<StoreListTile> {
   @override
   Widget build(BuildContext context) {
-    if(widget.store.name == "Pupin Lounge") print("POZVAO SE REBUILD PUPIN LOUNGA");
     ColorScheme colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.only(bottom: 4.0),
@@ -28,9 +27,6 @@ class _StoreListTileState extends State<StoreListTile> {
           onTap: () async {
             final updatedStore = await context.push<Store>('/stores/store_details', extra: widget.store);
             if (updatedStore != null && context.mounted) {
-              print("OVO SE POZVALO");
-              print("UPDATES STORE KOJI SAM DOBIO NAKON POPA");
-              print(updatedStore.toString());
               BlocProvider.of<StoreBloc>(context).add(UpdateStore(updatedStore));
               BlocProvider.of<FavoritesBloc>(context).add(GetFavorites());
             }
@@ -69,8 +65,6 @@ class _StoreListTileState extends State<StoreListTile> {
                     bool shouldShowStar = widget.store.isFavorite;
 
                     if (state is FavoritesLoaded) {
-                      //ToDo Bug
-                        //isFavorite = state.favorites.any((favStore) => favStore.id == widget.store.id);
                       final updatedStore = state.favorites.firstWhere(
                             (s) => s.id == widget.store.id,
                         orElse: () => widget.store,
@@ -81,7 +75,6 @@ class _StoreListTileState extends State<StoreListTile> {
 
                     return IconButton(
                       onPressed: () {
-                        print("IS FAVORITE JE $isFavorite");
                         if (isFavorite) {
                           BlocProvider.of<FavoritesBloc>(context).add(RemoveStoreFromFavorites(widget.store));
                         } else {

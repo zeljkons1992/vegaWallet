@@ -58,7 +58,6 @@ class StoresScreen extends StatelessWidget {
                       case StoreLoading():
                         return const Center(child: CircularProgressIndicator());
                       case StoreLoaded():
-                        print("KAO NAVODNO REBUILDAM LISTU");
                         return StoresList( stores: state.stores,);
                       case StoreError():
                         return Center(child: Text(state.message));

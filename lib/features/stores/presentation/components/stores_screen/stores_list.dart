@@ -19,7 +19,6 @@ class StoresListState extends State<StoresList> {
 
   @override
   Widget build(BuildContext context) {
-    print("POZVAO SE REBUILD LISTE");
     return ListView(
       padding: const EdgeInsets.all(8.0),
       children: [
