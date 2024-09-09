@@ -3,7 +3,7 @@ import 'package:vegawallet/core/data_state/data_state.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
 import 'package:vegawallet/features/stores/domain/repository/store_repository.dart';
 
-@LazySingleton()
+@Singleton()
 class SearchStoresUseCase {
   final StoreRepository repository;
 

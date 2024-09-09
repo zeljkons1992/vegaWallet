@@ -1,7 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:vegawallet/core/data_state/data_state.dart';
 import 'package:vegawallet/core/usecase/use_case.dart';
-import 'package:vegawallet/features/stores/domain/entities/store.dart';
 import 'package:vegawallet/features/stores/domain/repository/store_repository.dart';
 
 @LazySingleton()

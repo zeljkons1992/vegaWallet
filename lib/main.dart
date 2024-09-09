@@ -137,7 +137,6 @@ class MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: widget.child,
       bottomNavigationBar: MyBottomNavigationBar(
         selectedIndex: _selectedTab.index,

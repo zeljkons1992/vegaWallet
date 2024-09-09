@@ -7,6 +7,7 @@ import 'package:vegawallet/core/ui/elements/search_bar.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/stores/presentation/bloc/favorites_bloc/favorites_bloc.dart';
 import 'package:vegawallet/features/stores/presentation/bloc/store_bloc/store_bloc.dart';
+import '../bloc/search_bloc/search_bloc.dart';
 import '../components/stores_screen/stores_list.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -21,6 +22,9 @@ class StoresScreen extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => getIt<FavoritesBloc>()..add(GetFavorites()),
+        ),
+        BlocProvider(
+          create: (context) => getIt<SearchBloc>(),
         ),
       ],
       child: Scaffold(

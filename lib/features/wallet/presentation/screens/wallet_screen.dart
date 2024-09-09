@@ -6,12 +6,12 @@ import 'package:vegawallet/core/constants/assets_const.dart';
 import 'package:vegawallet/core/constants/size_const.dart';
 import 'package:vegawallet/core/ui/elements/language_switcher.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
+import 'package:vegawallet/features/stores/presentation/bloc/search_bloc/search_bloc.dart';
 import 'package:vegawallet/features/wallet/presentation/bloc/wallet_bloc.dart';
 import 'package:vegawallet/core/di/injection.dart';
 import '../../../../core/ui/elements/search_bar.dart';
 import '../../../../core/ui/elements/selected_store_display.dart';
 import '../../../stores/domain/entities/store.dart';
-import '../../../stores/presentation/bloc/store_bloc/store_bloc.dart';
 import '../../data/models/wallet_card_information.dart';
 import '../widgets/discount_calculator.dart';
 import '../widgets/discount_info.dart';
@@ -27,7 +27,7 @@ class WalletScreen extends StatefulWidget {
 class _WalletScreenState extends State<WalletScreen> {
   final FlipCardController _flipCardController = FlipCardController();
   final WalletBloc walletBloc = getIt<WalletBloc>();
-  final StoreBloc storeBloc = getIt<StoreBloc>();
+  final SearchBloc searchBloc = getIt<SearchBloc>();
 
   Store? _selectedStore;
 
@@ -44,7 +44,9 @@ class _WalletScreenState extends State<WalletScreen> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => walletBloc..add(FetchCardInfo())),
-
+        BlocProvider(
+          create: (context) => getIt<SearchBloc>(),
+        ),
       ],
       child: Scaffold(
         backgroundColor: colorScheme.surface,

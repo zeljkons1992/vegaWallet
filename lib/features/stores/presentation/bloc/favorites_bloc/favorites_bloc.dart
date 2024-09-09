@@ -28,7 +28,6 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
   Future<void> _onGetFavorites(GetFavorites event, Emitter<FavoritesState> emit) async {
     emit(FavoritesInitial());
     final dataState = await _getFavoritesUseCase();
-
     if (dataState.status == DataStateStatus.success) {
       emit(FavoritesLoaded(dataState.data));
     }

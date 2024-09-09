@@ -13,12 +13,10 @@ class MockSearchStoresUseCase extends Mock implements SearchStoresUseCase {}
 void main() {
   late StoreBloc storeBloc;
   late MockFetchStoresUseCase mockFetchStoresUseCase;
-  late MockSearchStoresUseCase mockSearchStoresUseCase;
 
   setUp(() {
     mockFetchStoresUseCase = MockFetchStoresUseCase();
-    mockSearchStoresUseCase = MockSearchStoresUseCase();
-    storeBloc = StoreBloc(mockFetchStoresUseCase, mockSearchStoresUseCase);
+    storeBloc = StoreBloc(mockFetchStoresUseCase);
   });
 
   group('StoreBloc', () {
@@ -46,7 +44,7 @@ void main() {
       act: (bloc) => bloc.add(LoadStores()),
       expect: () => [
         StoreLoading(),
-        StoreLoaded(stores: stores),
+        StoreLoaded(stores),
       ],
     );
 
@@ -64,30 +62,5 @@ void main() {
       ],
     );
 
-    blocTest<StoreBloc, StoreState>(
-      'emits [StoreSearchDone] when search is successful',
-      build: () {
-        when(() => mockSearchStoresUseCase(params: any(named: 'params')))
-            .thenAnswer((_) async => DataState.success(stores));
-        return storeBloc;
-      },
-      act: (bloc) => bloc.add(const SearchStores('Store1')),
-      expect: () => [
-        StoreSearchDone(stores),
-      ],
-    );
-
-    blocTest<StoreBloc, StoreState>(
-      'emits [StoreError] when search fails',
-      build: () {
-        when(() => mockSearchStoresUseCase(params: any(named: 'params')))
-            .thenAnswer((_) async => DataState.error('Error searching stores'));
-        return storeBloc;
-      },
-      act: (bloc) => bloc.add(const SearchStores('Store1')),
-      expect: () => [
-        const StoreError(message: 'Error searching stores'),
-      ],
-    );
   });
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
 import '../../../../../core/constants/icon_const.dart';
 import '../../../domain/entities/store.dart';
 import 'store_list_tile.dart';
