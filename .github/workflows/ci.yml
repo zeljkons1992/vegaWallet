@@ -161,7 +161,7 @@ jobs:
         run: rm -rf $HOME/.gradle/caches/
 
       - name: Build Android project
-        run: flutter build apk --debug
+        run: flutter build apk --release
 
 
       - name: Run tests
