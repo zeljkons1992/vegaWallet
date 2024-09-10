@@ -41,7 +41,7 @@ dependencies:
   flutter_native_splash: ^2.4.0
   lottie: ^3.1.2
   grouped_list: ^5.1.2
-  flutter_map: ^7.0.1
+  flutter_map: ^7.0.2
   latlong2: ^0.9.1
   geolocator: ^12.0.0
   permission_handler: ^10.2.0
@@ -68,7 +68,6 @@ dependencies:
   fluttertoast: ^8.2.6
   connectivity_plus: ^6.0.0
   diacritic: ^0.1.5
-  flutter_compass: ^0.8.0
 
 
 dev_dependencies:

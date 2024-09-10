@@ -3,6 +3,9 @@ buildscript {
         agp_version = '8.0.0'
         agp_version1 = '7.4.1'
         agp_version2 = '8.5.2'
+        agp_version3 = '7.4.2'
+        agp_version4 = agp_version1
+        agp_version5 = '7.0.0'
     }
 
     repositories {
@@ -11,7 +14,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.0'
+        classpath "com.android.tools.build:gradle:$agp_version5"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.24"
     }
 }
