@@ -109,4 +109,14 @@ class StoreRepositoryImpl implements StoreRepository {
       return DataState.error("Failed to get favorite stores.");
     }
   }
+
+  @override
+  Future<DataState> getFavorite(String id) async{
+    try{
+      final favorite = await localDataSource.getFavoriteItem(id);
+      return DataState.success(favorite);
+    }catch(e){
+      return DataState.error("Failed to get fafavorite stire");
+    }
+  }
 }

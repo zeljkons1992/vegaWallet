@@ -18,12 +18,13 @@ import '../components/details_screen/maps/map_location_error.dart';
 import '../components/details_screen/maps/map_location_initail.dart';
 import '../components/details_screen/maps/map_location_loaded.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import '../components/details_screen/maps/maps_unsuccessfully.dart';
+
 class StoreDetailsScreen extends StatefulWidget {
   final Store store;
+  final String source;
 
-  const StoreDetailsScreen({super.key, required this.store});
+  const StoreDetailsScreen({super.key, required this.store, required this.source});
 
   @override
   StoreDetailsScreenState createState() => StoreDetailsScreenState();
@@ -52,6 +53,9 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
     if (widget.store.addressCities.isNotEmpty) {
       selectedDropdownItem = widget.store.addressCities.first;
     }
+    if (_favoritesBloc.state is! FavoritesLoaded) {
+      _favoritesBloc.add(GetFavorites());
+    }
     _startListeningToMapStream();
   }
 
@@ -59,6 +63,7 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
     _navigationStream = _locationBloc.navigationStream.listen((event) {
       IntentUtils.launchMaps(event.data!.latitude, event.data!.longitude);
     });
+
   }
 
   @override
@@ -80,26 +85,24 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
     final localization = AppLocalizations.of(context)!;
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     if (selectedDropdownItem != null) {
-      addressCity =
-      "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}";
+      addressCity = "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}";
     }
 
-    return PopScope(
-      canPop: true,
-      onPopInvoked:(didPop) {
-        context.push("/stores");
-      },
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) =>
-            _locationBloc..add(UpdateStoreLocation(addressCity ?? '')),
-          ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => _locationBloc..add(UpdateStoreLocation(addressCity ?? '')),
+        ),
 
-          BlocProvider(
-            create: (context) => _favoritesBloc..add(GetFavorites()),
-          )
-        ],
+      ],
+      child: PopScope(
+        onPopInvoked: (_){
+          if (widget.source == "search") {
+            context.pushReplacement('/stores',extra: updatedStore);
+          } else {
+            context.pop(updatedStore);
+          }
+        },
         child: Scaffold(
           body: Column(
             children: [
@@ -115,48 +118,48 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                   children: [
                     BlocConsumer<LocationBloc, LocationState>(
                       listener: (context, state) {
-                        switch (state) {
-                          case OpenNavigationToAddressUnsuccessful _:
-                            Fluttertoast.showToast(
-                              msg: localization.noFindAddress,
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.CENTER,
-                            );
+                        if (state is OpenNavigationToAddressUnsuccessful) {
+                          Fluttertoast.showToast(
+                            msg: localization.noFindAddress,
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                          );
                         }
                       },
                       buildWhen: (previousState, currentState) {
-                        if (currentState
-                        is OpenNavigationToAddressUnsuccessful) {
+                        if (currentState is OpenNavigationToAddressUnsuccessful) {
                           return false;
                         }
                         return true;
                       },
                       builder: (context, state) {
-                        switch (state) {
-                          case LocationInitial _:
-                            return mapLocationInitial(context);
-                          case FetchStoreLocationSuccessState _:
-                            return MapLocationLoadedWidget(
-                              shouldCenter: isMyCurrentLocationActive,
-                              latitude: state.position.latitude,
-                              longitude: state.position.longitude,
-                              zoomLevel: zoomLevel,
-                            );
-                          case FetchStoreLocationUnsuccessfullyState _:
-                            return const MapsUnsuccessfully();
-                          case LocationLoading _:
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          case NoInternetConnectionState _:
-                            return const MapLocationError();
-                          default:
-                            return const SizedBox();
+                        if (state is LocationInitial) {
+                          return mapLocationInitial(context);
+                        } else if (state is FetchStoreLocationSuccessState) {
+                          return MapLocationLoadedWidget(
+                            shouldCenter: isMyCurrentLocationActive,
+                            latitude: state.position.latitude,
+                            longitude: state.position.longitude,
+                            zoomLevel: zoomLevel,
+                          );
+                        } else if (state is FetchStoreLocationUnsuccessfullyState) {
+                          return const MapsUnsuccessfully();
+                        } else if (state is LocationLoading) {
+                          return const Center(child: CircularProgressIndicator());
+                        } else if (state is NoInternetConnectionState) {
+                          return const MapLocationError();
+                        } else {
+                          return const SizedBox();
                         }
                       },
                     ),
                     PrimaryBackButton(
                       onBackPressed: () {
-                        Navigator.of(context).pop(); // Trigger back navigation
+                        if (widget.source == "search") {
+                          context.push("/stores",extra: updatedStore);
+                        } else {
+                          context.pop(updatedStore);
+                        }
                       },
                     ),
                     Positioned(
@@ -170,9 +173,7 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                         child: IconButton(
                           onPressed: () => _expandMapAndShowLocations(),
                           icon: Icon(
-                            isMapExpanded
-                                ? Icons.fullscreen_exit
-                                : Icons.fullscreen,
+                            isMapExpanded ? Icons.fullscreen_exit : Icons.fullscreen,
                             color: Colors.white,
                           ),
                         ),
@@ -204,11 +205,8 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                                       });
 
                                       if (selectedDropdownItem != null) {
-                                        String addressCity =
-                                            "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}";
-                                        BlocProvider.of<LocationBloc>(context)
-                                            .add(UpdateStoreLocation(
-                                            addressCity));
+                                        String addressCity = "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}";
+                                        BlocProvider.of<LocationBloc>(context).add(UpdateStoreLocation(addressCity));
                                       }
                                     },
                                   );
@@ -222,21 +220,19 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                                   shape: BoxShape.circle,
                                   color: colorScheme.primary,
                                 ),
-                                child: Builder(builder: (context) {
-                                  return IconButton(
-                                    onPressed: () {
-                                      BlocProvider.of<LocationBloc>(context)
-                                          .add(
-                                        OpenNavigationToAddress(
-                                            "${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}"),
-                                      );
-                                    },
-                                    icon: const Icon(
-                                      Icons.directions,
-                                    ),
-                                    color: Colors.white,
-                                  );
-                                }),
+                                child: Builder(
+                                  builder: (context) {
+                                    return IconButton(
+                                      onPressed: () {
+                                        BlocProvider.of<LocationBloc>(context).add(
+                                            OpenNavigationToAddress("${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}")
+                                        );
+                                      },
+                                      icon: const Icon(Icons.directions),
+                                      color: Colors.white,
+                                    );
+                                  },
+                                ),
                               ),
                             ],
                           ),

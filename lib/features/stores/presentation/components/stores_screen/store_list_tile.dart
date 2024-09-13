@@ -16,26 +16,35 @@ class StoreListTile extends StatefulWidget {
 }
 
 class _StoreListTileState extends State<StoreListTile> {
+  late Store updatedStore;
+
   @override
   Widget build(BuildContext context) {
+    // Remove the setState here, as we're updating the state via BLoC and navigation
     ColorScheme colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.only(bottom: 4.0),
       child: Material(
         color: colorScheme.onPrimary,
         child: InkWell(
-          onTap: () async {
-            final updatedStore = await context.push<Store>('/stores/store_details', extra: widget.store);
-            if (updatedStore != null && context.mounted) {
-              BlocProvider.of<StoreBloc>(context).add(UpdateStore(updatedStore));
-              BlocProvider.of<FavoritesBloc>(context).add(GetFavorites());
-            }
+          onTap: () {
+            // Navigate to the store details screen using context.push
+            context.push<Store>(
+              '/stores/store_details',
+              extra: {'store': widget.store, 'source': 'store'},
+            ).then((updatedStore) {
+              // Check for updated store data and dispatch the event outside of the async function
+              if (updatedStore != null) {
+                BlocProvider.of<StoreBloc>(context).add(UpdateStore(updatedStore));
+              }
+            });
           },
           splashColor: MaterialTheme.lightScheme().primaryContainer,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
+                // Store icon
                 Container(
                   width: 50,
                   height: 50,
@@ -50,6 +59,8 @@ class _StoreListTileState extends State<StoreListTile> {
                   ),
                 ),
                 const SizedBox(width: 8),
+
+                // Store name
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,32 +69,42 @@ class _StoreListTileState extends State<StoreListTile> {
                     ],
                   ),
                 ),
+
+                // Favorite button with BlocBuilder
                 BlocBuilder<FavoritesBloc, FavoritesState>(
+                  buildWhen: (previous, current) {
+                    return previous != current && current is FavoritesLoaded;
+                  },
                   builder: (context, state) {
                     bool isFavorite = widget.store.isFavorite;
 
-                    bool shouldShowStar = widget.store.isFavorite;
-
                     if (state is FavoritesLoaded) {
-                      final updatedStore = state.favorites.firstWhere(
-                            (s) => s.id == widget.store.id,
-                        orElse: () => widget.store,
-                      );
-
-                      isFavorite = updatedStore.isFavorite;
+                      if (state.favorites.isNotEmpty) {
+                        final updatedStore = state.favorites.firstWhere(
+                              (s) => s.id == widget.store.id,
+                          orElse: () => widget.store,
+                        );
+                        isFavorite = updatedStore.isFavorite;
+                      } else {
+                        // If the favorites list is empty, fall back to widget.store.isFavorite
+                        isFavorite = false;
+                      }
                     }
 
                     return IconButton(
                       onPressed: () {
+                        // Toggle favorite status and update via BLoC
                         if (isFavorite) {
                           BlocProvider.of<FavoritesBloc>(context).add(RemoveStoreFromFavorites(widget.store));
                         } else {
                           BlocProvider.of<FavoritesBloc>(context).add(AddStoreToFavorites(widget.store));
                         }
-                        BlocProvider.of<StoreBloc>(context).add(UpdateStore(widget.store.copyWith(isFavorite: !isFavorite)));
+                        BlocProvider.of<StoreBloc>(context).add(
+                          UpdateStore(widget.store.copyWith(isFavorite: !isFavorite)),
+                        );
                       },
                       icon: Icon(
-                        shouldShowStar ? Icons.star_outlined : Icons.star_border_outlined,
+                        isFavorite ? Icons.star : Icons.star_border,
                       ),
                       splashColor: Colors.transparent,
                     );

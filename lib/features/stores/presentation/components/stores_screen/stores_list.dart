@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/stores/presentation/bloc/favorites_bloc/favorites_bloc.dart';
 import '../../../domain/entities/store.dart';
+import '../../bloc/store_bloc/store_bloc.dart';
 import 'cetegory_expansion_tile.dart';
 
 class StoresList extends StatefulWidget {
@@ -22,27 +23,33 @@ class StoresListState extends State<StoresList> {
     return ListView(
       padding: const EdgeInsets.all(8.0),
       children: [
-        BlocBuilder<FavoritesBloc, FavoritesState>(
-          builder: (context, favoritesState) {
-            final favoriteStores = favoritesState is FavoritesLoaded
-                ? favoritesState.favorites
-                : widget.stores.where((store) => store.isFavorite).toList();
+        BlocBuilder<StoreBloc, StoreState>(
+          builder: (context, storeState) {
+            final stores = storeState is StoreLoaded ? storeState.stores : widget.stores;
 
-            final isFavoriteGroupExpanded =
-                groupExpanded['Favorites'] ?? false;
+            return BlocBuilder<FavoritesBloc, FavoritesState>(
+              builder: (context, favoritesState) {
+                final favoriteStores = favoritesState is FavoritesLoaded
+                    ? favoritesState.favorites
+                    : stores.where((store) => store.isFavorite).toList();
 
-            return CategoryExpansionTile(
-              category: 'Favorites',
-              stores: favoriteStores,
-              onExpansionChanged: (expanded) {
-                setState(() {
-                  groupExpanded['Favorites'] = expanded;
-                });
+                final isFavoriteGroupExpanded = groupExpanded['Favorites'] ?? false;
+
+                return CategoryExpansionTile(
+                  category: 'Favorites',
+                  stores: favoriteStores,
+                  onExpansionChanged: (expanded) {
+                    setState(() {
+                      groupExpanded['Favorites'] = expanded;
+                    });
+                  },
+                  isExpanded: isFavoriteGroupExpanded,
+                );
               },
-              isExpanded: isFavoriteGroupExpanded,
             );
           },
         ),
+
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(

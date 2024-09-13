@@ -9,4 +9,5 @@ abstract class StoreRepository {
   Future<DataState> addStoreToFavorites(Store store);
   Future<DataState> removeStoreFromFavorites(Store store);
   Future<DataState<List<Store>>> getFavorites();
+  Future<DataState> getFavorite(String id);
 }

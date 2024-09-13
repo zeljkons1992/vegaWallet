@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vegawallet/features/auth/presentaion/components/verification_screen/verification_start.dart';
 import 'package:vegawallet/features/auth/presentaion/screens/error_auth_screen.dart';
@@ -48,11 +49,17 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: 'store_details',
               builder: (context, state) {
-                final store = state.extra as Store;
-                return StoreDetailsScreen(store: store);
+                // Cast the extra parameter as a Map<String, dynamic>
+                final extra = state.extra as Map<String, dynamic>;
+                // Extract the store and source from the extra map
+                final store = extra['store'] as Store;
+                final source = extra['source'] as String;
+
+                return StoreDetailsScreen(store: store, source: source);
               },
             ),
-          ],
+
+      ],
         ),
         GoRoute(
           path: '/maps',

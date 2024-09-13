@@ -11,9 +11,19 @@ import '../bloc/search_bloc/search_bloc.dart';
 import '../components/stores_screen/stores_list.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class StoresScreen extends StatelessWidget {
+class StoresScreen extends StatefulWidget {
   const StoresScreen({super.key});
 
+  @override
+  State<StoresScreen> createState() => _StoresScreenState();
+}
+
+class _StoresScreenState extends State<StoresScreen> {
+  @override
+  void initState() {
+    BlocProvider.of<FavoritesBloc>(context).add(GetFavorites());
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
@@ -21,12 +31,9 @@ class StoresScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => getIt<FavoritesBloc>()..add(GetFavorites()),
-        ),
-        BlocProvider(
           create: (context) => getIt<SearchBloc>(),
         ),
-      ],
+        ],
       child: Scaffold(
         body: SafeArea(
           child: Column(
@@ -50,7 +57,7 @@ class StoresScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                 child: StoreSearchBar(
                   onStoreSelected: (store) {
-                    context.go('/stores/store_details', extra: store);
+                    context.go('/stores/store_details', extra: {'store': store, 'source': 'search'});
                   },
                 ),
               ),

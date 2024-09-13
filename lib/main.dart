@@ -15,6 +15,7 @@ import 'core/ui/theme/util.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/localization/presentation/bloc/locale_bloc.dart';
+import 'features/stores/presentation/bloc/favorites_bloc/favorites_bloc.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -61,6 +62,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => getIt<StoreBloc>()..add(LoadStores()),
+        ),
+        BlocProvider(
+          create: (context) => getIt<FavoritesBloc>()
         ),
       ],
       child: Builder(
