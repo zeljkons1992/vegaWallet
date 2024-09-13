@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vegawallet/features/stores/presentation/bloc/favorites_bloc/favorites_bloc.dart';
 import '../../../../../core/ui/theme/text_style.dart';
@@ -161,8 +162,16 @@ class _ItemDetailsInfoState extends State<ItemDetailsInfo> {
               ),
               recognizer: TapGestureRecognizer()
                 ..onTap = () async {
-                  final uri = Uri.parse(url!);
-                    await launchUrl(uri);
+                if(url!=null){
+                  final uri = Uri.parse(url);
+                  await launchUrl(uri);
+                }else{
+                  Fluttertoast.showToast(
+                    msg: "Error",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                  );
+                }
                 },
             ),
             TextSpan(
