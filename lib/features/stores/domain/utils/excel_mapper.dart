@@ -5,17 +5,17 @@ import '../entities/address_city.dart';
 @LazySingleton()
 class ExcelMapper {
   List<Store> mapTablesToStores(Map<String, List<List<dynamic>>> tables) {
-    final stores = <Store>[];
+    final storesMap = <String, Store>{}; // We'll use a map to merge stores by name
 
     for (var table in tables.keys) {
       var rows = tables[table]!;
-      _mapTableToStores(rows, table, stores);
+      _mapTableToStores(rows, table, storesMap);
     }
 
-    return stores;
+    return storesMap.values.toList(); // Convert the map values back to a list of stores
   }
 
-  void _mapTableToStores(List<List<dynamic>> rows, String category, List<Store> stores) {
+  void _mapTableToStores(List<List<dynamic>> rows, String category, Map<String, Store> storesMap) {
     String? currentName;
     List<AddressCity> currentAddressCities = [];
     List<String> currentDiscounts = [];
@@ -31,7 +31,7 @@ class ExcelMapper {
 
       if (rowData['name'] != null && rowData['name']!.isNotEmpty) {
         parsedDiscount = _calculateParsedDiscount(currentDiscounts);
-        _addStoreIfExists(currentName, currentAddressCities, currentDiscounts, currentConditions, parsedDiscount, category, stores);
+        _addOrMergeStoreIfExists(currentName, currentAddressCities, currentDiscounts, currentConditions, parsedDiscount, category, storesMap);
 
         currentName = rowData['name'];
         _resetCurrentStoreData(currentAddressCities, currentDiscounts, currentConditions);
@@ -45,7 +45,7 @@ class ExcelMapper {
     }
 
     parsedDiscount = _calculateParsedDiscount(currentDiscounts);
-    _addStoreIfExists(currentName, currentAddressCities, currentDiscounts, currentConditions, parsedDiscount, category, stores);
+    _addOrMergeStoreIfExists(currentName, currentAddressCities, currentDiscounts, currentConditions, parsedDiscount, category, storesMap);
   }
 
   Map<String, String?> _getRowData(List<dynamic> row, List<dynamic> header) {
@@ -81,24 +81,33 @@ class ExcelMapper {
     return rowData;
   }
 
-  void _addStoreIfExists(
+  void _addOrMergeStoreIfExists(
       String? currentName,
       List<AddressCity> currentAddressCities,
       List<String> currentDiscounts,
       List<String> currentConditions,
       double? parsedDiscount,
       String category,
-      List<Store> stores,
+      Map<String, Store> storesMap,
       ) {
     if (currentName != null) {
-      stores.add(Store.withData(
-        name: currentName,
-        addressCities: List.from(currentAddressCities),
-        discounts: List.from(currentDiscounts),
-        conditions: List.from(currentConditions),
-        category: category,
-        parsedDiscount: parsedDiscount,
-      ));
+      if (storesMap.containsKey(currentName)) {
+        // Merge with existing store
+        final existingStore = storesMap[currentName]!;
+        existingStore.addressCities.addAll(currentAddressCities);
+        existingStore.discounts.addAll(currentDiscounts);
+        existingStore.conditions.addAll(currentConditions);
+      } else {
+        // Add new store
+        storesMap[currentName] = Store.withData(
+          name: currentName,
+          addressCities: List.from(currentAddressCities),
+          discounts: List.from(currentDiscounts),
+          conditions: List.from(currentConditions),
+          category: category,
+          parsedDiscount: parsedDiscount,
+        );
+      }
     }
   }
 
