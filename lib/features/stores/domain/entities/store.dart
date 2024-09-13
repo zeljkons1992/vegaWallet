@@ -14,6 +14,7 @@ class Store {
   late List<String> conditions;
   late String category;
   late double? parsedDiscount;
+  late bool isFavorite = false;
 
   Store();
 
@@ -24,7 +25,29 @@ class Store {
     required this.conditions,
     required this.category,
     this.parsedDiscount,
+    this.isFavorite = false,
   });
+
+  Store copyWith({
+    Id? id,
+    String? name,
+    List<AddressCity>? addressCities,
+    List<String>? discounts,
+    List<String>? conditions,
+    String? category,
+    double? parsedDiscount,
+    bool? isFavorite,
+  }) {
+    return Store.withData(
+      name: name ?? this.name,
+      addressCities: addressCities ?? this.addressCities,
+      discounts: discounts ?? this.discounts,
+      conditions: conditions ?? this.conditions,
+      category: category ?? this.category,
+      parsedDiscount: parsedDiscount ?? this.parsedDiscount,
+      isFavorite: isFavorite ?? this.isFavorite,
+    )..id = id ?? this.id;
+  }
 
   factory Store.fromMap(String name, List<List<dynamic>> rows,
       String category, double parsedDiscount) {
@@ -35,6 +58,7 @@ class Store {
       conditions: _parseList(rows, 5),
       category: category,
       parsedDiscount: parsedDiscount,
+      isFavorite: false,
     );
   }
 
@@ -46,6 +70,7 @@ class Store {
       'conditions': conditions,
       'category': category,
       'parsedDiscount': parsedDiscount,
+      'isFavorite': isFavorite,
     };
   }
 
@@ -78,6 +103,7 @@ class Store {
         '  conditions: $conditions,\n'
         '  category: $category\n'
         '  parsedDiscount: $parsedDiscount\n'
+        '  isFavorite: $isFavorite\n'
         '}';
   }
 
@@ -92,7 +118,8 @@ class Store {
               const DeepCollectionEquality().equals(discounts, other.discounts) &&
               const DeepCollectionEquality().equals(conditions, other.conditions) &&
               category == other.category &&
-              parsedDiscount == other.parsedDiscount;
+              parsedDiscount == other.parsedDiscount &&
+              isFavorite == other.isFavorite;
 
   @override
   int get hashCode =>
@@ -102,5 +129,7 @@ class Store {
       const DeepCollectionEquality().hash(discounts) ^
       const DeepCollectionEquality().hash(conditions) ^
       category.hashCode ^
-      parsedDiscount.hashCode;
+      parsedDiscount.hashCode ^
+      isFavorite.hashCode;
+
 }

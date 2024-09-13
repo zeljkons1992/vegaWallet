@@ -6,7 +6,7 @@ import 'package:vegawallet/features/stores/domain/repository/store_repository.da
 
 import '../entities/store.dart';
 
-@Injectable()
+@LazySingleton()
 class FetchStoresUseCase extends UseCase<DataState, CachePolicy> {
   final StoreRepository repository;
 

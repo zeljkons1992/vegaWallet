@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class PrimaryBackButton extends StatelessWidget {
-  const PrimaryBackButton({super.key});
+  final VoidCallback onBackPressed;
+
+  const PrimaryBackButton({super.key, required this.onBackPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -9,11 +11,10 @@ class PrimaryBackButton extends StatelessWidget {
       top: MediaQuery.of(context).padding.top + 16.0,
       left: 16.0,
       child: GestureDetector(
-        onTap: () => Navigator.of(context).pop(),
+        onTap: onBackPressed,
         child: Container(
-          decoration:  BoxDecoration(
+          decoration: BoxDecoration(
             color: Colors.black.withOpacity(0.3),
-
             shape: BoxShape.circle,
           ),
           padding: const EdgeInsets.all(8.0),

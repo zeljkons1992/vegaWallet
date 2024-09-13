@@ -5,7 +5,7 @@ import 'store_list_tile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
-class CategoryExpansionTile extends StatelessWidget {
+class CategoryExpansionTile extends StatefulWidget {
   final String category;
   final List<Store> stores;
   final bool isExpanded;
@@ -19,10 +19,18 @@ class CategoryExpansionTile extends StatelessWidget {
     required this.onExpansionChanged,
   });
 
+  @override
+  State<CategoryExpansionTile> createState() => _CategoryExpansionTileState();
+}
+
+class _CategoryExpansionTileState extends State<CategoryExpansionTile> {
+  final ExpansionTileController controller = ExpansionTileController();
+
   String _mapCategoryToLocalizationString(String category, BuildContext context) {
     final localization = AppLocalizations.of(context)!;
 
     switch (category) {
+      case "Favorites": return localization.categoryFavorites;
       case "Kafići i Restorani": return localization.categoryCoffeeShopsAndRestaurants;
       case "Putovanja": return localization.categoryTravel;
       case "Zabava": return localization.categoryEntertainment;
@@ -37,6 +45,12 @@ class CategoryExpansionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.stores.isEmpty && controller.isExpanded) {
+        controller.collapse();
+      }
+    });
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
@@ -50,23 +64,24 @@ class CategoryExpansionTile extends StatelessWidget {
           highlightColor: Colors.transparent,
         ),
         child: ExpansionTile(
-
+          controller: controller,
           leading: Icon(
-            categoryIcons[category] ?? Icons.category,
+            categoryIcons[widget.category] ?? Icons.star_outlined,
             color: colorScheme.onSurface,
           ),
-
+          trailing: widget.stores.isEmpty ? const SizedBox() : null,
           title: Text(
-            _mapCategoryToLocalizationString(category, context),
+            _mapCategoryToLocalizationString(widget.category, context),
             style:  TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: colorScheme.onSurface
             ),
           ),
-          initiallyExpanded: isExpanded,
-          onExpansionChanged: onExpansionChanged,
-          children: stores.map((store) => StoreListTile(store: store)).toList(),
+          maintainState: true,
+          initiallyExpanded: widget.isExpanded,
+          onExpansionChanged: widget.onExpansionChanged,
+          children: widget.stores.map((store) => StoreListTile(store: store)).toList(),
         ),
       ),
     );

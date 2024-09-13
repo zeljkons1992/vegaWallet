@@ -11,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:vegawallet/core/di/injection.config.dart';
 
 import '../../features/stores/data/data_sources/spreadsheet_downloader.dart';
+import '../../features/stores/domain/entities/favorite.dart';
 import '../../features/stores/domain/entities/store.dart';
 
 final getIt = GetIt.instance;
@@ -40,9 +41,9 @@ abstract class InjectableModule {
 
   @Singleton()
   @preResolve
-  Future<Isar> provideIsar() async {
+  Future<Isar> provideStoreIsar() async {
     final dir = await getApplicationDocumentsDirectory();
-    return await Isar.open([StoreSchema], directory: dir.path);
+    return await Isar.open([StoreSchema, FavoriteSchema], directory: dir.path);
   }
 
   @LazySingleton()

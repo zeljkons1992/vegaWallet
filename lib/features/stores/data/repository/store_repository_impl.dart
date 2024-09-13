@@ -78,4 +78,35 @@ class StoreRepositoryImpl implements StoreRepository {
       return DataState.error("Error occurred: ${e.toString()}");
     }
   }
+
+  @override
+  Future<DataState> addStoreToFavorites(Store store) async {
+    try {
+      await localDataSource.addToFavorites(store);
+      return DataState.success();
+    } catch (e) {
+      return DataState.error("Failed to add store to favorites.");
+    }
+  }
+
+  @override
+  Future<DataState> removeStoreFromFavorites(Store store) async {
+
+    try {
+      await localDataSource.removeFromFavorites(store);
+      return DataState.success();
+    } catch (e) {
+      return DataState.error("Failed to remove store from favorites");
+    }
+  }
+
+  @override
+  Future<DataState<List<Store>>> getFavorites() async {
+    try {
+      final favorites = await localDataSource.getFavoriteStores();
+      return DataState.success(favorites);
+    } catch (e) {
+      return DataState.error("Failed to get favorite stores.");
+    }
+  }
 }

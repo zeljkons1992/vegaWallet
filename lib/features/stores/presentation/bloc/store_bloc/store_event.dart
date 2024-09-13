@@ -7,9 +7,9 @@ abstract class StoreEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadStores extends StoreEvent {}
+final class LoadStores extends StoreEvent {}
 
-class SearchStores extends StoreEvent {
+final class SearchStores extends StoreEvent {
   final String query;
 
   const SearchStores(this.query);
@@ -17,3 +17,14 @@ class SearchStores extends StoreEvent {
   @override
   List<Object> get props => [query];
 }
+
+final class UpdateStore extends StoreEvent {
+  final Store store;
+
+  const UpdateStore(this.store);
+
+  @override
+  List<Object> get props => [store];
+}
+
+

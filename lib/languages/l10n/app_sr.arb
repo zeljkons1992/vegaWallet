@@ -18,6 +18,7 @@
     "categoryServices":"Usluge",
     "categoryBeautyAndHealth":"Lepota i Zdravlje",
     "categoryShopping":"Kupovina",
+    "categoryFavorites": "Omiljene",
     "error":"Greška",
     "vegaConfIde": "Potvrdjen Vega identitet",
     "vegaNoConfIde": "Nije potvrdjen Vega identitet",

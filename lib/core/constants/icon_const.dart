@@ -5,6 +5,6 @@ const Map<String, IconData> categoryIcons = {
 'Putovanja': Icons.card_travel,
 'Zabava': Icons.celebration_outlined,
 'Usluge': Icons.health_and_safety,
-'Zdravlje i wellness': Icons.local_hospital_outlined,
+'Lepota i Zdravlje': Icons.local_hospital_outlined,
 'Kupovina': Icons.shopping_cart_outlined,
 };

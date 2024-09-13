@@ -1,5 +1,4 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -10,19 +9,19 @@ import 'package:vegawallet/core/di/injection.dart';
 import 'package:vegawallet/core/navigation/go_router.dart';
 import 'package:vegawallet/core/ui/elements/bottom_navigation_bar.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:vegawallet/features/stores/presentation/bloc/store_bloc/store_bloc.dart';
 import 'core/ui/theme/theme.dart';
 import 'core/ui/theme/util.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/localization/presentation/bloc/locale_bloc.dart';
+import 'features/stores/presentation/bloc/favorites_bloc/favorites_bloc.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   await configureDependencies();
   await precacheInitialAssets();
   runApp(const MyApp());
@@ -54,8 +53,20 @@ class MyApp extends StatelessWidget {
     TextTheme textTheme = createTextTheme(context, "Inter", "Inter");
     MaterialTheme theme = MaterialTheme(textTheme);
 
-    return BlocProvider(
-      create: (context) => LocaleBloc()..add(const GetInitialLocale()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+          LocaleBloc()
+            ..add(const GetInitialLocale()),
+        ),
+        BlocProvider(
+          create: (context) => getIt<StoreBloc>()..add(LoadStores()),
+        ),
+        BlocProvider(
+          create: (context) => getIt<FavoritesBloc>()
+        ),
+      ],
       child: Builder(
           builder: (context) {
             return BlocBuilder<LocaleBloc, LocaleState>(
@@ -86,7 +97,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-enum TabItem { home, stores, maps, profile}
+enum TabItem { home, stores, maps, profile }
 
 class MainScreen extends StatefulWidget {
   final Widget child;
@@ -128,7 +139,6 @@ class MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: widget.child,
       bottomNavigationBar: MyBottomNavigationBar(
         selectedIndex: _selectedTab.index,

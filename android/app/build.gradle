@@ -3,7 +3,6 @@ plugins {
     // START: FlutterFire Configuration
     id 'com.google.gms.google-services'
     id 'com.google.firebase.firebase-perf'
-    id 'com.google.firebase.crashlytics'
     // END: FlutterFire Configuration
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
@@ -30,13 +29,15 @@ if (flutterVersionName == null) {
 
 android {
     namespace = "com.example.vegawallet"
+
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "26.1.10909125"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
@@ -47,6 +48,7 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -61,3 +63,11 @@ android {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.google.guava:guava:31.0.1-android'
+
+
+}
+
