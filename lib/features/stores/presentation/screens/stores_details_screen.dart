@@ -117,42 +117,40 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                 child: Stack(
                   children: [
                     BlocConsumer<LocationBloc, LocationState>(
-                      listener: (context, state) {
-                        if (state is OpenNavigationToAddressUnsuccessful) {
-                          Fluttertoast.showToast(
-                            msg: localization.noFindAddress,
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.CENTER,
-                          );
-                        }
-                      },
-                      buildWhen: (previousState, currentState) {
-                        if (currentState is OpenNavigationToAddressUnsuccessful) {
-                          return false;
-                        }
-                        return true;
-                      },
-                      builder: (context, state) {
-                        if (state is LocationInitial) {
-                          return mapLocationInitial(context);
-                        } else if (state is FetchStoreLocationSuccessState) {
-                          return MapLocationLoadedWidget(
-                            shouldCenter: isMyCurrentLocationActive,
-                            latitude: state.position.latitude,
-                            longitude: state.position.longitude,
-                            zoomLevel: zoomLevel,
-                          );
-                        } else if (state is FetchStoreLocationUnsuccessfullyState) {
-                          return const MapsUnsuccessfully();
-                        } else if (state is LocationLoading) {
-                          return const Center(child: CircularProgressIndicator());
-                        } else if (state is NoInternetConnectionState) {
-                          return const MapLocationError();
-                        } else {
-                          return const SizedBox();
-                        }
-                      },
-                    ),
+                listener: (context, state) {
+                  if (state is OpenNavigationToAddressUnsuccessful) {
+                    Fluttertoast.showToast(
+                      msg: localization.noFindAddress,
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                    );
+                  }
+                },
+                buildWhen: (previousState, currentState) {
+                  return currentState is! OpenNavigationToAddressUnsuccessful;
+                },
+                builder: (context, state) {
+                  switch (state) {
+                    case LocationInitial _:
+                      return mapLocationInitial(context);
+                    case FetchStoreLocationSuccessState _:
+                      return MapLocationLoadedWidget(
+                        shouldCenter: isMyCurrentLocationActive,
+                        latitude: state.position.latitude,
+                        longitude: state.position.longitude,
+                        zoomLevel: zoomLevel,
+                      );
+                    case FetchStoreLocationUnsuccessfullyState _:
+                      return const MapsUnsuccessfully();
+                    case LocationLoading _:
+                      return const Center(child: CircularProgressIndicator());
+                    case NoInternetConnectionState _:
+                      return const MapLocationError();
+                    default:
+                      return const SizedBox();
+                  }
+                },
+                ),
                     PrimaryBackButton(
                       onBackPressed: () {
                         if (widget.source == "search") {

@@ -157,9 +157,6 @@ jobs:
       - name: Build iOS project
         run: flutter build ios --no-codesign
 
-      - name: Clean Gradle cache before build
-        run: rm -rf $HOME/.gradle/caches/
-
       - name: Build Android project
         run: flutter build apk --release
 

@@ -28,13 +28,3 @@ final class UpdateStore extends StoreEvent {
 }
 
 
-// class ToggleCategoryExpansion extends StoreEvent {
-//   final String category;
-//   final bool isExpanded;
-//
-//   const ToggleCategoryExpansion(this.category, this.isExpanded);
-//
-//   @override
-//   List<Object> get props => [category, isExpanded];
-// }
-

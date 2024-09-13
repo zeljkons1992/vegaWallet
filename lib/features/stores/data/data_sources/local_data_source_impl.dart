@@ -101,14 +101,4 @@ class LocalDataSourceImpl implements LocalDataSource {
     return await isar.stores.filter().isFavoriteEqualTo(true).findAll();
   }
 
-  @override
-  Future<bool> getFavoriteItem(String id) async {
-    // TODO: implement getFavoriteItem
-    final store = await isar.stores.filter().idEqualTo(int.parse(id)).findFirst();
-    if(store!=null){
-      return store.isFavorite;
-    }
-    return false;
-  }
-
 }
