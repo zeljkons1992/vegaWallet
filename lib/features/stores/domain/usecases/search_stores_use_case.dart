@@ -1,0 +1,15 @@
+import 'package:injectable/injectable.dart';
+import 'package:vegawallet/core/data_state/data_state.dart';
+import 'package:vegawallet/features/stores/domain/entities/store.dart';
+import 'package:vegawallet/features/stores/domain/repository/store_repository.dart';
+
+@Singleton()
+class SearchStoresUseCase {
+  final StoreRepository repository;
+
+  SearchStoresUseCase(this.repository);
+
+  Future<DataState<List<Store>>> call({required String params}) async {
+    return await repository.searchStores(params);
+  }
+}

@@ -1,0 +1,17 @@
+coverage:
+  status:
+    project:
+      default:
+        target: 80%
+        threshold: 1%
+    patch:
+      default:
+        enabled: false
+
+  ignore:
+    - '**/entities/**'
+    - '**/di/**'
+    - '**/theme/**'
+    - '**/core/services/i_geo_locator_wrapper.dart'
+    - '**/core/services/location_service.dart'
+

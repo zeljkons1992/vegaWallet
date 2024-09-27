@@ -1,0 +1,111 @@
+name: vegawallet
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.6
+  isar: ^3.1.0+1
+  isar_flutter_libs: ^3.1.0+1
+  go_router: ^14.2.0
+  dio: ^5.4.3+1
+  bloc: ^8.1.4
+  flutter_bloc: ^8.1.6
+  equatable: ^2.0.5
+  retrofit: ^4.1.0
+  retrofit_generator: ^8.1.0
+  get_it: ^7.7.0
+  injectable: ^2.4.2
+  injectable_generator: ^2.4.2
+  flutter_dotenv: ^5.1.0
+  excel: ^4.0.3
+  path_provider: ^2.1.3
+  spreadsheet_decoder: ^2.2.0
+  flutter_svg: ^2.0.10+1
+  google_fonts: ^6.2.1
+  flutter_flip_card: ^0.0.6
+  mocktail: ^1.0.4
+  bloc_test: ^9.1.7
+  mockito: ^5.4.4
+  shared_preferences: ^2.2.3
+  collection: ^1.18.0
+
+  flutter_native_splash: ^2.4.0
+  lottie: ^3.1.2
+  grouped_list: ^5.1.2
+  flutter_map: ^7.0.2
+  latlong2: ^0.9.1
+  geolocator: ^12.0.0
+  permission_handler: ^10.2.0
+  flutter_map_location_marker: ^9.0.0
+  url_launcher: ^6.3.0
+  geocoding: ^3.0.0
+
+  vector_graphics_compiler: ^1.1.11+1
+  back_button_interceptor: ^7.0.3
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.19.0
+  google_sign_in: ^6.2.1
+  firebase_core: ^3.1.1
+  firebase_auth: ^5.1.1
+  shimmer: ^2.0.0
+  firebase_performance: ^0.10.0+3
+  flutter_launcher_icons: ^0.13.1
+  either_dart: ^1.0.0
+  build_runner: ^2.4.11
+  build: ^2.4.1
+  fluttertoast: ^8.2.6
+  connectivity_plus: ^6.0.0
+  diacritic: ^0.1.5
+
+
+dev_dependencies:
+  integration_test:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+  isar_generator: ^3.1.0+1
+  json_serializable: ^6.8.0
+  geolocator_android: ^4.6.1
+
+
+flutter:
+  generate: true
+
+  uses-material-design: true
+
+  assets:
+    - .env
+    - assets/img/
+    - assets/icons/
+    - assets/lottie/
+    - assets/icon/
+
+flutter_native_splash:
+  color: "#C35535"
+  image: assets/img/vega_splash.png
+  ios: true
+  android_12:
+    android: true
+    color: "#C35535"
+    image: assets/img/vega_splash.png
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
+  min_sdk_android: 21
+  background_color_ios: "#0E0E0E"
+  android_adaptive_icon_background: "#0E0E0E"
+  remove_alpha_ios: true
