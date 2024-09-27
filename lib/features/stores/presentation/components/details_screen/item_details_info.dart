@@ -1,5 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vegawallet/features/stores/presentation/bloc/favorites_bloc/favorites_bloc.dart';
 import '../../../../../core/ui/theme/text_style.dart';
 import '../../../domain/entities/store.dart';
@@ -65,7 +68,7 @@ class _ItemDetailsInfoState extends State<ItemDetailsInfo> {
                     },
                     icon: Icon(
                       isFavorite ? Icons.star_outlined : Icons.star_border_outlined,
-                      color: isFavorite ? Colors.yellow : Colors.grey,
+                      color: isFavorite ? Colors.black : Colors.grey,
                     ),
                     splashColor: Colors.transparent,
                   );
@@ -93,10 +96,7 @@ class _ItemDetailsInfoState extends State<ItemDetailsInfo> {
             localization.discountCalculatorConditionsTitle,
             AppTextStyles(context).titleBold.copyWith(fontSize: 14),
           ),
-          _buildSectionText(
-            _formatList(widget.store.conditions),
-            AppTextStyles(context).headline2.copyWith(fontSize: 14.0),
-          ),
+          _buildConditionText(widget.store.conditions),
         ],
       ),
     );
@@ -122,7 +122,65 @@ class _ItemDetailsInfoState extends State<ItemDetailsInfo> {
     );
   }
 
-  String _formatList(List<dynamic> list) {
-    return list.join(', ');
+  Widget _buildConditionText(List<String> conditions) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: conditions.map((condition) {
+        if (condition.contains('https://') || condition.contains('http://')) {
+          return _buildLinkText(condition);
+        } else {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Text(condition, style: AppTextStyles(context).headline2.copyWith(fontSize: 14.0)),
+          );
+        }
+      }).toList(),
+    );
+  }
+
+  Widget _buildLinkText(String text) {
+    final urlRegex = RegExp(r'(https?://[^\s]+)');
+    final matches = urlRegex.allMatches(text);
+
+    return RichText(
+      text: TextSpan(
+        children: matches.map((match) {
+          final url = match.group(0);
+          final beforeUrl = text.substring(0, match.start);
+          final afterUrl = text.substring(match.end);
+
+          return [
+            TextSpan(
+              text: beforeUrl,
+              style: AppTextStyles(context).headline2.copyWith(fontSize: 14.0),
+            ),
+            TextSpan(
+              text: url,
+              style: const TextStyle(
+                color: Colors.blue,
+                decoration: TextDecoration.underline,
+              ),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () async {
+                if(url!=null){
+                  final uri = Uri.parse(url);
+                  await launchUrl(uri);
+                }else{
+                  Fluttertoast.showToast(
+                    msg: "Error",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                  );
+                }
+                },
+            ),
+            TextSpan(
+              text: afterUrl,
+              style: AppTextStyles(context).headline2.copyWith(fontSize: 14.0),
+            ),
+          ];
+        }).expand((element) => element).toList(),
+      ),
+    );
   }
 }
