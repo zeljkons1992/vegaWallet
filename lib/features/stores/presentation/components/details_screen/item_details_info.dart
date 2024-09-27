@@ -65,7 +65,7 @@ class _ItemDetailsInfoState extends State<ItemDetailsInfo> {
                     },
                     icon: Icon(
                       isFavorite ? Icons.star_outlined : Icons.star_border_outlined,
-                      color: isFavorite ? Colors.yellow : Colors.grey,
+                      color: isFavorite ? Colors.black : Colors.grey,
                     ),
                     splashColor: Colors.transparent,
                   );

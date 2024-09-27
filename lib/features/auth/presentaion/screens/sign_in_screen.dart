@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/auth/presentaion/bloc/auth/auth_bloc.dart';
 import 'package:vegawallet/features/wallet/presentation/bloc/wallet_bloc.dart';
@@ -39,6 +40,7 @@ class _SignInScreenState extends State<SignInScreen> {
     _navigationStream = widget._authBloc.streamNavigationSuccess.listen((event) {
         widget._storeBloc.add(LoadStores());
         widget._walletBloc.add(FetchCardInfo());
+        context.go('/');
     });
   }
 
