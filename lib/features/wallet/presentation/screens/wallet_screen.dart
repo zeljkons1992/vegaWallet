@@ -107,7 +107,7 @@ class _WalletScreenState extends State<WalletScreen> {
             padding: const EdgeInsets.only(
                 top: PADDING_VALUE_LARGE, left: PADDING_VALUE_SMALL),
             child: Text(
-              "Kategorije",
+              localization.category,
               style: AppTextStyles(context).headline1,
             ),
           ),
