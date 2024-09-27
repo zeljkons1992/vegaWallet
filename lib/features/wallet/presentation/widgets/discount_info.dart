@@ -21,35 +21,33 @@ class DiscountInfo extends StatelessWidget {
     final localization = AppLocalizations.of(context)!;
     ColorScheme colorScheme = Theme.of(context).colorScheme;
 
-    return Expanded(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 8),
-            TextField(
-              decoration: InputDecoration(
-                labelText: localization.discountsTitle,
-                labelStyle: AppTextStyles(context).searchBarText,
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
-                  borderSide: BorderSide(color: colorScheme.onSurface),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
-                  borderSide: BorderSide(color: colorScheme.onSurface),
-                ),
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 8),
+          TextField(
+            decoration: InputDecoration(
+              labelText: localization.discountsTitle,
+              labelStyle: AppTextStyles(context).searchBarText,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
+                borderSide: BorderSide(color: colorScheme.onSurface),
               ),
-              controller: TextEditingController(
-                text: uniqueDiscounts.join(', '),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(CIRCULAR_BORDER_RADIUS_TINY),
+                borderSide: BorderSide(color: colorScheme.onSurface),
               ),
-              readOnly: true,
-              maxLines: null,
             ),
-            const SizedBox(height: 8),
-            DiscountConditions(conditions: store.conditions)
-          ],
-        ),
+            controller: TextEditingController(
+              text: uniqueDiscounts.join(', '),
+            ),
+            readOnly: true,
+            maxLines: null,
+          ),
+          const SizedBox(height: 8),
+          DiscountConditions(conditions: store.conditions)
+        ],
       ),
     );
   }

@@ -37,100 +37,95 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final localization = AppLocalizations.of(context)!;
 
-    return Expanded(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: PADDING_VALUE_LARGE),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                controller: _priceController,
-                                keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                decoration: InputDecoration(
-                                  helperStyle:
-                                      AppTextStyles(context).searchBarText,
-                                  labelStyle:
-                                      AppTextStyles(context).searchBarText,
-                                  labelText:
-                                      localization.discountCalculatorHint,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        CIRCULAR_BORDER_RADIUS_TINY),
-                                    borderSide: BorderSide(
-                                        color: colorScheme.onSurface),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        CIRCULAR_BORDER_RADIUS_TINY),
-                                    borderSide: BorderSide(
-                                        color: colorScheme.onSurface),
-                                  ),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: PADDING_VALUE_LARGE),
+            child: Row(
+              children: [
+                // Fiksirane veličine za unos cene
+                SizedBox(
+                  width: 200, // Fiksirana širina
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 150, // Fiksirana širina za TextField
+                            child: TextField(
+                              controller: _priceController,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              decoration: InputDecoration(
+                                helperStyle: AppTextStyles(context).searchBarText,
+                                labelStyle: AppTextStyles(context).searchBarText,
+                                labelText: localization.discountCalculatorHint,
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      CIRCULAR_BORDER_RADIUS_TINY),
+                                  borderSide:
+                                  BorderSide(color: colorScheme.onSurface),
                                 ),
-                                onChanged: (value) {
-                                  _calculateDiscount();
-                                },
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      CIRCULAR_BORDER_RADIUS_TINY),
+                                  borderSide:
+                                  BorderSide(color: colorScheme.onSurface),
+                                ),
                               ),
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.clear),
-                              style: ButtonStyle(
-                                  iconColor: WidgetStatePropertyAll(
-                                      colorScheme.onSurface)),
-                              onPressed: () {
-                                _priceController.clear();
-                                setState(() {
-                                  _discountedPrice = null;
-                                });
+                              onChanged: (value) {
+                                _calculateDiscount();
                               },
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              _priceController.clear();
+                              setState(() {
+                                _discountedPrice = null;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: SIZED_BOX_LARGE),
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          localization.discountCalculatorResultLabel,
-                          style: AppTextStyles(context).titleBold,
-                        ),
-                        Text(
-                          _discountedPrice != null
-                              ? '${_discountedPrice!.toStringAsFixed(2)} rsd'
-                              : localization.discountCalculatorInvalidResult,
-                          style: AppTextStyles(context).headline1,
-                        ),
-                      ],
-                    ),
+                ),
+                const SizedBox(width: SIZED_BOX_LARGE),
+                // Fiksirane veličine za prikaz rezultata
+                SizedBox(
+                  width: 120, // Fiksirana širina za prikaz popusta
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        localization.discountCalculatorResultLabel,
+                        style: AppTextStyles(context).titleBold,
+                      ),
+                      Text(
+                        _discountedPrice != null
+                            ? '${_discountedPrice!.toStringAsFixed(2)} rsd'
+                            : localization.discountCalculatorInvalidResult,
+                        style: AppTextStyles(context).headline1,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: PADDING_VALUE_LARGE),
-              child: DiscountConditions(
-                conditions: widget.store.conditions,
-              ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: PADDING_VALUE_LARGE),
+            child: DiscountConditions(
+              conditions: widget.store.conditions,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

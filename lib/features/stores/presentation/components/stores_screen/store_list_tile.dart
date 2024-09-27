@@ -20,25 +20,23 @@ class _StoreListTileState extends State<StoreListTile> {
 
   @override
   Widget build(BuildContext context) {
-    // Remove the setState here, as we're updating the state via BLoC and navigation
     ColorScheme colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.only(bottom: 4.0),
       child: Material(
         color: colorScheme.onPrimary,
         child: InkWell(
-          onTap: () {
-            // Navigate to the store details screen using context.push
-            context.push<Store>(
+          onTap: () async {
+            final storeBloc = BlocProvider.of<StoreBloc>(context);
+            final updatedStore = await context.push<Store>(
               '/stores/store_details',
               extra: {'store': widget.store, 'source': 'store'},
-            ).then((updatedStore) {
-              // Check for updated store data and dispatch the event outside of the async function
-              if (updatedStore != null) {
-                BlocProvider.of<StoreBloc>(context).add(UpdateStore(updatedStore));
-              }
-            });
+            );
+            if (updatedStore != null && mounted) {
+              storeBloc.add(UpdateStore(updatedStore));
+            }
           },
+
           splashColor: MaterialTheme.lightScheme().primaryContainer,
           child: Padding(
             padding: const EdgeInsets.all(8.0),

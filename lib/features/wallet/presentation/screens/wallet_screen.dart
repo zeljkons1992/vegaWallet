@@ -9,12 +9,8 @@ import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/stores/presentation/bloc/search_bloc/search_bloc.dart';
 import 'package:vegawallet/features/wallet/presentation/bloc/wallet_bloc.dart';
 import 'package:vegawallet/core/di/injection.dart';
-import '../../../../core/ui/elements/search_bar.dart';
-import '../../../../core/ui/elements/selected_store_display.dart';
-import '../../../stores/domain/entities/store.dart';
 import '../../data/models/wallet_card_information.dart';
-import '../widgets/discount_calculator.dart';
-import '../widgets/discount_info.dart';
+
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WalletScreen extends StatefulWidget {
@@ -28,8 +24,6 @@ class _WalletScreenState extends State<WalletScreen> {
   final FlipCardController _flipCardController = FlipCardController();
   final WalletBloc walletBloc = getIt<WalletBloc>();
   final SearchBloc searchBloc = getIt<SearchBloc>();
-
-  Store? _selectedStore;
 
   @override
   void initState() {
@@ -106,52 +100,17 @@ class _WalletScreenState extends State<WalletScreen> {
               frontWidget: _buildFrontCard(context, cardInfo),
               backWidget: _buildBackCard(context),
             ),
+
+
           ),
           Padding(
             padding: const EdgeInsets.only(
                 top: PADDING_VALUE_LARGE, left: PADDING_VALUE_SMALL),
             child: Text(
-              localization.discountsTitle,
+              "Kategorije",
               style: AppTextStyles(context).headline1,
             ),
           ),
-          StoreSearchBar(
-            onStoreSelected: (store) {
-              setState(() {
-                _selectedStore = store;
-              });
-            },
-          ),
-          const SizedBox(
-            height: SIZED_BOX_SMALL,
-          ),
-          if (_selectedStore != null) ...[
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: PADDING_VALUE_LARGE, bottom: PADDING_VALUE_LARGE),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: SelectedStoreDisplay(
-                      store: _selectedStore!,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _selectedStore = null;
-                      });
-                    },
-                    icon: const Icon(Icons.close),
-                    color: Theme.of(context).colorScheme.onSurface,
-                  )
-                ],
-              ),
-            ),
-            _selectedStore!.parsedDiscount != null
-                ? DiscountCalculator(store: _selectedStore!)
-                : DiscountInfo(store: _selectedStore!),
-          ],
         ],
       ),
     );

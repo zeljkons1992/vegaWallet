@@ -23,11 +23,7 @@ void main() {
           Locale('sr'),
         ],
         home: Scaffold(
-          body: Row(
-            children: [
-              DiscountInfo(store: store),
-            ],
-          ),
+          body: DiscountInfo(store: store),
         ),
       ),
     );

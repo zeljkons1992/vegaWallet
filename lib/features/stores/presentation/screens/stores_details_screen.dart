@@ -10,6 +10,8 @@ import '../../../../core/di/injection.dart';
 import '../../../../core/ui/elements/primary_back_button.dart';
 import '../../../../core/ui/elements/primary_dropdown_button.dart';
 import '../../../../core/utils/intent_utils.dart';
+import '../../../wallet/presentation/widgets/discount_calculator.dart';
+import '../../../wallet/presentation/widgets/discount_info.dart';
 import '../../domain/entities/address_city.dart';
 import '../../domain/entities/store.dart';
 import '../bloc/location_bloc/location_bloc.dart';
@@ -19,6 +21,7 @@ import '../components/details_screen/maps/map_location_initail.dart';
 import '../components/details_screen/maps/map_location_loaded.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../components/details_screen/maps/maps_unsuccessfully.dart';
+
 
 class StoreDetailsScreen extends StatefulWidget {
   final Store store;
@@ -63,7 +66,6 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
     _navigationStream = _locationBloc.navigationStream.listen((event) {
       IntentUtils.launchMaps(event.data!.latitude, event.data!.longitude);
     });
-
   }
 
   @override
@@ -93,12 +95,12 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
         BlocProvider(
           create: (context) => _locationBloc..add(UpdateStoreLocation(addressCity ?? '')),
         ),
-
       ],
       child: PopScope(
-        onPopInvoked: (_){
+        canPop: false,
+        onPopInvokedWithResult: (bool didPop,Object? result)async {
           if (widget.source == "search") {
-            context.pushReplacement('/stores',extra: updatedStore);
+            context.pushReplacement('/stores', extra: updatedStore);
           } else {
             context.pop(updatedStore);
           }
@@ -117,44 +119,44 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                 child: Stack(
                   children: [
                     BlocConsumer<LocationBloc, LocationState>(
-                listener: (context, state) {
-                  if (state is OpenNavigationToAddressUnsuccessful) {
-                    Fluttertoast.showToast(
-                      msg: localization.noFindAddress,
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.CENTER,
-                    );
-                  }
-                },
-                buildWhen: (previousState, currentState) {
-                  return currentState is! OpenNavigationToAddressUnsuccessful;
-                },
-                builder: (context, state) {
-                  switch (state) {
-                    case LocationInitial _:
-                      return mapLocationInitial(context);
-                    case FetchStoreLocationSuccessState _:
-                      return MapLocationLoadedWidget(
-                        shouldCenter: isMyCurrentLocationActive,
-                        latitude: state.position.latitude,
-                        longitude: state.position.longitude,
-                        zoomLevel: zoomLevel,
-                      );
-                    case FetchStoreLocationUnsuccessfullyState _:
-                      return const MapsUnsuccessfully();
-                    case LocationLoading _:
-                      return const Center(child: CircularProgressIndicator());
-                    case NoInternetConnectionState _:
-                      return const MapLocationError();
-                    default:
-                      return const SizedBox();
-                  }
-                },
-                ),
+                      listener: (context, state) {
+                        if (state is OpenNavigationToAddressUnsuccessful) {
+                          Fluttertoast.showToast(
+                            msg: localization.noFindAddress,
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                          );
+                        }
+                      },
+                      buildWhen: (previousState, currentState) {
+                        return currentState is! OpenNavigationToAddressUnsuccessful;
+                      },
+                      builder: (context, state) {
+                        switch (state) {
+                          case LocationInitial _:
+                            return mapLocationInitial(context);
+                          case FetchStoreLocationSuccessState _:
+                            return MapLocationLoadedWidget(
+                              shouldCenter: isMyCurrentLocationActive,
+                              latitude: state.position.latitude,
+                              longitude: state.position.longitude,
+                              zoomLevel: zoomLevel,
+                            );
+                          case FetchStoreLocationUnsuccessfullyState _:
+                            return const MapsUnsuccessfully();
+                          case LocationLoading _:
+                            return const Center(child: CircularProgressIndicator());
+                          case NoInternetConnectionState _:
+                            return const MapLocationError();
+                          default:
+                            return const SizedBox();
+                        }
+                      },
+                    ),
                     PrimaryBackButton(
                       onBackPressed: () {
                         if (widget.source == "search") {
-                          context.push("/stores",extra: updatedStore);
+                          context.pushReplacement('/stores', extra: updatedStore);
                         } else {
                           context.pop(updatedStore);
                         }
@@ -243,6 +245,11 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                             });
                           },
                         ),
+                        const SizedBox(height: 20),
+                        // Discount Calculator or Info goes here
+                        widget.store.parsedDiscount != null
+                            ? DiscountCalculator(store: widget.store)
+                            : DiscountInfo(store: widget.store),
                       ],
                     ),
                   ),
