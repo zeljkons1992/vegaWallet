@@ -38,11 +38,18 @@ class _SignInScreenState extends State<SignInScreen> {
 
   void _startListeningToAuthStream() {
     _navigationStream = widget._authBloc.streamNavigationSuccess.listen((event) {
-        widget._storeBloc.add(LoadStores());
-        widget._walletBloc.add(FetchCardInfo());
-        context.go('/');
+      if (mounted) {
+        Future.microtask(() {
+          if (mounted) {
+            widget._storeBloc.add(LoadStores());
+            widget._walletBloc.add(FetchCardInfo());
+            context.go('/');
+          }
+        });
+      }
     });
   }
+
 
   @override
   void dispose() {
