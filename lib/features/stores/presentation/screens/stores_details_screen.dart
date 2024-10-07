@@ -246,10 +246,15 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                           },
                         ),
                         const SizedBox(height: 20),
-                        // Discount Calculator or Info goes here
                         widget.store.parsedDiscount != null
-                            ? DiscountCalculator(store: widget.store)
-                            : DiscountInfo(store: widget.store),
+                            ? Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: DiscountCalculator(store: widget.store),
+                            )
+                            : Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: DiscountInfo(store: widget.store),
+                            ),
                       ],
                     ),
                   ),
