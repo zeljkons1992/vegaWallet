@@ -103,7 +103,7 @@ class _SignInScreenState extends State<SignInScreen> {
             return Scaffold(
               body: Center(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 70.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 50.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
