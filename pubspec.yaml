@@ -93,12 +93,11 @@ flutter:
     - assets/icon/
 
 flutter_native_splash:
-  color: "#C35535"
+  color: "#000000"
   image: assets/img/vega_splash.png
   ios: true
   android_12:
-    android: true
-    color: "#C35535"
+    color: "#000000"
     image: assets/img/vega_splash.png
 
 flutter_icons:
