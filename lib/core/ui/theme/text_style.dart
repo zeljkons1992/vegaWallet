@@ -1,77 +1,90 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AppTextStyles {
   final BuildContext context;
 
   AppTextStyles(this.context);
 
-  TextStyle get headline1 => GoogleFonts.inter(
+  TextStyle get headline1 => TextStyle(
+    fontFamily: 'PPMori',
     fontSize: 24,
     fontWeight: FontWeight.bold,
     color: Theme.of(context).colorScheme.onSurface,
   );
 
-  TextStyle get headline2 => GoogleFonts.inter(
+  TextStyle get headline2 => TextStyle(
+    fontFamily: 'PPMori',
     fontSize: 16,
     fontWeight: FontWeight.w500,
     color: Theme.of(context).colorScheme.onSurface,
   );
 
-  TextStyle get bodyText1 => GoogleFonts.inter(
+  TextStyle get bodyText1 => TextStyle(
+    fontFamily: 'PPMori',
     fontSize: 16,
     fontWeight: FontWeight.normal,
     color: Theme.of(context).colorScheme.onSurface,
   );
 
-  TextStyle get bodyText2 => GoogleFonts.inter(
+  TextStyle get bodyText2 => TextStyle(
+    fontFamily: 'PPMori',
     fontSize: 14,
     fontWeight: FontWeight.normal,
     color: Theme.of(context).colorScheme.onSurface,
   );
 
-  TextStyle get headline3 => GoogleFonts.inter(
-      fontSize: 16,
-      fontWeight: FontWeight.w600,
-      color: Theme.of(context).colorScheme.onSurface);
+  TextStyle get headline3 => TextStyle(
+    fontFamily: 'PPMori',
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: Theme.of(context).colorScheme.onSurface,
+  );
 
-  TextStyle get headline4 => GoogleFonts.inter(
-      fontSize: 20,
-      fontWeight: FontWeight.bold,
-      color: Theme.of(context).colorScheme.onSurface);
+  TextStyle get headline4 => TextStyle(
+    fontFamily: 'PPMori',
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    color: Theme.of(context).colorScheme.onSurface,
+  );
 
-  TextStyle get cardNameStyle => GoogleFonts.inter(
+  TextStyle get cardNameStyle => const TextStyle(
+    fontFamily: 'PPMori',
     fontSize: 24,
     fontWeight: FontWeight.w300,
     color: Colors.white,
   );
 
-  TextStyle get cardLabelTitle => GoogleFonts.inter(
+  TextStyle get cardLabelTitle => const TextStyle(
+    fontFamily: 'PPMori',
     fontSize: 12,
     fontWeight: FontWeight.w500,
     color: Colors.white,
   );
 
-  TextStyle get cardLabelDigital => GoogleFonts.robotoMono(
+  TextStyle get cardLabelDigital => const TextStyle(
+    fontFamily: 'PPMori',
     fontSize: 18,
     fontWeight: FontWeight.w600,
     color: Colors.white,
   );
 
-  TextStyle get titleBold => GoogleFonts.inter(
+  TextStyle get titleBold => TextStyle(
+    fontFamily: 'PPMori',
     fontSize: 12,
     fontWeight: FontWeight.bold,
     color: Theme.of(context).colorScheme.onSurface,
   );
 
-  TextStyle get discountRed => GoogleFonts.inter(
+  TextStyle get discountRed => TextStyle(
+    fontFamily: 'PPMori',
     fontSize: 14,
     fontWeight: FontWeight.bold,
     color: Theme.of(context).colorScheme.error,
   );
 
-  TextStyle get searchBarText => GoogleFonts.inter(
+  TextStyle get searchBarText => TextStyle(
+    fontFamily: 'PPMori',
     fontSize: 18,
-    color: Theme.of(context).colorScheme.onSurface
+    color: Theme.of(context).colorScheme.onSurface,
   );
 }

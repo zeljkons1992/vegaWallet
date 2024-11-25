@@ -20,11 +20,10 @@ class _StoreListTileState extends State<StoreListTile> {
 
   @override
   Widget build(BuildContext context) {
-    ColorScheme colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.only(bottom: 4.0),
       child: Material(
-        color: colorScheme.onPrimary,
+        color: Colors.transparent,
         child: InkWell(
           onTap: () async {
             final storeBloc = BlocProvider.of<StoreBloc>(context);
