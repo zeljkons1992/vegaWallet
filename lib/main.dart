@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    TextTheme textTheme = createTextTheme(context, "Inter", "Inter");
+    TextTheme textTheme = createTextTheme(context);
     MaterialTheme theme = MaterialTheme(textTheme);
 
     return MultiBlocProvider(

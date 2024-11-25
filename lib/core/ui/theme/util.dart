@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-TextTheme createTextTheme(
-    BuildContext context, String bodyFontString, String displayFontString) {
+TextTheme createTextTheme(BuildContext context) {
   TextTheme baseTextTheme = Theme.of(context).textTheme;
 
   // Define body text theme using PPMori font
