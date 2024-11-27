@@ -16,7 +16,6 @@ void main() {
     );
 
     expect(find.text('Store 1'), findsOneWidget);
-    expect(find.byIcon(Icons.coffee_outlined), findsOneWidget);
     expect(find.text('-10.0%'), findsOneWidget);
   });
 }

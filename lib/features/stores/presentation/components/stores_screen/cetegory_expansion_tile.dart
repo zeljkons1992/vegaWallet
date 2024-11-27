@@ -56,7 +56,7 @@ class _CategoryExpansionTileState extends State<CategoryExpansionTile> {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
-        color: isFavorite ? Colors.orange : Colors.transparent,
+        color: isFavorite ? const Color(0xFFFF9211) : Colors.transparent,
         borderRadius: BorderRadius.circular(15.0),
         border: Border.all(
           color: isFavorite ? Colors.transparent : colorScheme.onSurface,
