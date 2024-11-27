@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:vegawallet/core/constants/icon_const.dart';
 import 'package:vegawallet/core/ui/theme/theme.dart';
 import '../../../domain/entities/store.dart';
 import '../../bloc/favorites_bloc/favorites_bloc.dart';
@@ -38,21 +40,29 @@ class _StoreListTileState extends State<StoreListTile> {
 
           splashColor: MaterialTheme.lightScheme().primaryContainer,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.fromLTRB(10.0, 8.0, 8.0, 8.0),
             child: Row(
               children: [
                 // Store icon
                 Container(
-                  width: 50,
-                  height: 50,
+                  width: 45,
+                  height: 45,
                   decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        width: 0.5,
+                      ),
                   ),
-                  child: Icon(
-                    Icons.location_city_rounded,
-                    color: Theme.of(context).colorScheme.onSurface,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SvgPicture.asset(
+                      categoryIcons[widget.store.category] ?? 'assets/icons/default_icon.svg',
+                      color: Theme.of(context).colorScheme.onSurface,
+                      width: 20.0,
+                      height: 20.0,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 8),

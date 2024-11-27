@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../../core/constants/icon_const.dart';
 import '../../../../../core/ui/theme/text_style.dart';
 import '../../../domain/entities/store.dart';
@@ -70,14 +71,20 @@ class _CategoryExpansionTileState extends State<CategoryExpansionTile> {
         ),
         child: ExpansionTile(
           controller: controller,
-          leading: Icon(
-            categoryIcons[widget.category] ?? Icons.star_outlined,
+          leading: categoryIcons.containsKey(widget.category)
+              ? SvgPicture.asset(
+            categoryIcons[widget.category]!,
+            color: colorScheme.onSurface,
+            width: 30.0,
+          )
+              : Icon(
+            Icons.star_outlined,
             color: colorScheme.onSurface,
           ),
           trailing: widget.stores.isEmpty ? const SizedBox() : null,
           title: Text(
             _mapCategoryToLocalizationString(widget.category, context),
-            style: AppTextStyles(context).headline4,
+            style: AppTextStyles(context).bodyText1,
           ),
           maintainState: true,
           initiallyExpanded: widget.isExpanded,

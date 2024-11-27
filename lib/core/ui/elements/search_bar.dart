@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
 import '../../../features/stores/presentation/bloc/search_bloc/search_bloc.dart';
@@ -66,8 +67,14 @@ class StoreSearchBarState extends State<StoreSearchBar> {
         setState(() {
           _suggestions = stores
               .map((store) => ListTile(
-            leading:
-            Icon(categoryIcons[store.category] ?? Icons.category),
+            leading: categoryIcons.containsKey(store.category)
+                ? SvgPicture.asset(
+              categoryIcons[store.category]!,
+              width: 30.0,
+            )
+                : const Icon(
+              Icons.star_outlined,
+            ),
             title: Text(
               store.name,
               style: AppTextStyles(context).searchBarText,
