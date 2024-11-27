@@ -115,6 +115,7 @@ class _StoreListTileState extends State<StoreListTile> {
                       },
                       icon: Icon(
                         isFavorite ? Icons.star : Icons.star_border,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                       splashColor: Colors.transparent,
                     );
