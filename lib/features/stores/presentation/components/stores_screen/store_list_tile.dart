@@ -59,7 +59,10 @@ class _StoreListTileState extends State<StoreListTile> {
                     padding: const EdgeInsets.all(8.0),
                     child: SvgPicture.asset(
                       categoryIcons[widget.store.category] ?? 'assets/icons/beauty_and_health_icon.svg',
-                      color: Theme.of(context).colorScheme.onSurface,
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).colorScheme.onSurface,
+                        BlendMode.srcIn,
+                      ),
                       width: 20.0,
                       height: 20.0,
                     ),

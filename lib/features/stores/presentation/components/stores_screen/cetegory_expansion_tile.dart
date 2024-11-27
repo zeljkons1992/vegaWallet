@@ -74,7 +74,10 @@ class _CategoryExpansionTileState extends State<CategoryExpansionTile> {
           leading: categoryIcons.containsKey(widget.category)
               ? SvgPicture.asset(
             categoryIcons[widget.category]!,
-            color: colorScheme.onSurface,
+            colorFilter: ColorFilter.mode(
+              Theme.of(context).colorScheme.onSurface,
+              BlendMode.srcIn,
+            ),
             width: 30.0,
           )
               : Icon(

@@ -27,7 +27,10 @@ class SelectedStoreDisplay extends StatelessWidget {
             children: [
               SvgPicture.asset(
                 categoryIcons[store.category] ?? 'assets/icons/beauty_and_health_icon.svg',
-                color: Theme.of(context).colorScheme.onSurface,
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).colorScheme.onSurface,
+                  BlendMode.srcIn,
+                ),
                 width: 30.0,
               ),
               const SizedBox(width: SIZED_BOX_LARGE),
