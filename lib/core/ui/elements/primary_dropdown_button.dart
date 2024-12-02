@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vegawallet/core/ui/theme/theme.dart';
 import '../../../features/stores/domain/entities/address_city.dart';
 
 class PrimaryDropdownButton extends StatefulWidget {
