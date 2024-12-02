@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vegawallet/core/data_state/data_state.dart';
@@ -190,8 +191,8 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                       children: [
                         Container(
                           height: 70,
-                          color: colorScheme.surfaceBright,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          color: colorScheme.surface,
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
                           child: Row(
                             children: [
                               Builder(
@@ -212,14 +213,10 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                                   );
                                 },
                               ),
-                              const SizedBox(width: 8),
-                              Container(
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: colorScheme.primary,
-                                ),
+                              const SizedBox(width: 1),
+                              SizedBox(
+                                height: 70,
+                                width: 70,
                                 child: Builder(
                                   builder: (context) {
                                     return IconButton(
@@ -228,10 +225,26 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                                             OpenNavigationToAddress("${selectedDropdownItem!.address}, ${selectedDropdownItem!.city}")
                                         );
                                       },
-                                      icon: const Icon(Icons.directions),
-                                      color: Colors.white,
+                                        icon: Container(
+                                        width: 70,
+                                        height: 70,
+                                        decoration: BoxDecoration(
+                                        color: const Color(0xFFFF9211),
+                                        borderRadius: BorderRadius.circular(8.0),
+                                        ),
+                                          child: Padding(
+                                          padding: const EdgeInsets.all(15.0),
+                                          child: SvgPicture.asset(
+                                          'assets/icons/navigation_arrow_icon.svg',
+                                              colorFilter: ColorFilter.mode(
+                                                Theme.of(context).colorScheme.onSurface,
+                                                BlendMode.srcIn,
+                                              ),
+                                        ),
+                                      ),
+                                    ),
                                     );
-                                  },
+                                  }
                                 ),
                               ),
                             ],

@@ -23,8 +23,8 @@ class MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
 
     return NavigationBarTheme(
       data: NavigationBarThemeData(
-        backgroundColor: colorScheme.onPrimary,
-        indicatorColor: colorScheme.primary,
+        backgroundColor: colorScheme.surface,
+        indicatorColor: colorScheme.tertiaryFixed,
         labelTextStyle: WidgetStateProperty.all(
           TextStyle(
             color: Color(colorScheme.onSurface.value),
@@ -35,7 +35,7 @@ class MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
           if (states.contains(WidgetState.selected)) {
             return IconThemeData(color: colorScheme.onTertiaryFixed);
           }
-          return  IconThemeData(color: colorScheme.tertiaryFixed);
+          return  IconThemeData(color: colorScheme.onSurface);
         }),
       ),
       child: NavigationBar(

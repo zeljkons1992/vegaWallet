@@ -99,7 +99,7 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
                 const SizedBox(width: SIZED_BOX_LARGE),
                 // Fiksirane veličine za prikaz rezultata
                 SizedBox(
-                  width: 120, // Fiksirana širina za prikaz popusta
+                  width: 170, // Fiksirana širina za prikaz popusta
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -117,12 +117,6 @@ class DiscountCalculatorState extends State<DiscountCalculator> {
                   ),
                 ),
               ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: PADDING_VALUE_LARGE),
-            child: DiscountConditions(
-              conditions: widget.store.conditions,
             ),
           ),
         ],

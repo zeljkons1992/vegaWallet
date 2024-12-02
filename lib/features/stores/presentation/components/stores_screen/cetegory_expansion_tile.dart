@@ -71,6 +71,8 @@ class _CategoryExpansionTileState extends State<CategoryExpansionTile> {
         ),
         child: ExpansionTile(
           controller: controller,
+          iconColor: Theme.of(context).colorScheme.onSurface,
+          collapsedIconColor: Theme.of(context).colorScheme.onSurface,
           leading: categoryIcons.containsKey(widget.category)
               ? SvgPicture.asset(
             categoryIcons[widget.category]!,

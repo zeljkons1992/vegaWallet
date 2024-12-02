@@ -82,11 +82,18 @@ class _ItemDetailsInfoState extends State<ItemDetailsInfo> {
             localization.discountsTitle,
             AppTextStyles(context).titleBold.copyWith(fontSize: 14),
           ),
-          _buildSectionText(
-            widget.store.parsedDiscount != null
-                ? "${widget.store.parsedDiscount!.toInt().toString()}%"
-                : widget.store.discounts.toSet().join(", "),
-            AppTextStyles(context).headline2.copyWith(fontSize: 14.0),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0), // Dodavanje unutrašnjeg razmaka
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.onSurface, // Crna pozadina
+              borderRadius: BorderRadius.circular(16.0), // Zaobljeni uglovi
+            ),
+            child: _buildSectionText(
+              widget.store.parsedDiscount != null
+                  ? "${widget.store.parsedDiscount!.toInt().toString()}%"
+                  : widget.store.discounts.toSet().join(", "),
+              AppTextStyles(context).headline2.copyWith(fontSize: 14.0, color: Theme.of(context).colorScheme.surface), // Beleži tekst belom bojom
+            ),
           ),
           _buildDivider(context),
           _buildSectionText(
@@ -104,7 +111,7 @@ class _ItemDetailsInfoState extends State<ItemDetailsInfo> {
 
   Widget _buildSectionText(String content, TextStyle appTextStyle) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 4.0),
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Text(
         content,
         style: appTextStyle,
@@ -117,7 +124,7 @@ class _ItemDetailsInfoState extends State<ItemDetailsInfo> {
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Divider(
         height: 1,
-        color: Theme.of(context).primaryColor,
+        color: Theme.of(context).colorScheme.onSurface,
       ),
     );
   }
