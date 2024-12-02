@@ -4,7 +4,6 @@ import 'package:vegawallet/core/constants/size_const.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:vegawallet/features/wallet/presentation/widgets/discount_conditions.dart';
 
 class DiscountCalculator extends StatefulWidget {
   final Store store;
