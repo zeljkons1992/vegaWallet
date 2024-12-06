@@ -158,6 +158,8 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                       onBackPressed: () {
                         if (widget.source == "search") {
                           context.pushReplacement('/stores', extra: updatedStore);
+                        } if(widget.source == "wallet"){
+                          context.pushReplacement('/', extra: updatedStore);
                         } else {
                           context.pop(updatedStore);
                         }

@@ -121,8 +121,7 @@ class _WalletScreenState extends State<WalletScreen> {
             padding: const EdgeInsets.only(left: 8.0, right: 8.0),
             child: StoreSearchBar(
               onStoreSelected: (store) {
-                context.go('/stores/store_details', extra: {'store': store, 'source': 'search'});
-                bottomNavKey.currentState?.setSelectedIndex(1);
+                context.go('/stores/store_details', extra: {'store': store, 'source': 'wallet'});
               },
             ),
           ),

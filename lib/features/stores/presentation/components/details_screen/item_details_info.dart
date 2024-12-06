@@ -30,6 +30,7 @@ class _ItemDetailsInfoState extends State<ItemDetailsInfo> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -67,7 +68,7 @@ class _ItemDetailsInfoState extends State<ItemDetailsInfo> {
                     },
                     icon: Icon(
                       isFavorite ? Icons.star_outlined : Icons.star_border_outlined,
-                      color: isFavorite ? Colors.black : Colors.grey,
+                      color: colorScheme.onSurface,
                     ),
                     splashColor: Colors.transparent,
                   );

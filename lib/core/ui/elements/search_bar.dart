@@ -131,7 +131,7 @@ class StoreSearchBarState extends State<StoreSearchBar> {
               onPressed: _closeSearch,
             ),
             barBackgroundColor:
-            WidgetStateProperty.all<Color>(colorScheme.onPrimary),
+            WidgetStateProperty.all<Color>(colorScheme.surface),
             barElevation: WidgetStateProperty.all(0),
           ),
         ),
