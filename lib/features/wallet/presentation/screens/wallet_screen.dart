@@ -10,7 +10,6 @@ import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/stores/presentation/bloc/search_bloc/search_bloc.dart';
 import 'package:vegawallet/features/wallet/presentation/bloc/wallet_bloc.dart';
 import 'package:vegawallet/core/di/injection.dart';
-import '../../../../core/ui/elements/bottom_navigation_bar.dart';
 import '../../../../core/ui/elements/search_bar.dart';
 import '../../../../main.dart';
 import '../../data/models/wallet_card_information.dart';
