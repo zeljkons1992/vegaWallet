@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vegawallet/features/stores/presentation/bloc/favorites_bloc/favorites_bloc.dart';
+import '../../../../../core/constants/icon_const.dart';
 import '../../../../../core/ui/theme/text_style.dart';
 import '../../../domain/entities/store.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -73,9 +75,41 @@ class _ItemDetailsInfoState extends State<ItemDetailsInfo> {
               ),
             ],
           ),
-          _buildSectionText(
-            widget.store.name,
-            AppTextStyles(context).titleBold.copyWith(fontSize: 18.0),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 3.0),
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      width: 0.5,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SvgPicture.asset(
+                      categoryIcons[widget.store.category] ?? 'assets/icons/beauty_and_health_icon.svg',
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).colorScheme.onSurface,
+                        BlendMode.srcIn,
+                      ),
+                      width: 20.0,
+                      height: 20.0,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8.0), // Razmak između ikonice i teksta
+              Text(
+                widget.store.name,
+                style: AppTextStyles(context).titleBold.copyWith(fontSize: 18.0),
+              ),
+            ],
           ),
           _buildDivider(context),
           _buildSectionText(

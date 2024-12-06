@@ -105,6 +105,13 @@ class StoreSearchBarState extends State<StoreSearchBar> {
       children: [
         Container(
           margin: const EdgeInsets.only(top: 20.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30.0),
+            border: Border.all(
+              color: colorScheme.onSurface,
+              width: 1.0,
+            ),
+          ),
           child: SearchAnchor.bar(
             barHintText: localization.searchBarHint,
             barHintStyle:

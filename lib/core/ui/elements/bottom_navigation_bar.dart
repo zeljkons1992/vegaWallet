@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
   final int selectedIndex;
@@ -55,11 +56,6 @@ class MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
             label: localization.storesTitle,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.map_outlined),
-            selectedIcon: const Icon(Icons.map),
-            label: localization.mapsTitle,
-          ),
-          NavigationDestination(
             icon: const Icon(Icons.account_circle_outlined),
             selectedIcon: const Icon(Icons.account_circle_rounded),
             label: localization.profileTitle,
@@ -67,5 +63,13 @@ class MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
         ],
       ),
     );
+  }
+
+  void setSelectedIndex(int index) {
+    if (index != widget.selectedIndex) {
+      setState(() {
+        widget.onItemTapped(index);
+      });
+    }
   }
 }

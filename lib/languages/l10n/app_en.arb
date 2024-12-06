@@ -4,7 +4,7 @@
     "cardInformationExpiry":"Expiry",
     "cardInformationNumber":"Card No",
     "discountsTitle":"Discounts",
-    "searchBarHint":"Search stores",
+    "searchBarHint":"Type to search something...",
     "discountCalculatorHint":"Price",
     "discountCalculatorResultLabel":"Price with discount:",
     "discountCalculatorInvalidResult":"N/A",

@@ -4,7 +4,7 @@
     "cardInformationExpiry":"Datum isteka",
     "cardInformationNumber":"Broj kartice",
     "discountsTitle":"Popusti",
-    "searchBarHint":"Pretraži prodavnice",
+    "searchBarHint":"Ukucaj nesto da pretrazis...",
     "discountCalculatorHint":"Cena",
     "discountCalculatorResultLabel":"Cena sa popustom:",
     "discountCalculatorInvalidResult":"N/A",

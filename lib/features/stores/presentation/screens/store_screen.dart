@@ -27,6 +27,10 @@ class _StoresScreenState extends State<StoresScreen> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    final categoryForExpand = GoRouterState.of(context).extra is String
+        ? GoRouterState.of(context).extra as String
+        : null;
+
 
     return MultiBlocProvider(
       providers: [
@@ -69,7 +73,7 @@ class _StoresScreenState extends State<StoresScreen> {
                       case StoreLoading():
                         return const Center(child: CircularProgressIndicator());
                       case StoreLoaded():
-                        return StoresList( stores: state.stores,);
+                        return StoresList(stores: state.stores, categoryForExpand: categoryForExpand);
                       case StoreError():
                         return Center(child: Text(state.message));
                       default:

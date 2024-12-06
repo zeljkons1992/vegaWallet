@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:vegawallet/core/constants/assets_const.dart';
 import 'package:vegawallet/core/constants/size_const.dart';
 import 'package:vegawallet/core/ui/elements/language_switcher.dart';
@@ -9,9 +10,14 @@ import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/stores/presentation/bloc/search_bloc/search_bloc.dart';
 import 'package:vegawallet/features/wallet/presentation/bloc/wallet_bloc.dart';
 import 'package:vegawallet/core/di/injection.dart';
+import '../../../../core/ui/elements/bottom_navigation_bar.dart';
+import '../../../../core/ui/elements/search_bar.dart';
+import '../../../../main.dart';
 import '../../data/models/wallet_card_information.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../widgets/IconWithText.dart';
 
 class WalletScreen extends StatefulWidget {
   const WalletScreen({super.key});
@@ -105,10 +111,102 @@ class _WalletScreenState extends State<WalletScreen> {
           ),
           Padding(
             padding: const EdgeInsets.only(
-                top: PADDING_VALUE_LARGE, left: PADDING_VALUE_SMALL),
+                top: SELECTED_STORE_CATEGORY_ICON_SIZE, left: PADDING_VALUE_SMALL),
             child: Text(
-              localization.category,
-              style: AppTextStyles(context).headline1,
+              localization.discountsTitle,
+              style: AppTextStyles(context).headline2.copyWith(fontSize: 24),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+            child: StoreSearchBar(
+              onStoreSelected: (store) {
+                context.go('/stores/store_details', extra: {'store': store, 'source': 'search'});
+                bottomNavKey.currentState?.setSelectedIndex(1);
+              },
+            ),
+          ),
+          // 3 SVG images in one row
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start, // Start alignment to avoid overflow
+              children: [
+                Expanded(
+                  child: IconWithText(
+                    iconPath: 'assets/icons/coffee_icon.svg',
+                    label: 'Coffee',
+                    onTap: () {
+                      bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
+                      context.go('/stores', extra: "Kafići i Restorani");
+                    },
+                  ),
+                ),
+                const SizedBox(width: 22.0), // Razmak između prvog i drugog itema
+                Expanded(
+                  child: IconWithText(
+                    iconPath: 'assets/icons/travel_icon.svg',
+                    label: 'Travel',
+                    onTap: () {
+                      bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
+                      context.go('/stores', extra: "Putovanja");
+                    },
+                  ),
+                ),
+                const SizedBox(width: 22.0), // Razmak između drugog i trećeg itema
+                Expanded(
+                  child: IconWithText(
+                    iconPath: 'assets/icons/entertaiment_icon.svg',
+                    label: 'Entertainment',
+                    onTap: () {
+                      bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
+                      context.go('/stores', extra: "Zabava");
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+// 3 SVG images in another row with text and click listeners
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start, // Start alignment to avoid overflow
+              children: [
+                Expanded(
+                  child: IconWithText(
+                    iconPath: 'assets/icons/services_icon.svg',
+                    label: 'Services',
+                    onTap: () {
+                      bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
+                      context.go('/stores', extra: "Usluge");
+                    },
+                  ),
+                ),
+                const SizedBox(width: 22.0), // Razmak između prvog i drugog itema
+                Expanded(
+                  child: IconWithText(
+                    iconPath: 'assets/icons/beauty_and_health_icon.svg',
+                    label: 'Beauty & Health',
+                    onTap: () {
+                      bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
+                      context.go('/stores', extra: "Lepota i Zdravlje");
+                    },
+                  ),
+                ),
+                const SizedBox(width: 22.0), // Razmak između drugog i trećeg itema
+                Expanded(
+                  child: IconWithText(
+                    iconPath: 'assets/icons/shopping_icon.svg',
+                    label: 'Shopping',
+                    onTap: () {
+                      bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
+                      context.go('/stores', extra: "Kupovina");
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         ],

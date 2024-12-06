@@ -6,18 +6,19 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Widget profileGeneralSection(UserProfileInformation user,BuildContext context) {
   final localization = AppLocalizations.of(context)!;
+  ColorScheme colorScheme = Theme.of(context).colorScheme;
 
   return Padding(
     padding: const EdgeInsets.all(16),
     child: Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.black12,),
+          border: Border.all(color: colorScheme.onSurface),
           borderRadius: const BorderRadius.all(Radius.circular(10))),
       padding: const EdgeInsets.all(16),
       child:  Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(localization.general ,style: AppTextStyles(context).headline4,),
+          Text(localization.general ,style: AppTextStyles(context).headline4),
           const SizedBox(height: 10,),
           Padding(
             padding: const EdgeInsets.symmetric(vertical:12),
@@ -29,8 +30,8 @@ Widget profileGeneralSection(UserProfileInformation user,BuildContext context) {
               ],
             ),
           ),
-          const Divider(
-            color: Colors.black12,
+          Divider(
+            color: colorScheme.onSurface,
             height: 3,
           ),
            Padding(
@@ -43,8 +44,8 @@ Widget profileGeneralSection(UserProfileInformation user,BuildContext context) {
               ],
             ),
           ),
-          const Divider(
-            color: Colors.black12,
+          Divider(
+            color: colorScheme.onSurface,
             height: 3,
           ),
           Padding(

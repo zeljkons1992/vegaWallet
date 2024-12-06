@@ -84,7 +84,7 @@ class AppTextStyles {
 
   TextStyle get searchBarText => TextStyle(
     fontFamily: 'PPMori',
-    fontSize: 18,
+    fontSize: 16,
     color: Theme.of(context).colorScheme.onSurface,
   );
 }
