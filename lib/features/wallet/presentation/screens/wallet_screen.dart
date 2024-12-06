@@ -16,7 +16,7 @@ import '../../data/models/wallet_card_information.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../widgets/IconWithText.dart';
+import '../widgets/icon_with_text.dart';
 
 class WalletScreen extends StatefulWidget {
   const WalletScreen({super.key});
