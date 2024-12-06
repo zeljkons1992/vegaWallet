@@ -133,7 +133,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 Expanded(
                   child: IconWithText(
                     iconPath: 'assets/icons/coffee_icon.svg',
-                    label: 'Coffee',
+                    label: localization.categoryCoffeeShopsAndRestaurants,
                     onTap: () {
                       bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
                       context.go('/stores', extra: "Kafići i Restorani");
@@ -144,7 +144,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 Expanded(
                   child: IconWithText(
                     iconPath: 'assets/icons/travel_icon.svg',
-                    label: 'Travel',
+                    label: localization.categoryTravel,
                     onTap: () {
                       bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
                       context.go('/stores', extra: "Putovanja");
@@ -155,7 +155,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 Expanded(
                   child: IconWithText(
                     iconPath: 'assets/icons/entertaiment_icon.svg',
-                    label: 'Entertainment',
+                    label: localization.categoryEntertainment,
                     onTap: () {
                       bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
                       context.go('/stores', extra: "Zabava");
@@ -175,7 +175,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 Expanded(
                   child: IconWithText(
                     iconPath: 'assets/icons/services_icon.svg',
-                    label: 'Services',
+                    label: localization.categoryServices,
                     onTap: () {
                       bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
                       context.go('/stores', extra: "Usluge");
@@ -186,7 +186,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 Expanded(
                   child: IconWithText(
                     iconPath: 'assets/icons/beauty_and_health_icon.svg',
-                    label: 'Beauty & Health',
+                    label: localization.categoryBeautyAndHealth,
                     onTap: () {
                       bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
                       context.go('/stores', extra: "Lepota i Zdravlje");
@@ -197,7 +197,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 Expanded(
                   child: IconWithText(
                     iconPath: 'assets/icons/shopping_icon.svg',
-                    label: 'Shopping',
+                    label: localization.categoryShopping,
                     onTap: () {
                       bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
                       context.go('/stores', extra: "Kupovina");
