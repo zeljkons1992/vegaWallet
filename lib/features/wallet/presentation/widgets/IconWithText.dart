@@ -35,7 +35,10 @@ class IconWithText extends StatelessWidget {
                 iconPath,
                 width: 40,
                 height: 40,
-                color: colorScheme.onSurface,
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).colorScheme.onSurface,
+                  BlendMode.srcIn,
+                ),
               ),
               const SizedBox(height: 8.0), // Razmak između slike i teksta
               Text(

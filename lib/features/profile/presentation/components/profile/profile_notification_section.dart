@@ -45,8 +45,8 @@ class ProfileNotificationSectionState extends State<ProfileNotificationSection> 
                     activeTrackColor: colorScheme.tertiaryFixed,
                     inactiveThumbColor: Colors.white,
                     inactiveTrackColor: Colors.black,
-                    trackOutlineColor: MaterialStateProperty.resolveWith((states) {
-                      if (states.contains(MaterialState.selected)) {
+                    trackOutlineColor: WidgetStateProperty.resolveWith((states) {
+                      if (states.contains(WidgetState.selected)) {
                         return Colors.transparent;
                       }
                       return colorScheme.onSurface;
@@ -78,8 +78,8 @@ class ProfileNotificationSectionState extends State<ProfileNotificationSection> 
                     activeTrackColor: colorScheme.tertiaryFixed,
                     inactiveThumbColor: Colors.white,
                     inactiveTrackColor: Colors.black,
-                    trackOutlineColor: MaterialStateProperty.resolveWith((states) {
-                      if (states.contains(MaterialState.selected)) {
+                    trackOutlineColor: WidgetStateProperty.resolveWith((states) {
+                      if (states.contains(WidgetState.selected)) {
                         return Colors.transparent;
                       }
                       return colorScheme.onSurface;
