@@ -135,13 +135,14 @@ class MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final showBottomNavBar = GoRouterState.of(context).uri.toString() != "/stores/store_details";
     return Scaffold(
       body: widget.child,
-      bottomNavigationBar: MyBottomNavigationBar(
+      bottomNavigationBar: showBottomNavBar ? MyBottomNavigationBar(
         key: bottomNavKey,
         selectedIndex: selectedTab.index,
         onItemTapped: _onItemTapped,
-      ),
+      ): null,
     );
   }
 }
