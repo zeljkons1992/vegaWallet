@@ -139,6 +139,7 @@ class _ItemDetailsInfoState extends State<ItemDetailsInfo> {
             AppTextStyles(context).titleBold.copyWith(fontSize: 14),
           ),
           _buildConditionText(widget.store.conditions),
+          _buildDivider(context)
         ],
       ),
     );

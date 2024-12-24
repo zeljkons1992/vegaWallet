@@ -263,7 +263,6 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                             });
                           },
                         ),
-                        const SizedBox(height: 20),
                         widget.store.parsedDiscount != null
                             ? Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -271,7 +270,7 @@ class StoreDetailsScreenState extends State<StoreDetailsScreen> {
                             )
                             : Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: DiscountInfo(store: widget.store),
+                              child: Container(),
                             ),
                       ],
                     ),

@@ -6,7 +6,7 @@
 
 
     <application
-        android:label="vegawallet"
+        android:label="VegaIT Wallet"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
