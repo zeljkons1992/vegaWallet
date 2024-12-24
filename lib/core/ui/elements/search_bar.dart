@@ -20,11 +20,14 @@ class StoreSearchBar extends StatefulWidget {
 class StoreSearchBarState extends State<StoreSearchBar> {
   SearchController? _controller;
   late StreamController<List<Store>> _searchStreamController;
+  List<Widget> _allSuggestions = [];
   List<Widget> _suggestions = [];
+  late String searchCriteria = "";
 
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<SearchBloc>(context).add(SearchStores(searchCriteria));
     _controller = SearchController();
     _searchStreamController = StreamController<List<Store>>.broadcast();
     BackButtonInterceptor.add(_interceptBackButton);
@@ -47,6 +50,7 @@ class StoreSearchBarState extends State<StoreSearchBar> {
   }
 
   void _onSearchChanged(String value) {
+    searchCriteria = value;
     if (value.isNotEmpty) {
       BlocProvider.of<SearchBloc>(context).add(SearchStores(value));
     }
@@ -63,10 +67,14 @@ class StoreSearchBarState extends State<StoreSearchBar> {
 
   void _buildSuggestions() {
     _searchStreamController.stream.listen((stores) {
-      if (stores.isNotEmpty) {
+      setState(() {
+        _suggestions = [];
+      });
+      if (stores.isNotEmpty && _allSuggestions.isEmpty) {
         setState(() {
           _suggestions = stores
               .map((store) => ListTile(
+            contentPadding: const EdgeInsets.only(left: 15),
             leading: categoryIcons.containsKey(store.category)
                 ? SvgPicture.asset(
               categoryIcons[store.category]!,
@@ -79,14 +87,21 @@ class StoreSearchBarState extends State<StoreSearchBar> {
               store.name,
               style: AppTextStyles(context).searchBarText,
             ),
+            trailing: Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Icon(
+                store.isFavorite ? Icons.star : Icons.star_border,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
             onTap: () {
               widget.onStoreSelected(store);
               _controller?.clear();
               _controller?.closeView("");
               FocusScope.of(context).unfocus();
             },
-          ))
-              .toList();
+          )).toList();
+          _allSuggestions = _suggestions;
         });
       } else {
         setState(() {
@@ -120,7 +135,8 @@ class StoreSearchBarState extends State<StoreSearchBar> {
               _onSearchChanged(value);
             },
             suggestionsBuilder: (context, controller) {
-              return _suggestions;
+              searchCriteria = controller.text;
+              return _filterSuggestions(controller.text);
             },
 
             searchController: _controller!,
@@ -145,5 +161,15 @@ class StoreSearchBarState extends State<StoreSearchBar> {
         ),
       ],
     );
+  }
+
+  List<Widget> _filterSuggestions(String searchText) {
+      return _allSuggestions.where((suggestion) {
+        if (suggestion is ListTile) {
+          final titleText = (suggestion.title as Text).data?.toLowerCase() ?? '';
+          return titleText.contains(searchText.toLowerCase());
+        }
+        return false;
+      }).toList();
   }
 }

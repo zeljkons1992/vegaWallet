@@ -23,7 +23,7 @@ final GlobalKey<MyBottomNavigationBarState> bottomNavKey = GlobalKey<MyBottomNav
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp();
   await configureDependencies();
   await precacheInitialAssets();
   runApp(const MyApp());

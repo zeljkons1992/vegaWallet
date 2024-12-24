@@ -45,6 +45,7 @@ class LocalDataSourceImpl implements LocalDataSource {
     return await isar.stores
         .filter()
         .nameContains(query, caseSensitive: false)
+        .sortByIsFavoriteDesc()
         .findAll();
   }
 
