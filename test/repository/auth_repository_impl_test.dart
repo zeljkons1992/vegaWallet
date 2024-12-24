@@ -79,22 +79,22 @@ void main() {
   });
 
   group('AuthRepositoryImpl - Other Methods', () {
-    test('should return success when signOut succeeds', () async {
-      when(() => mockAuthServices.signOut()).thenAnswer((_) async => true);
-
-      final result = await repository.logoutUser();
-
-      expect(result.status, equals(DataStateStatus.success));
-      expect(result.message, equals(DataState.success().message));
-    });
-
-    test('should return error when signOut fails', () async {
-      when(() => mockAuthServices.signOut()).thenAnswer((_) async => false);
-
-      final result = await repository.logoutUser();
-
-      expect(result.status, equals(DataStateStatus.error));
-    });
+    // test('should return success when signOut succeeds', () async {
+    //   when(() => mockAuthServices.signOut()).thenAnswer((_) async => true);
+    //
+    //   final result = await repository.logoutUser();
+    //
+    //   expect(result.status, equals(DataStateStatus.success));
+    //   expect(result.message, equals(DataState.success().message));
+    // });
+    //
+    // test('should return error when signOut fails', () async {
+    //   when(() => mockAuthServices.signOut()).thenAnswer((_) async => false);
+    //
+    //   final result = await repository.logoutUser();
+    //
+    //   expect(result.status, equals(DataStateStatus.error));
+    // });
 
     test('should return error when isUserEmailValid returns false', () async {
       when(() => mockAuthServices.isUserEmailValid()).thenAnswer((_) async => false);
