@@ -16,7 +16,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/localization/presentation/bloc/locale_bloc.dart';
 import 'features/stores/presentation/bloc/favorites_bloc/favorites_bloc.dart';
-import 'firebase_options.dart';
 
 final GlobalKey<MyBottomNavigationBarState> bottomNavKey = GlobalKey<MyBottomNavigationBarState>();
 
