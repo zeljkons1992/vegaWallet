@@ -12,7 +12,6 @@ import '../../../../core/ui/elements/primary_back_button.dart';
 import '../../../../core/ui/elements/primary_dropdown_button.dart';
 import '../../../../core/utils/intent_utils.dart';
 import '../../../wallet/presentation/widgets/discount_calculator.dart';
-import '../../../wallet/presentation/widgets/discount_info.dart';
 import '../../domain/entities/address_city.dart';
 import '../../domain/entities/store.dart';
 import '../bloc/location_bloc/location_bloc.dart';
