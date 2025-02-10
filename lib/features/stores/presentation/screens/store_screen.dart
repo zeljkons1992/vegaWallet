@@ -10,6 +10,7 @@ import 'package:vegawallet/features/stores/presentation/bloc/store_bloc/store_bl
 import '../bloc/search_bloc/search_bloc.dart';
 import '../components/stores_screen/stores_list.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../components/stores_screen/city_filter.dart';
 
 class StoresScreen extends StatefulWidget {
   const StoresScreen({super.key});
@@ -19,6 +20,8 @@ class StoresScreen extends StatefulWidget {
 }
 
 class _StoresScreenState extends State<StoresScreen> {
+  String? selectedCity;
+
   @override
   void initState() {
     BlocProvider.of<FavoritesBloc>(context).add(GetFavorites());
@@ -65,6 +68,31 @@ class _StoresScreenState extends State<StoresScreen> {
                   },
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: BlocBuilder<StoreBloc, StoreState>(
+                  builder: (context, state) {
+                    if (state is StoreLoaded) {
+                      final cities = state.stores
+                          .expand((store) => store.addressCities.map((city) => city.city))
+                          .map((city) => city.replaceAll(',', '').trim())
+                          .toSet()
+                          .toList();
+
+                      return CityFilter(
+                        cities: cities,
+                        selectedCity: selectedCity,
+                        onCitySelected: (city) {
+                          setState(() {
+                            selectedCity = city;
+                          });
+                        },
+                      );
+                    }
+                    return const SizedBox();
+                  },
+                ),
+              ),
               Expanded(
                 child: BlocBuilder<StoreBloc, StoreState>(
                   buildWhen: (previous, current) => current is! StoreSearchDone,
@@ -73,7 +101,11 @@ class _StoresScreenState extends State<StoresScreen> {
                       case StoreLoading():
                         return const Center(child: CircularProgressIndicator());
                       case StoreLoaded():
-                        return StoresList(stores: state.stores, categoryForExpand: categoryForExpand);
+                        final filteredStores = selectedCity == null
+                            ? state.stores
+                            : state.stores.where((store) =>
+                                store.addressCities.any((city) => city.city == selectedCity)).toList();
+                        return StoresList(stores: filteredStores, categoryForExpand: categoryForExpand);
                       case StoreError():
                         return Center(child: Text(state.message));
                       default:
