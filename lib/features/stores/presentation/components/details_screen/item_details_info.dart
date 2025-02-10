@@ -1,9 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vegawallet/features/stores/presentation/bloc/favorites_bloc/favorites_bloc.dart';
+import '../../../../../core/constants/icon_const.dart';
 import '../../../../../core/ui/theme/text_style.dart';
 import '../../../domain/entities/store.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -31,6 +33,7 @@ class _ItemDetailsInfoState extends State<ItemDetailsInfo> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -68,7 +71,7 @@ class _ItemDetailsInfoState extends State<ItemDetailsInfo> {
                     },
                     icon: Icon(
                       isFavorite ? Icons.star_outlined : Icons.star_border_outlined,
-                      color: isFavorite ? Colors.black : Colors.grey,
+                      color: colorScheme.onSurface,
                     ),
                     splashColor: Colors.transparent,
                   );
@@ -76,20 +79,59 @@ class _ItemDetailsInfoState extends State<ItemDetailsInfo> {
               ),
             ],
           ),
-          _buildSectionText(
-            widget.store.name,
-            AppTextStyles(context).titleBold.copyWith(fontSize: 18.0),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 3.0),
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      width: 0.5,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SvgPicture.asset(
+                      categoryIcons[widget.store.category] ?? 'assets/icons/beauty_and_health_icon.svg',
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).colorScheme.onSurface,
+                        BlendMode.srcIn,
+                      ),
+                      width: 20.0,
+                      height: 20.0,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8.0), // Razmak između ikonice i teksta
+              Text(
+                widget.store.name,
+                style: AppTextStyles(context).titleBold.copyWith(fontSize: 18.0),
+              ),
+            ],
           ),
           _buildDivider(context),
           _buildSectionText(
             localization.discountsTitle,
             AppTextStyles(context).titleBold.copyWith(fontSize: 14),
           ),
-          _buildSectionText(
-            widget.store.parsedDiscount != null
-                ? "${widget.store.parsedDiscount!.toInt().toString()}%"
-                : widget.store.discounts.toSet().join(", "),
-            AppTextStyles(context).headline2.copyWith(fontSize: 14.0),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0), // Dodavanje unutrašnjeg razmaka
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.onSurface, // Crna pozadina
+              borderRadius: BorderRadius.circular(16.0), // Zaobljeni uglovi
+            ),
+            child: _buildSectionText(
+              widget.store.parsedDiscount != null
+                  ? "${widget.store.parsedDiscount!.toInt().toString()}%"
+                  : widget.store.discounts.toSet().join(", "),
+              AppTextStyles(context).headline2.copyWith(fontSize: 14.0, color: Theme.of(context).colorScheme.surface), // Beleži tekst belom bojom
+            ),
           ),
           _buildDivider(context),
           _buildSectionText(
@@ -97,6 +139,7 @@ class _ItemDetailsInfoState extends State<ItemDetailsInfo> {
             AppTextStyles(context).titleBold.copyWith(fontSize: 14),
           ),
           _buildConditionText(widget.store.conditions),
+          _buildDivider(context)
         ],
       ),
     );
@@ -104,7 +147,7 @@ class _ItemDetailsInfoState extends State<ItemDetailsInfo> {
 
   Widget _buildSectionText(String content, TextStyle appTextStyle) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 4.0),
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Text(
         content,
         style: appTextStyle,
@@ -117,7 +160,7 @@ class _ItemDetailsInfoState extends State<ItemDetailsInfo> {
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Divider(
         height: 1,
-        color: Theme.of(context).primaryColor,
+        color: Theme.of(context).colorScheme.onSurface,
       ),
     );
   }

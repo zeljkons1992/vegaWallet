@@ -42,8 +42,8 @@ class LanguageSwitcher extends StatelessWidget {
               SvgPicture.asset(
                 'assets/img/flag_of_serbia.svg',
                 fit: BoxFit.cover,
-                width: 24,
-                height: 24,
+                width: 27,
+                height: 27,
               ),
               const SizedBox(width: 8),
               const Text('Srpski'),

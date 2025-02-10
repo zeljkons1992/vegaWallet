@@ -17,12 +17,13 @@ class ProfileNotificationSectionState extends State<ProfileNotificationSection> 
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
       padding: const EdgeInsets.all(12),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.black12),
+          border: Border.all(color: colorScheme.onSurface),
           borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
         padding: const EdgeInsets.all(10),
@@ -40,6 +41,16 @@ class ProfileNotificationSectionState extends State<ProfileNotificationSection> 
                   Text(localization.pushNotifications, style: AppTextStyles(context).headline3),
                   const Spacer(),
                   Switch(
+                    activeColor: Colors.black,
+                    activeTrackColor: colorScheme.tertiaryFixed,
+                    inactiveThumbColor: Colors.white,
+                    inactiveTrackColor: Colors.black,
+                    trackOutlineColor: WidgetStateProperty.resolveWith((states) {
+                      if (states.contains(WidgetState.selected)) {
+                        return Colors.transparent;
+                      }
+                      return colorScheme.onSurface;
+                    }),
                     value: isPushNotificationEnabled,
                     onChanged: (bool value) {
                       setState(() {
@@ -50,8 +61,8 @@ class ProfileNotificationSectionState extends State<ProfileNotificationSection> 
                 ],
               ),
             ),
-            const Divider(
-              color: Colors.black12,
+            Divider(
+              color: colorScheme.onSurface,
               height: 3,
             ),
             Padding(
@@ -63,6 +74,16 @@ class ProfileNotificationSectionState extends State<ProfileNotificationSection> 
                   Text(localization.enableLocation, style: AppTextStyles(context).headline3),
                   const Spacer(),
                   Switch(
+                    activeColor: Colors.black,
+                    activeTrackColor: colorScheme.tertiaryFixed,
+                    inactiveThumbColor: Colors.white,
+                    inactiveTrackColor: Colors.black,
+                    trackOutlineColor: WidgetStateProperty.resolveWith((states) {
+                      if (states.contains(WidgetState.selected)) {
+                        return Colors.transparent;
+                      }
+                      return colorScheme.onSurface;
+                    }),
                     value: isLocationEnabled,
                     onChanged: (bool value) {
                       setState(() {

@@ -8,18 +8,24 @@ import 'cetegory_expansion_tile.dart';
 
 class StoresList extends StatefulWidget {
   final List<Store> stores;
+  final String? categoryForExpand;
 
-  const StoresList({super.key, required this.stores});
+  const StoresList({super.key, required this.stores, this.categoryForExpand});
 
   @override
   StoresListState createState() => StoresListState();
 }
 
 class StoresListState extends State<StoresList> {
-  Map<String, bool> groupExpanded = {};
+  Map<String, bool> groupExpanded = { };
 
   @override
   Widget build(BuildContext context) {
+    String? test = widget.categoryForExpand;
+    if(test != null) {
+      groupExpanded[test] = true;
+    }
+
     return ListView(
       padding: const EdgeInsets.all(8.0),
       children: [
@@ -64,7 +70,7 @@ class StoresListState extends State<StoresList> {
 
   List<Widget> _buildCategoryTiles(List<Store> stores) {
     final otherCategories = stores
-        .where((store) => !store.isFavorite)
+        //.where((store) => !store.isFavorite)
         .map((store) => store.category)
         .toSet()
         .toList();

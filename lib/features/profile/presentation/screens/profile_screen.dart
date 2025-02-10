@@ -68,7 +68,7 @@ class ProfileScreen extends StatelessWidget {
                               padding: const EdgeInsets.all(16.0),
                               child: SizedBox(
                                 width: double.infinity,
-                                height: 50,
+                                height: 40,
                                 child: Builder(builder: (context) {
                                   return ElevatedButton(
                                     onPressed: () {
@@ -76,11 +76,11 @@ class ProfileScreen extends StatelessWidget {
                                           .add(LogoutUser());
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: colorScheme.primary,
+                                      backgroundColor: colorScheme.tertiaryFixed,
                                     ),
                                     child: Text(localization.logout,
                                         style: const TextStyle(
-                                            fontSize: 18, color: Colors.white)),
+                                            fontSize: 18, color: Colors.black)),
                                   );
                                 }),
                               ),

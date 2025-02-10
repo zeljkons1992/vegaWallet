@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../../core/constants/icon_const.dart';
+import '../../../../../core/ui/theme/text_style.dart';
 import '../../../domain/entities/store.dart';
 import 'store_list_tile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -44,7 +46,7 @@ class _CategoryExpansionTileState extends State<CategoryExpansionTile> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-
+    bool isFavorite = widget.category == "Favorites";
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.stores.isEmpty && controller.isExpanded) {
         controller.collapse();
@@ -54,8 +56,12 @@ class _CategoryExpansionTileState extends State<CategoryExpansionTile> {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
-        color: colorScheme.onPrimary,
+        color: isFavorite ? const Color(0xFFFF9211) : Colors.transparent,
         borderRadius: BorderRadius.circular(15.0),
+        border: Border.all(
+          color: isFavorite ? Colors.transparent : colorScheme.onSurface,
+          width: 1.0,
+        ),
       ),
       child: Theme(
         data: Theme.of(context).copyWith(
@@ -65,18 +71,25 @@ class _CategoryExpansionTileState extends State<CategoryExpansionTile> {
         ),
         child: ExpansionTile(
           controller: controller,
-          leading: Icon(
-            categoryIcons[widget.category] ?? Icons.star_outlined,
+          iconColor: Theme.of(context).colorScheme.onSurface,
+          collapsedIconColor: Theme.of(context).colorScheme.onSurface,
+          leading: categoryIcons.containsKey(widget.category)
+              ? SvgPicture.asset(
+            categoryIcons[widget.category]!,
+            colorFilter: ColorFilter.mode(
+              Theme.of(context).colorScheme.onSurface,
+              BlendMode.srcIn,
+            ),
+            width: 30.0,
+          )
+              : Icon(
+            Icons.star_outlined,
             color: colorScheme.onSurface,
           ),
           trailing: widget.stores.isEmpty ? const SizedBox() : null,
           title: Text(
             _mapCategoryToLocalizationString(widget.category, context),
-            style:  TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: colorScheme.onSurface
-            ),
+            style: AppTextStyles(context).bodyText1,
           ),
           maintainState: true,
           initiallyExpanded: widget.isExpanded,

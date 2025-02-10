@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
 
@@ -24,10 +25,13 @@ class SelectedStoreDisplay extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(
-                categoryIcons[store.category] ?? Icons.category,
-                color: colorScheme.onSurface,
-                size: SELECTED_STORE_CATEGORY_ICON_SIZE,
+              SvgPicture.asset(
+                categoryIcons[store.category] ?? 'assets/icons/beauty_and_health_icon.svg',
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).colorScheme.onSurface,
+                  BlendMode.srcIn,
+                ),
+                width: 30.0,
               ),
               const SizedBox(width: SIZED_BOX_LARGE),
               Text(store.name, style: Theme.of(context).textTheme.titleSmall),

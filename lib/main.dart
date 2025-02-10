@@ -16,12 +16,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/localization/presentation/bloc/locale_bloc.dart';
 import 'features/stores/presentation/bloc/favorites_bloc/favorites_bloc.dart';
-import 'firebase_options.dart';
+
+final GlobalKey<MyBottomNavigationBarState> bottomNavKey = GlobalKey<MyBottomNavigationBarState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp();
   await configureDependencies();
   await precacheInitialAssets();
   runApp(const MyApp());
@@ -40,7 +41,6 @@ Future<void> precacheSvgPicture(String svgPath) async {
   final logo = SvgAssetLoader(svgPath);
   await svg.cache.putIfAbsent(logo.cacheKey(null), () => logo.loadBytes(null));
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    TextTheme textTheme = createTextTheme(context, "Inter", "Inter");
+    TextTheme textTheme = createTextTheme(context);
     MaterialTheme theme = MaterialTheme(textTheme);
 
     return MultiBlocProvider(
@@ -97,7 +97,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-enum TabItem { home, stores, maps, profile }
+enum TabItem { home, stores, profile }
 
 class MainScreen extends StatefulWidget {
   final Widget child;
@@ -109,26 +109,23 @@ class MainScreen extends StatefulWidget {
 }
 
 class MainScreenState extends State<MainScreen> {
-  TabItem _selectedTab = TabItem.home;
+  TabItem selectedTab = TabItem.home;
   int _previousIndex = 0;
 
   void _onItemTapped(int index) {
     setState(() {
-      _previousIndex = _selectedTab.index;
-      _selectedTab = TabItem.values[index];
+      _previousIndex = selectedTab.index;
+      selectedTab = TabItem.values[index];
     });
 
-    final isRightToLeft = _previousIndex < _selectedTab.index;
+    final isRightToLeft = _previousIndex < selectedTab.index;
 
-    switch (_selectedTab) {
+    switch (selectedTab) {
       case TabItem.home:
         context.go('/', extra: isRightToLeft);
         break;
       case TabItem.stores:
         context.go('/stores', extra: isRightToLeft);
-        break;
-      case TabItem.maps:
-        context.go('/maps', extra: isRightToLeft);
         break;
       case TabItem.profile:
         context.go('/profile', extra: isRightToLeft);
@@ -138,12 +135,14 @@ class MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final showBottomNavBar = GoRouterState.of(context).uri.toString() != "/stores/store_details";
     return Scaffold(
       body: widget.child,
-      bottomNavigationBar: MyBottomNavigationBar(
-        selectedIndex: _selectedTab.index,
+      bottomNavigationBar: showBottomNavBar ? MyBottomNavigationBar(
+        key: bottomNavKey,
+        selectedIndex: selectedTab.index,
         onItemTapped: _onItemTapped,
-      ),
+      ): null,
     );
   }
 }

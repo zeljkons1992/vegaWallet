@@ -23,8 +23,8 @@ class MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
 
     return NavigationBarTheme(
       data: NavigationBarThemeData(
-        backgroundColor: colorScheme.onPrimary,
-        indicatorColor: colorScheme.primary,
+        backgroundColor: colorScheme.surface,
+        indicatorColor: colorScheme.tertiaryFixed,
         labelTextStyle: WidgetStateProperty.all(
           TextStyle(
             color: Color(colorScheme.onSurface.value),
@@ -35,7 +35,7 @@ class MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
           if (states.contains(WidgetState.selected)) {
             return IconThemeData(color: colorScheme.onTertiaryFixed);
           }
-          return  IconThemeData(color: colorScheme.tertiaryFixed);
+          return  IconThemeData(color: colorScheme.onSurface);
         }),
       ),
       child: NavigationBar(
@@ -55,11 +55,6 @@ class MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
             label: localization.storesTitle,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.map_outlined),
-            selectedIcon: const Icon(Icons.map),
-            label: localization.mapsTitle,
-          ),
-          NavigationDestination(
             icon: const Icon(Icons.account_circle_outlined),
             selectedIcon: const Icon(Icons.account_circle_rounded),
             label: localization.profileTitle,
@@ -67,5 +62,13 @@ class MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
         ],
       ),
     );
+  }
+
+  void setSelectedIndex(int index) {
+    if (index != widget.selectedIndex) {
+      setState(() {
+        widget.onItemTapped(index);
+      });
+    }
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:vegawallet/core/constants/icon_const.dart';
 import 'package:vegawallet/core/ui/theme/theme.dart';
 import '../../../domain/entities/store.dart';
 import '../../bloc/favorites_bloc/favorites_bloc.dart';
@@ -20,42 +22,50 @@ class _StoreListTileState extends State<StoreListTile> {
 
   @override
   Widget build(BuildContext context) {
-    // Remove the setState here, as we're updating the state via BLoC and navigation
-    ColorScheme colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.only(bottom: 4.0),
       child: Material(
-        color: colorScheme.onPrimary,
+        color: Colors.transparent,
         child: InkWell(
-          onTap: () {
-            // Navigate to the store details screen using context.push
-            context.push<Store>(
+          onTap: () async {
+            final storeBloc = BlocProvider.of<StoreBloc>(context);
+            final updatedStore = await context.push<Store>(
               '/stores/store_details',
               extra: {'store': widget.store, 'source': 'store'},
-            ).then((updatedStore) {
-              // Check for updated store data and dispatch the event outside of the async function
-              if (updatedStore != null) {
-                BlocProvider.of<StoreBloc>(context).add(UpdateStore(updatedStore));
-              }
-            });
+            );
+            if (updatedStore != null && mounted) {
+              storeBloc.add(UpdateStore(updatedStore));
+            }
           },
+
           splashColor: MaterialTheme.lightScheme().primaryContainer,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.fromLTRB(10.0, 8.0, 8.0, 8.0),
             child: Row(
               children: [
                 // Store icon
                 Container(
-                  width: 50,
-                  height: 50,
+                  width: 45,
+                  height: 45,
                   decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        width: 0.5,
+                      ),
                   ),
-                  child: Icon(
-                    Icons.location_city_rounded,
-                    color: Theme.of(context).colorScheme.onSurface,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SvgPicture.asset(
+                      categoryIcons[widget.store.category] ?? 'assets/icons/beauty_and_health_icon.svg',
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).colorScheme.onSurface,
+                        BlendMode.srcIn,
+                      ),
+                      width: 20.0,
+                      height: 20.0,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -105,6 +115,7 @@ class _StoreListTileState extends State<StoreListTile> {
                       },
                       icon: Icon(
                         isFavorite ? Icons.star : Icons.star_border,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                       splashColor: Colors.transparent,
                     );

@@ -1,6 +1,7 @@
 
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vegawallet/core/constants/text_const.dart';
 import 'package:vegawallet/core/data_state/data_state.dart';
 import 'package:vegawallet/core/domain/exceptions/auth_exception_message.dart';
@@ -38,6 +39,8 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<DataState> logoutUser() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
     bool isLogoutSuccess = await _authServices.signOut();
     if(isLogoutSuccess){
       return DataState.success();

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vegawallet/core/ui/theme/theme.dart';
 import '../../../features/stores/domain/entities/address_city.dart';
 
 class PrimaryDropdownButton extends StatefulWidget {
@@ -60,7 +59,7 @@ class PrimaryDropdownButtonState extends State<PrimaryDropdownButton> {
 
     final selectedItem = await showMenu<AddressCity>(
       context: context,
-      surfaceTintColor: Theme.of(context).colorScheme.onSurface,
+      surfaceTintColor: Theme.of(context).colorScheme.surface,
       position: position,
       items: _items.map((AddressCity item) {
         return PopupMenuItem<AddressCity>(
@@ -75,32 +74,18 @@ class PrimaryDropdownButtonState extends State<PrimaryDropdownButton> {
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Row(
                 children: [
-                  Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    child: Icon(
-                      Icons.location_city_rounded,
-                      color: MaterialTheme.lightScheme().inversePrimary,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
                   Flexible(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           item.city,
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold,),
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
                           item.address,
-                          style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.onSurface,),
+                          style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.onSurface),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ],
@@ -136,7 +121,7 @@ class PrimaryDropdownButtonState extends State<PrimaryDropdownButton> {
         child: Container(
           height: 50,
           decoration: BoxDecoration(
-            color: colorScheme.primary,
+            color: Theme.of(context).colorScheme.onSurface,
             borderRadius: BorderRadius.circular(10.0),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -150,19 +135,19 @@ class PrimaryDropdownButtonState extends State<PrimaryDropdownButton> {
                   children: [
                     Text(
                       _getFirstLine(_selectedItem?.city ?? '',),
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: colorScheme.surface),
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
                       _getFirstLine(_selectedItem?.address ?? ''),
-                      style: const TextStyle(fontSize: 14, color: Colors.white),
+                      style: TextStyle(fontSize: 14, color: colorScheme.surface),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
               ),
               if (_items.length > 1)
-                const Icon(Icons.arrow_drop_down, color: Colors.white),
+                Icon(Icons.arrow_drop_down, color: colorScheme.surface),
             ],
           ),
         ),

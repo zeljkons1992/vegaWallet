@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vegawallet/core/ui/theme/text_style.dart';
 import 'package:vegawallet/features/stores/domain/entities/store.dart';
 import '../../../features/stores/presentation/bloc/search_bloc/search_bloc.dart';
@@ -19,11 +20,14 @@ class StoreSearchBar extends StatefulWidget {
 class StoreSearchBarState extends State<StoreSearchBar> {
   SearchController? _controller;
   late StreamController<List<Store>> _searchStreamController;
+  List<Widget> _allSuggestions = [];
   List<Widget> _suggestions = [];
+  late String searchCriteria = "";
 
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<SearchBloc>(context).add(SearchStores(searchCriteria));
     _controller = SearchController();
     _searchStreamController = StreamController<List<Store>>.broadcast();
     BackButtonInterceptor.add(_interceptBackButton);
@@ -46,6 +50,7 @@ class StoreSearchBarState extends State<StoreSearchBar> {
   }
 
   void _onSearchChanged(String value) {
+    searchCriteria = value;
     if (value.isNotEmpty) {
       BlocProvider.of<SearchBloc>(context).add(SearchStores(value));
     }
@@ -62,15 +67,32 @@ class StoreSearchBarState extends State<StoreSearchBar> {
 
   void _buildSuggestions() {
     _searchStreamController.stream.listen((stores) {
-      if (stores.isNotEmpty) {
+      setState(() {
+        _suggestions = [];
+      });
+      if (stores.isNotEmpty && _allSuggestions.isEmpty) {
         setState(() {
           _suggestions = stores
               .map((store) => ListTile(
-            leading:
-            Icon(categoryIcons[store.category] ?? Icons.category),
+            contentPadding: const EdgeInsets.only(left: 15),
+            leading: categoryIcons.containsKey(store.category)
+                ? SvgPicture.asset(
+              categoryIcons[store.category]!,
+              width: 30.0,
+            )
+                : const Icon(
+              Icons.star_outlined,
+            ),
             title: Text(
               store.name,
               style: AppTextStyles(context).searchBarText,
+            ),
+            trailing: Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Icon(
+                store.isFavorite ? Icons.star : Icons.star_border,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
             ),
             onTap: () {
               widget.onStoreSelected(store);
@@ -78,8 +100,8 @@ class StoreSearchBarState extends State<StoreSearchBar> {
               _controller?.closeView("");
               FocusScope.of(context).unfocus();
             },
-          ))
-              .toList();
+          )).toList();
+          _allSuggestions = _suggestions;
         });
       } else {
         setState(() {
@@ -98,6 +120,13 @@ class StoreSearchBarState extends State<StoreSearchBar> {
       children: [
         Container(
           margin: const EdgeInsets.only(top: 20.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30.0),
+            border: Border.all(
+              color: colorScheme.onSurface,
+              width: 1.0,
+            ),
+          ),
           child: SearchAnchor.bar(
             barHintText: localization.searchBarHint,
             barHintStyle:
@@ -106,7 +135,8 @@ class StoreSearchBarState extends State<StoreSearchBar> {
               _onSearchChanged(value);
             },
             suggestionsBuilder: (context, controller) {
-              return _suggestions;
+              searchCriteria = controller.text;
+              return _filterSuggestions(controller.text);
             },
 
             searchController: _controller!,
@@ -117,7 +147,7 @@ class StoreSearchBarState extends State<StoreSearchBar> {
               onPressed: _closeSearch,
             ),
             barBackgroundColor:
-            WidgetStateProperty.all<Color>(colorScheme.onPrimary),
+            WidgetStateProperty.all<Color>(colorScheme.surface),
             barElevation: WidgetStateProperty.all(0),
           ),
         ),
@@ -131,5 +161,15 @@ class StoreSearchBarState extends State<StoreSearchBar> {
         ),
       ],
     );
+  }
+
+  List<Widget> _filterSuggestions(String searchText) {
+      return _allSuggestions.where((suggestion) {
+        if (suggestion is ListTile) {
+          final titleText = (suggestion.title as Text).data?.toLowerCase() ?? '';
+          return titleText.contains(searchText.toLowerCase());
+        }
+        return false;
+      }).toList();
   }
 }

@@ -38,11 +38,18 @@ class _SignInScreenState extends State<SignInScreen> {
 
   void _startListeningToAuthStream() {
     _navigationStream = widget._authBloc.streamNavigationSuccess.listen((event) {
-        widget._storeBloc.add(LoadStores());
-        widget._walletBloc.add(FetchCardInfo());
-        context.go('/');
+      if (mounted) {
+        Future.microtask(() {
+          if (mounted) {
+            widget._storeBloc.add(LoadStores());
+            widget._walletBloc.add(FetchCardInfo());
+            context.go('/');
+          }
+        });
+      }
     });
   }
+
 
   @override
   void dispose() {
@@ -96,11 +103,14 @@ class _SignInScreenState extends State<SignInScreen> {
             return Scaffold(
               body: Center(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 50.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Expanded(
+                        child: Container(),
+                      ),
                       SvgPicture.asset(
                         vegaWalletLogo,
                         width: 150,
@@ -109,11 +119,15 @@ class _SignInScreenState extends State<SignInScreen> {
                       const SizedBox(height: 40),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: colorScheme.onPrimary,
-                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          backgroundColor: colorScheme.surface,
+                          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
+                            borderRadius: BorderRadius.circular(15),
+                            side: BorderSide(
+                              color: colorScheme.onSurface,
+                              width: 1,
+                            )
+                            ),
                         ),
                         onPressed: () {
                           context.read<AuthBloc>().add(LoginWithGoogle());
@@ -123,8 +137,8 @@ class _SignInScreenState extends State<SignInScreen> {
                           children: [
                             SvgPicture.asset(
                               googleIcon,
-                              width: 24,
-                              height: 24,
+                              width: 30,
+                              height: 30,
                             ),
                             const SizedBox(width: 8),
                             Text(
@@ -135,25 +149,31 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ),
                       const SizedBox(height: 40),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Powered by",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          Image.asset(
-                            vegaDarkLogo,
-                            width: 70,
-                            height: 24,
-                            color: colorScheme.onSurface,
-                          ),
-                        ],
+                      Expanded(
+                        child: Container(),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 40),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "Powered by",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            Image.asset(
+                              vegaDarkLogo,
+                              width: 70,
+                              height: 24,
+                              color: colorScheme.onSurface,
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 ),

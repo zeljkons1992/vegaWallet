@@ -10,7 +10,7 @@ class PrimaryBackButton extends StatelessWidget {
     return Positioned(
       top: MediaQuery.of(context).padding.top + 16.0,
       left: 16.0,
-      child: GestureDetector(
+      child: InkWell(
         onTap: onBackPressed,
         child: Container(
           decoration: BoxDecoration(
