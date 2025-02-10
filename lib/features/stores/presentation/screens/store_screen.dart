@@ -58,7 +58,7 @@ class _StoresScreenState extends State<StoresScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
                 child: StoreSearchBar(
                   onStoreSelected: (store) {
                     context.go('/stores/store_details', extra: {'store': store, 'source': 'search'});

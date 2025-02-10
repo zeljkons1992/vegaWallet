@@ -117,7 +117,7 @@ class _WalletScreenState extends State<WalletScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+            padding: const EdgeInsets.only(left: 0.0, right: 0.0),
             child: StoreSearchBar(
               onStoreSelected: (store) {
                 context.go('/stores/store_details', extra: {'store': store, 'source': 'wallet'});
@@ -128,42 +128,52 @@ class _WalletScreenState extends State<WalletScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 20.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start, // Start alignment to avoid overflow
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Expanded(
-                  child: IconWithText(
-                    iconPath: 'assets/icons/coffee_icon.svg',
-                    label: localization.categoryCoffeeShopsAndRestaurants,
-                    onTap: () {
-                      bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
-                      context.go('/stores', extra: "Kafići i Restorani");
-                    },
+                  child: SizedBox(
+                    height: 130, // Konstantna visina za sve kartice
+                    child: IconWithText(
+                      iconPath: 'assets/icons/coffee_icon.svg',
+                      label: localization.categoryCoffeeShopsAndRestaurants,
+                      onTap: () {
+                        bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
+                        context.go('/stores', extra: "Kafići i Restorani");
+                      },
+                    ),
                   ),
                 ),
-                const SizedBox(width: 22.0), // Razmak između prvog i drugog itema
+                const SizedBox(width: 22.0),
                 Expanded(
-                  child: IconWithText(
-                    iconPath: 'assets/icons/travel_icon.svg',
-                    label: localization.categoryTravel,
-                    onTap: () {
-                      bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
-                      context.go('/stores', extra: "Putovanja");
-                    },
+                  child: SizedBox(
+                    height: 130, // Konstantna visina za sve kartice
+                    child: IconWithText(
+                      iconPath: 'assets/icons/travel_icon.svg',
+                      label: localization.categoryTravel,
+                      onTap: () {
+                        bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
+                        context.go('/stores', extra: "Putovanja");
+                      },
+                    ),
                   ),
                 ),
-                const SizedBox(width: 22.0), // Razmak između drugog i trećeg itema
+                const SizedBox(width: 22.0),
                 Expanded(
-                  child: IconWithText(
-                    iconPath: 'assets/icons/entertaiment_icon.svg',
-                    label: localization.categoryEntertainment,
-                    onTap: () {
-                      bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
-                      context.go('/stores', extra: "Zabava");
-                    },
+                  child: SizedBox(
+                    height: 130, // Konstantna visina za sve kartice
+                    child: IconWithText(
+                      iconPath: 'assets/icons/entertaiment_icon.svg',
+                      label: localization.categoryEntertainment,
+                      onTap: () {
+                        bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
+                        context.go('/stores', extra: "Zabava");
+                      },
+                    ),
                   ),
                 ),
               ],
             ),
+
           ),
 
 // 3 SVG images in another row with text and click listeners
@@ -173,35 +183,44 @@ class _WalletScreenState extends State<WalletScreen> {
               mainAxisAlignment: MainAxisAlignment.start, // Start alignment to avoid overflow
               children: [
                 Expanded(
-                  child: IconWithText(
-                    iconPath: 'assets/icons/services_icon.svg',
-                    label: localization.categoryServices,
-                    onTap: () {
-                      bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
-                      context.go('/stores', extra: "Usluge");
-                    },
+                  child: SizedBox(
+                    height: 130,
+                    child: IconWithText(
+                      iconPath: 'assets/icons/services_icon.svg',
+                      label: localization.categoryServices,
+                      onTap: () {
+                        bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
+                        context.go('/stores', extra: "Usluge");
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(width: 22.0), // Razmak između prvog i drugog itema
                 Expanded(
-                  child: IconWithText(
-                    iconPath: 'assets/icons/beauty_and_health_icon.svg',
-                    label: localization.categoryBeautyAndHealth,
-                    onTap: () {
-                      bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
-                      context.go('/stores', extra: "Lepota i Zdravlje");
-                    },
+                  child: SizedBox(
+                    height: 130,
+                    child: IconWithText(
+                      iconPath: 'assets/icons/beauty_and_health_icon.svg',
+                      label: localization.categoryBeautyAndHealth,
+                      onTap: () {
+                        bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
+                        context.go('/stores', extra: "Lepota i Zdravlje");
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(width: 22.0), // Razmak između drugog i trećeg itema
                 Expanded(
-                  child: IconWithText(
-                    iconPath: 'assets/icons/shopping_icon.svg',
-                    label: localization.categoryShopping,
-                    onTap: () {
-                      bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
-                      context.go('/stores', extra: "Kupovina");
-                    },
+                  child: SizedBox(
+                    height: 130,
+                    child: IconWithText(
+                      iconPath: 'assets/icons/shopping_icon.svg',
+                      label: localization.categoryShopping,
+                      onTap: () {
+                        bottomNavKey.currentState?.setSelectedIndex(TabItem.stores.index);
+                        context.go('/stores', extra: "Kupovina");
+                      },
+                    ),
                   ),
                 ),
               ],
@@ -241,21 +260,6 @@ class _WalletScreenState extends State<WalletScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    localization.cardInformationExpiry,
-                    style: AppTextStyles(context).cardLabelTitle,
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    cardInfo.expireDate,
-                    style: AppTextStyles(context).cardLabelDigital,
-                  ),
-                ],
-              ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,

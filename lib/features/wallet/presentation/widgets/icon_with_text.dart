@@ -45,10 +45,14 @@ class IconWithText extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center, // Centrira sadržaj
                 children: [
                   const SizedBox(height: 8.0), // Razmak između slike i teksta
-                  Text(
-                    label, // Tekst ispod ikonice
-                    style: TextStyle(fontSize: 12, color: colorScheme.onSurface),
-                    textAlign: TextAlign.center, // Poravnava tekst u centru horizonta
+                  Padding(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 3),
+                    child: Text(
+                      label, // Tekst ispod ikonice
+                      style: TextStyle(fontSize: 12, color: colorScheme.onSurface),
+                      textAlign: TextAlign.center, // Poravnava tekst u centru horizonta
+                    ),
                   ),
                 ],
               )
